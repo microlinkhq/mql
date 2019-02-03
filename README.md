@@ -2,6 +2,14 @@
   <img src="https://microlink.io/banner_mql.png" alt="microlink logo">
 </h1>
 
+Microlink Query Language (MQL) is the way to interact with the [Microlink API](https://docs.microlink.io/api).
+
+## Install
+
+```js
+npm install @microlink/mql
+```
+
 ## Features
 
 ### Cache Support
@@ -52,6 +60,55 @@ const { MicrolinkError } = mql
 A `MicrolinkError` always have associated `status`, `message` and `code`.
 
 Additionally, it can have the rest of the response information, such as `headers`, `statusCode` or `body`.
+
+## API
+
+### mql(url, [opts])
+
+#### url
+
+*Required*<br>
+Type: `string`
+
+The target URL for extracting structure data.
+
+#### options
+
+Type: `object`<br>
+
+You can pass any [API Parameters](https://docs.microlink.io/api/#introduction) from [Microlink API](https://docs.microlink.io/api/#introduction) as option, including [specific parameters](https://docs.microlink.io/api/#api-parameters/screenshot/specific-parameters) or [device emulation](https://docs.microlink.io/api/#api-parameters/screenshot/device-emulation).
+
+Additionally, you can setup
+
+##### apiKey
+
+Type: `string`<br>
+Default: `undefined`
+
+The API Key used for authenticating your requests as `x-api-key` header.
+
+When the `apiKey` is provided, the `pro.microlink.io` endpoint will used.
+
+Read more about [authentication on docs](https://docs.microlink.io/api/#api-basics/authentication).
+
+##### cache
+
+Type: `string`<br>
+Default: `undefined`
+
+##### retry
+
+Type: `number`<br>
+Default: `3`
+
+See [got#retry](https://www.npmjs.com/package/got#retry).
+
+##### timeout
+
+Type: `number`<br>
+Default: `25000`
+
+See [got#timeout](https://www.npmjs.com/package/got#timeout).
 
 ## License
 

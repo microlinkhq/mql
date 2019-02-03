@@ -41,16 +41,14 @@ module.exports = ({ whoops, isUrlHttp, stringify, got }) => {
     }
   }
 
-  const apiUrl = (url, { key, ...opts } = {}) => {
-    const isPro = !!key
+  const apiUrl = (url, { apiKey, ...opts } = {}) => {
+    const isPro = !!apiKey
     const endpoint = ENDPOINT[isPro ? 'PRO' : 'FREE']
     const apiUrl = `${endpoint}?${stringify({ url: url, ...opts })}`
-    const headers = isPro ? { 'x-api-key': key } : {}
+    const headers = isPro ? { 'x-api-key': apiKey } : {}
     return [apiUrl, { headers }]
   }
 
-  // TODO: Add `agent` support
-  // TODO: Add `batch` support https://www.npmjs.com/package/dataloader
   const mql = async (
     targetUrl,
     { cache = null, retry = 3, timeout = 25000, ...opts } = {}
