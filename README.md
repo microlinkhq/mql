@@ -6,8 +6,6 @@ Microlink Query Language (MQL) is the way to interact with the [Microlink API](h
 
 ## Install
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/microlinkhq/mql.svg)](https://greenkeeper.io/)
-
 ```bash
 npm install @microlink/mql
 ```
