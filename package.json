@@ -1,13 +1,13 @@
 {
-  "name": "mql",
+  "name": "@microlink/mql",
   "description": "Microlink Query Language",
-  "homepage": "https://documentup.com/microlinkhq/mql",
+  "homepage": "https://nicedoc.io/microlinkhq/mql",
   "version": "0.0.0",
   "main": "src/node.js",
   "author": {
-    "name": "microlink.io",
-    "email": "hello@microlink.io",
-    "url": "https://microlink.io"
+    "email": "josefrancisco.verdu@gmail.com",
+    "name": "Kiko Beats",
+    "url": "https://github.com/Kikobeats"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,11 @@
     "url": "https://github.com/microlinkhq/mql/issues"
   },
   "keywords": [
-    "microlink"
+    "api",
+    "language",
+    "microlink",
+    "mql",
+    "query"
   ],
   "dependencies": {
     "got": "~9.6.0",
@@ -45,6 +49,9 @@
   "engines": {
     "node": ">= 8"
   },
+  "files": [
+    "src"
+  ],
   "scripts": {
     "clean": "rm -rf node_modules",
     "coverage": "nyc report --reporter=text-lcov | coveralls",

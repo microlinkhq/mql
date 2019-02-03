@@ -6,7 +6,7 @@ Microlink Query Language (MQL) is the way to interact with the [Microlink API](h
 
 ## Install
 
-```js
+```bash
 npm install @microlink/mql
 ```
 
