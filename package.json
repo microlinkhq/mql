@@ -2,7 +2,7 @@
   "name": "@microlink/mql",
   "description": "Microlink Query Language",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "src/node.js",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
