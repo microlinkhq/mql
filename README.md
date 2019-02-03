@@ -2,7 +2,29 @@
   <img src="https://microlink.io/banner_mql.png" alt="microlink logo">
 </h1>
 
-*WORK IN PROGRESS*
+## Featues
+
+### Cache Support
+
+You can enable cache for saving API calls if they have been previously done
+
+
+```js
+const mql = requir('@microlink/mql')
+const cache = new Map();
+
+(async () => {
+  let status, data, response
+
+  { status, data, response } = await mql('https://kikobeats.com', { cache })
+  console.log(response.fromCache);
+  //=> false
+
+  { status, data, response } = await mql('https://kikobeats.com', { cache })
+  console.log(response.fromCache);
+  //=> true
+})();
+```
 
 ## License
 

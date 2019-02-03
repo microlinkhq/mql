@@ -28,15 +28,20 @@ module.exports = ({ whoops, isUrlHttp, stringify, got }) => {
   }
 
   // TODO: Add `agent` support
-  // TODO: Add local `cache` support: https://www.npmjs.com/package/got#cache-1
   // TODO: Add `batch` support https://www.npmjs.com/package/dataloader
   const MQL = async (
     targetUrl,
-    { retry = 3, timeout = 25000, ...opts } = {}
+    { cache = null, retry = 3, timeout = 25000, ...opts } = {}
   ) => {
     assertUrl(targetUrl)
     const [url, { headers }] = apiUrl(targetUrl, opts)
-    const response = await got(url, { retry, timeout, headers, json: true })
+    const response = await got(url, {
+      cache,
+      retry,
+      timeout,
+      headers,
+      json: true
+    })
     const { body } = response
     return { ...body, response }
   }
