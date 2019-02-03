@@ -10,9 +10,38 @@ Microlink Query Language (MQL) is the way to interact with the [Microlink API](h
 npm install @microlink/mql
 ```
 
-## Features
+## Getting Started
 
-### Cache Support
+The purpose of the library is to provide a good developer experience while you interact with [Microlink API](https://docs.microlink.io/api).
+
+You can do exactly the same thing than performing a cURL or any other HTTP client.
+
+```js
+const mql = require('@microlink/mql')
+
+;(async () => {
+  const { status, body, response } = await mql('https://kikobeats.com')
+  console.log(status)
+  // => success
+})()
+```
+
+Additionally, you pass the same [API Parameters](https://docs.microlink.io/api/#api-parameters/url).
+
+```js
+const mql = require('@microlink/mql')
+
+;(async () => {
+  const { status, body, response } = await mql('https://kikobeats.com', {
+    screenshot: true,
+    waitFor: 3000
+  })
+
+  console.log(`My screenshot at ${body.screenshot.url}`)
+})()
+```
+
+## Cache Support
 
 You can enable cache for saving API calls if they have been previously done
 
@@ -34,7 +63,7 @@ const cache = new Map()
 })()
 ```
 
-### Error Handling
+## Error Handling
 
 If something does not go as expected, it returns a `MicrolinkError`
 
