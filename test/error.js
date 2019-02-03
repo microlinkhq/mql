@@ -2,6 +2,7 @@
 
 import test from 'ava'
 import mql from '../src/node'
+import { omit } from 'lodash'
 
 const { MicrolinkError } = mql
 
@@ -15,10 +16,7 @@ test('invalid url', async t => {
     instanceOf: MicrolinkError
   })
   t.is(error.code, 'ENOVALIDURL')
-  t.is(
-    error.description,
-    `The \`url\` value 'pacopepe' is not a valid HTTP URL.`
-  )
+  t.is(error.description, `The \`url\` value 'pacopepe' is not a valid HTTP URL.`)
 })
 test('fail status', async t => {
   const error = await t.throwsAsync(
@@ -39,5 +37,6 @@ test('fail status', async t => {
   t.true(!!error.statusCode)
   t.true(!!error.headers)
   t.true(!!error.body)
-  t.snapshot(error)
+  t.snapshot(!!error.headers)
+  t.snapshot(omit(error, ['headers']))
 })

@@ -39,6 +39,7 @@
     "git-dirty": "latest",
     "husky": "latest",
     "lint-staged": "latest",
+    "lodash": "latest",
     "npm-check-updates": "latest",
     "nyc": "latest",
     "prettier-standard": "latest",
