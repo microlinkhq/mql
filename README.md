@@ -2,7 +2,7 @@
   <img src="https://microlink.io/banner_mql.png" alt="microlink logo">
 </h1>
 
-## Featues
+## Features
 
 ### Cache Support
 
@@ -10,21 +10,48 @@ You can enable cache for saving API calls if they have been previously done
 
 
 ```js
-const mql = requir('@microlink/mql')
-const cache = new Map();
+const mql = require('@microlink/mql')
+const cache = new Map()
 
-(async () => {
-  let status, data, response
+;(async () => {
+  let data
 
-  { status, data, response } = await mql('https://kikobeats.com', { cache })
-  console.log(response.fromCache);
-  //=> false
+  data = await mql('https://kikobeats.com', { cache })
+  console.log(data.response.fromCache)
+  // => false
 
-  { status, data, response } = await mql('https://kikobeats.com', { cache })
-  console.log(response.fromCache);
-  //=> true
-})();
+  data = await mql('https://kikobeats.com', { cache })
+  console.log(data.response.fromCache)
+  // => true
+})()
 ```
+
+### Error Handling
+
+If something does not go as expected, it returns a `MicrolinkError`
+
+```js
+const mql = require('@microlink/mql')
+
+// The library exposes `MicrolinkError` constructor
+const { MicrolinkError } = mql
+
+;(async () => {
+  try {
+    mql('https://kikobeats.com', {
+      screenshot: true,
+      waitFor: 30000
+    })
+  } catch (err) {
+    err instanceof MicrolinkError
+    // => true
+  }
+})()
+```
+
+A `MicrolinkError` always have associated `status`, `message` and `code`.
+
+Additionally, it can have the rest of the response information, such as `headers`, `statusCode` or `body`.
 
 ## License
 
