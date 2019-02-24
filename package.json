@@ -2,7 +2,7 @@
   "name": "@microlink/mql",
   "description": "Microlink Query Language",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "browser": "src/browser.js",
   "main": "src/node.js",
   "author": {
@@ -77,7 +77,7 @@
     "prerelease": "git-dirty && npm run update:check && npm test && git-authors-cli",
     "pretest": "npm run lint",
     "pretty": "prettier-standard index.js {core,test,bin,scripts}/**/*.js --single-quote --print-width 100",
-    "release": "git add src/umd.js && standard-version -a",
+    "release": "npm run build && git add src/umd.js && standard-version --commit-all",
     "release:github": "conventional-github-releaser -p angular",
     "release:tags": "git push --follow-tags origin master",
     "test": "nyc ava",
@@ -124,8 +124,7 @@
   },
   "standard-version": {
     "scripts": {
-      "prechangelog": "git-authors-cli",
-      "prerelease": "npm run build"
+      "prechangelog": "git-authors-cli"
     }
   },
   "umd:main": "src/umd.js"
