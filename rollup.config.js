@@ -1,5 +1,5 @@
 import builtins from 'rollup-plugin-node-builtins'
-import visualizer from 'rollup-plugin-visualizer'
+import visualizer from 'rollup-plugin-visualizer' // eslint-disable-line
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'

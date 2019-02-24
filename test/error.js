@@ -3,7 +3,7 @@
 import test from 'ava'
 import mqlBrowser from '../src/browser'
 import mqlNode from '../src/node'
-;[{ constructor: mqlNode, target: 'node' }, { constructor: mqlBrowser, target: 'browser' }].forEach(
+  ;[{ constructor: mqlNode, target: 'node' }, { constructor: mqlBrowser, target: 'browser' }].forEach(
   ({ constructor: mql, target }) => {
     test(`${target} » empty url`, async t => {
       const error = await t.throwsAsync(mql(), { instanceOf: mql.MicrolinkError })
