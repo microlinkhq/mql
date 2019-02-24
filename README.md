@@ -20,7 +20,7 @@ You can do exactly the same thing than performing a cURL or any other HTTP clien
 const mql = require('@microlink/mql')
 
 ;(async () => {
-  const { status, body, response } = await mql('https://kikobeats.com')
+  const { status, data, response } = await mql('https://kikobeats.com')
   console.log(status)
   // => success
 })()
@@ -32,12 +32,12 @@ Additionally, you pass the same [API Parameters](https://docs.microlink.io/api/#
 const mql = require('@microlink/mql')
 
 ;(async () => {
-  const { status, body, response } = await mql('https://kikobeats.com', {
+  const { status, data, response } = await mql('https://kikobeats.com', {
     screenshot: true,
     waitFor: 3000
   })
 
-  console.log(`My screenshot at ${body.screenshot.url}`)
+  console.log(`My screenshot at ${data.screenshot.url}`)
 })()
 ```
 
@@ -88,7 +88,7 @@ const { MicrolinkError } = mql
 
 A `MicrolinkError` always have associated `status`, `message` and `code`.
 
-Additionally, it can have the rest of the response information, such as `headers`, `statusCode` or `body`.
+Additionally, it can have the rest of the response information, such as `headers`, `statusCode` or `data`.
 
 ## API
 
