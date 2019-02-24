@@ -3,6 +3,7 @@
   "description": "Microlink Query Language",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
   "version": "0.1.0",
+  "browser": "src/browser.js",
   "main": "src/node.js",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
@@ -26,6 +27,8 @@
   "dependencies": {
     "got": "~9.6.0",
     "is-url-http": "~1.0.1",
+    "ky": "~0.9.0",
+    "ky-universal": "~0.1.0",
     "whoops": "~4.0.1"
   },
   "devDependencies": {
@@ -39,7 +42,6 @@
     "git-dirty": "latest",
     "husky": "latest",
     "lint-staged": "latest",
-    "lodash": "latest",
     "npm-check-updates": "latest",
     "nyc": "latest",
     "prettier-standard": "latest",

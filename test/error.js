@@ -1,42 +1,41 @@
 'use strict'
 
 import test from 'ava'
-import mql from '../src/node'
-import { omit } from 'lodash'
+import mqlBrowser from '../src/browser'
+import mqlNode from '../src/node'
+;[{ constructor: mqlNode, target: 'node' }, { constructor: mqlBrowser, target: 'browser' }].forEach(
+  ({ constructor: mql, target }) => {
+    test(`${target} » empty url`, async t => {
+      const error = await t.throwsAsync(mql(), { instanceOf: mql.MicrolinkError })
+      t.is(error.code, 'ENOVALIDURL')
+      t.is(error.description, 'The `url` value is not a valid HTTP URL.')
+    })
+    test(`${target} » invalid url`, async t => {
+      const error = await t.throwsAsync(mql('pacopepe'), {
+        instanceOf: mql.MicrolinkError
+      })
+      t.is(error.code, 'ENOVALIDURL')
+      t.is(error.description, `The \`url\` value 'pacopepe' is not a valid HTTP URL.`)
+    })
+    test(`${target} » fail status`, async t => {
+      const error = await t.throwsAsync(
+        mql('https://kikobeats.com', {
+          screenshot: true,
+          video: true,
+          waitFor: 40000,
+          force: true
+        }),
+        {
+          instanceOf: mql.MicrolinkError
+        }
+      )
 
-const { MicrolinkError } = mql
-
-test('empty url', async t => {
-  const error = await t.throwsAsync(mql(), { instanceOf: MicrolinkError })
-  t.is(error.code, 'ENOVALIDURL')
-  t.is(error.description, 'The `url` value is not a valid HTTP URL.')
-})
-test('invalid url', async t => {
-  const error = await t.throwsAsync(mql('pacopepe'), {
-    instanceOf: MicrolinkError
-  })
-  t.is(error.code, 'ENOVALIDURL')
-  t.is(error.description, `The \`url\` value 'pacopepe' is not a valid HTTP URL.`)
-})
-test('fail status', async t => {
-  const error = await t.throwsAsync(
-    mql('https://kikobeats.com', {
-      screenshot: true,
-      video: true,
-      waitFor: 40000,
-      force: true
-    }),
-    {
-      instanceOf: MicrolinkError
-    }
-  )
-
-  t.true(!!error.status)
-  t.true(!!error.code)
-  t.true(!!error.message)
-  t.true(!!error.statusCode)
-  t.true(!!error.headers)
-  t.true(!!error.body)
-  t.snapshot(!!error.headers)
-  t.snapshot(omit(error, ['headers']))
-})
+      t.true(!!error.status)
+      t.true(!!error.code)
+      t.true(!!error.message)
+      t.true(!!error.statusCode)
+      t.true(!!error.headers)
+      t.true(!!error.body)
+    })
+  }
+)
