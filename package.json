@@ -32,6 +32,7 @@
     "whoops": "~4.0.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "latest",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "ava": "latest",
@@ -45,6 +46,12 @@
     "npm-check-updates": "latest",
     "nyc": "latest",
     "prettier-standard": "latest",
+    "rollup-plugin-babel": "latest",
+    "rollup-plugin-commonjs": "latest",
+    "rollup-plugin-filesize": "latest",
+    "rollup-plugin-node-builtins": "latest",
+    "rollup-plugin-node-resolve": "latest",
+    "rollup-plugin-terser": "latest",
     "standard": "latest",
     "standard-markdown": "latest",
     "standard-version": "latest"
@@ -56,6 +63,7 @@
     "src"
   ],
   "scripts": {
+    "build": "rollup -c rollup.config.js",
     "clean": "rm -rf node_modules",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "standard-markdown README.md && standard",

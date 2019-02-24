@@ -1,6 +1,9 @@
-'use strict'
+import { stringify } from 'querystring'
+import isUrlHttp from 'is-url-http'
+import ky from 'ky-universal'
+import whoops from 'whoops'
 
-const ky = require('ky-universal')
+import factory from './factory'
 
 const got = async (url, { json, ...opts }) => {
   try {
@@ -16,9 +19,9 @@ const got = async (url, { json, ...opts }) => {
   }
 }
 
-module.exports = require('./factory')({
-  whoops: require('whoops'),
-  isUrlHttp: require('is-url-http'),
-  stringify: require('querystring').stringify,
+export default factory({
+  whoops,
+  isUrlHttp,
+  stringify,
   got
 })
