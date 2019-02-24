@@ -1,18 +1,19 @@
-import { stringify } from 'querystring'
+import { stringify } from 'qs'
 import isUrlHttp from 'is-url-http'
 import ky from 'ky-universal'
-import whoops from 'whoops'
 
-import factory from './factory'
+const factory = require('./factory')
 
-const got = async (url, { json, ...opts }) => {
+const MicrolinkError = require('whoops')('MicrolinkError')
+
+const got = async (url, { json, headers, ...opts }) => {
   try {
     const response = await ky(url, opts)
     const body = await response.json()
     const { headers, status: statusCode, statusText: statusMessage } = response
     return { url: response.url, body, headers, statusCode, statusMessage }
   } catch (err) {
-    err.body = await err.response.json()
+    err.body = err.response ? await err.response.json() : ''
     err.statusCode = err.response.status
     err.headers = err.response.headers
     throw err
@@ -20,7 +21,7 @@ const got = async (url, { json, ...opts }) => {
 }
 
 export default factory({
-  whoops,
+  MicrolinkError,
   isUrlHttp,
   stringify,
   got

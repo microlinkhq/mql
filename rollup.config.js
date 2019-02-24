@@ -1,6 +1,7 @@
+import builtins from 'rollup-plugin-node-builtins'
+import visualizer from 'rollup-plugin-visualizer'
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
-import builtins from 'rollup-plugin-node-builtins'
 import { terser } from 'rollup-plugin-terser'
 import filesize from 'rollup-plugin-filesize'
 import babel from 'rollup-plugin-babel'
@@ -10,24 +11,28 @@ const babelRc = JSON.parse(fs.readFileSync('./.babelrc'))
 
 const name = 'mql'
 
-export default [
-  // UMD
-  {
-    input: './src/browser.js',
-    output: { name, format: 'umd', file: `dist/umd/index.js` },
-    plugins: [
-      builtins(),
-      resolve({
-        module: true,
-        jsnext: true,
-        main: true,
-        browser: true,
-        extensions: ['.js']
-      }),
-      commonjs(),
-      babel(babelRc),
-      terser(),
-      filesize()
-    ]
-  }
-]
+const umd = () => ({
+  input: './src/browser.js',
+  output: { name, format: 'umd', file: `dist/umd/index.js` },
+  plugins: [
+    builtins(),
+    resolve({
+      browser: true,
+      jsnext: true,
+      main: true
+    }),
+    commonjs({
+      include: 'node_modules/**'
+    }),
+    babel({
+      babelrc: false,
+      externalHelpers: false,
+      ...babelRc
+    }),
+    terser(),
+    filesize(),
+    visualizer()
+  ]
+})
+
+export default [umd()]
