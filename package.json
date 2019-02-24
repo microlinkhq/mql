@@ -118,7 +118,9 @@
   },
   "standard-version": {
     "scripts": {
-      "prechangelog": "git-authors-cli"
+      "prechangelog": "git-authors-cli",
+      "prerelease": "npm run build"
     }
-  }
+  },
+  "umd:main": "dist/mql.umd.js"
 }

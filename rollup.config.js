@@ -13,7 +13,7 @@ const name = 'mql'
 
 const umd = () => ({
   input: './src/browser.js',
-  output: { name, format: 'umd', file: `dist/umd/index.js` },
+  output: { name, format: 'umd', file: `dist/mql.umd.js` },
   plugins: [
     builtins(),
     resolve({
@@ -30,8 +30,8 @@ const umd = () => ({
       ...babelRc
     }),
     terser(),
-    filesize(),
-    visualizer()
+    filesize()
+    // visualizer()
   ]
 })
 
