@@ -76,8 +76,7 @@
     "precommit": "lint-staged",
     "prerelease": "git-dirty && npm run update:check && npm test && git-authors-cli",
     "pretest": "npm run lint",
-    "pretty": "prettier-standard index.js {core,test,bin,scripts}/**/*.js --single-quote --print-width 100",
-    "release": "npm run build && git add src/umd.min.js && standard-version --commit-all",
+    "release": "npm run build && git add -A && standard-version --commit-all",
     "release:github": "conventional-github-releaser -p angular",
     "release:tags": "git push --follow-tags origin master",
     "test": "nyc ava",
@@ -121,11 +120,6 @@
     "ignore": [
       "src/umd.min.js"
     ]
-  },
-  "standard-version": {
-    "scripts": {
-      "prechangelog": "git-authors-cli"
-    }
   },
   "umd:main": "src/umd.min.js"
 }
