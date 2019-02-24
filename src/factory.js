@@ -1,5 +1,3 @@
-'use strict'
-
 const ENDPOINT = {
   FREE: 'https://api.microlink.io',
   PRO: 'https://pro.microlink.io'
@@ -10,16 +8,12 @@ const ERRORS_CODE = {
   FAILED: 'EFAILED'
 }
 
-module.exports = ({ whoops, isUrlHttp, stringify, got }) => {
-  const MicrolinkError = whoops('MicrolinkError')
-
+function factory ({ MicrolinkError, isUrlHttp, stringify, got }) {
   const assertUrl = url => {
     if (!isUrlHttp(url)) {
       throw new MicrolinkError({
         code: ERRORS_CODE.INVALID_URL,
-        message: `The \`url\` value ${
-          url ? `'${url}' ` : ''
-        }is not a valid HTTP URL.`.trim()
+        message: `The \`url\` value ${url ? `'${url}' ` : ''}is not a valid HTTP URL.`.trim()
       })
     }
   }
@@ -49,10 +43,7 @@ module.exports = ({ whoops, isUrlHttp, stringify, got }) => {
     return [apiUrl, { headers }]
   }
 
-  const mql = async (
-    targetUrl,
-    { cache = null, retry = 3, timeout = 25000, ...opts } = {}
-  ) => {
+  const mql = async (targetUrl, { cache = null, retry = 3, timeout = 25000, ...opts } = {}) => {
     assertUrl(targetUrl)
     const [url, { headers }] = apiUrl(targetUrl, opts)
     return fetchFromApi(url, { cache, retry, timeout, headers, json: true })
@@ -63,3 +54,6 @@ module.exports = ({ whoops, isUrlHttp, stringify, got }) => {
 
   return mql
 }
+
+module.exports = factory
+module.exports.default = factory

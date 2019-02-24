@@ -3,6 +3,7 @@
   "description": "Microlink Query Language",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
   "version": "0.1.0",
+  "browser": "src/browser.js",
   "main": "src/node.js",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
@@ -29,20 +30,32 @@
     "whoops": "~4.0.1"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "latest",
+    "@babel/preset-env": "latest",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "ava": "latest",
     "conventional-github-releaser": "latest",
     "coveralls": "latest",
+    "esm": "latest",
     "finepack": "latest",
     "git-authors-cli": "latest",
     "git-dirty": "latest",
     "husky": "latest",
+    "ky": "latest",
+    "ky-universal": "latest",
     "lint-staged": "latest",
-    "lodash": "latest",
     "npm-check-updates": "latest",
     "nyc": "latest",
     "prettier-standard": "latest",
+    "qs": "latest",
+    "rollup-plugin-babel": "latest",
+    "rollup-plugin-commonjs": "latest",
+    "rollup-plugin-filesize": "latest",
+    "rollup-plugin-node-builtins": "latest",
+    "rollup-plugin-node-resolve": "latest",
+    "rollup-plugin-terser": "latest",
+    "rollup-plugin-visualizer": "latest",
     "standard": "latest",
     "standard-markdown": "latest",
     "standard-version": "latest"
@@ -54,6 +67,7 @@
     "src"
   ],
   "scripts": {
+    "build": "rollup -c rollup.config.js",
     "clean": "rm -rf node_modules",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "standard-markdown README.md && standard",
@@ -70,6 +84,11 @@
     "update:check": "ncu -- --error-level 2"
   },
   "license": "MIT",
+  "ava": {
+    "require": [
+      "esm"
+    ]
+  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -99,7 +118,9 @@
   },
   "standard-version": {
     "scripts": {
-      "prechangelog": "git-authors-cli"
+      "prechangelog": "git-authors-cli",
+      "prerelease": "npm run build"
     }
-  }
+  },
+  "umd:main": "dist/mql.umd.js"
 }
