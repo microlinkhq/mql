@@ -13,7 +13,7 @@ const name = 'mql'
 
 const umd = () => ({
   input: './src/browser.js',
-  output: { name, format: 'umd', file: `src/umd.js` },
+  output: { name, format: 'umd', file: `src/umd.min.js` },
   plugins: [
     builtins(),
     resolve({
