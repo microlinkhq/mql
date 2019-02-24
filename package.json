@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "got": "~9.6.0",
-    "is-url-http": "~1.0.1",
+    "is-url-http": "~1.1.0",
     "whoops": "~4.0.1"
   },
   "devDependencies": {
