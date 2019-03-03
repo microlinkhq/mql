@@ -1,3 +1,11 @@
+<a name="0.2.7"></a>
+## 0.2.7 (2019-03-03)
+
+* build: add ky-universal as dependecy ([8570d8e](https://github.com/microlinkhq/mql/commit/8570d8e))
+* build: fix tests ([c9bddfd](https://github.com/microlinkhq/mql/commit/c9bddfd))
+
+
+
 # Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
