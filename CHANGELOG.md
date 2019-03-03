@@ -1,3 +1,10 @@
+<a name="0.2.10"></a>
+## 0.2.10 (2019-03-03)
+
+* build: update dependencies ([1998c50](https://github.com/microlinkhq/mql/commit/1998c50))
+
+
+
 <a name="0.2.9"></a>
 ## 0.2.9 (2019-03-03)
 
