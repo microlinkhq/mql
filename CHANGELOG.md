@@ -1,3 +1,10 @@
+<a name="0.2.8"></a>
+## 0.2.8 (2019-03-03)
+
+* build: setup deps ([491e227](https://github.com/microlinkhq/mql/commit/491e227))
+
+
+
 <a name="0.2.7"></a>
 ## 0.2.7 (2019-03-03)
 
