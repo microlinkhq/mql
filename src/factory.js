@@ -26,12 +26,14 @@ function factory ({ MicrolinkError, isUrlHttp, stringify, got }) {
       const { body } = response
       return { ...body, response }
     } catch (err) {
+      const statusCode = err.statusCode || 500
       const message = err.body ? err.body.message : err.message
       const status = err.body ? err.body.status : 'fail'
       throw MicrolinkError({
         ...err,
         status,
         message,
+        statusCode,
         code: ERRORS_CODE.FAILED
       })
     }
