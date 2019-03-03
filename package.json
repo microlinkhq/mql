@@ -27,6 +27,8 @@
   "dependencies": {
     "got": "~9.6.0",
     "is-url-http": "~1.1.1",
+    "ky": "~0.9.0",
+    "ky-universal": "~0.1.0",
     "whoops": "~4.0.1"
   },
   "devDependencies": {
@@ -43,8 +45,6 @@
     "git-authors-cli": "latest",
     "git-dirty": "latest",
     "husky": "latest",
-    "ky": "latest",
-    "ky-universal": "~0.1.0",
     "lint-staged": "latest",
     "npm-check-updates": "latest",
     "nyc": "latest",
