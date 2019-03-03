@@ -1,12 +1,17 @@
 'use strict'
 
 import test from 'ava'
-import { apiUrl } from '..'
+import mqlBrowser from '../src/browser'
+import mqlNode from '../src/node'
+  ;[
+  { constructor: mqlNode, target: 'node' },
+  { constructor: mqlBrowser, target: 'browser' }
+].forEach(({ constructor: mql, target }) => {
+  test(`${target} » url without query params`, t => {
+    t.snapshot(mql.apiUrl('https://kikobeats.com'))
+  })
 
-test('url without query params', t => {
-  t.snapshot(apiUrl('https://kikobeats.com'))
-})
-
-test('apiKey', t => {
-  t.snapshot(apiUrl('https://kikobeats.com', { apiKey: 'foobar' }))
+  test(`${target} » apiKey`, t => {
+    t.snapshot(mql.apiUrl('https://kikobeats.com', { apiKey: 'foobar' }))
+  })
 })
