@@ -1,3 +1,10 @@
+<a name="0.2.9"></a>
+## 0.2.9 (2019-03-03)
+
+* test: improve ([f89a41f](https://github.com/microlinkhq/mql/commit/f89a41f))
+
+
+
 <a name="0.2.8"></a>
 ## 0.2.8 (2019-03-03)
 
