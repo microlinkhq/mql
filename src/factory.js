@@ -13,7 +13,9 @@ function factory ({ MicrolinkError, isUrlHttp, stringify, got }) {
     if (!isUrlHttp(url)) {
       throw new MicrolinkError({
         code: ERRORS_CODE.INVALID_URL,
-        message: `The \`url\` value ${url ? `'${url}' ` : ''}is not a valid HTTP URL.`.trim()
+        message: `The \`url\` value ${
+          url ? `'${url}' ` : ''
+        }is not a valid HTTP URL.`.trim()
       })
     }
   }
@@ -43,7 +45,10 @@ function factory ({ MicrolinkError, isUrlHttp, stringify, got }) {
     return [apiUrl, { headers }]
   }
 
-  const mql = async (targetUrl, { cache = null, retry = 3, timeout = 25000, ...opts } = {}) => {
+  const mql = async (
+    targetUrl,
+    { cache = null, retry = 3, timeout = 25000, ...opts } = {}
+  ) => {
     assertUrl(targetUrl)
     const [url, { headers }] = apiUrl(targetUrl, opts)
     return fetchFromApi(url, { cache, retry, timeout, headers, json: true })
