@@ -29,6 +29,7 @@
     "is-url-http": "~1.1.3",
     "ky": "~0.9.0",
     "ky-universal": "~0.1.0",
+    "qs": "~6.6.0",
     "whoops": "~4.0.1"
   },
   "devDependencies": {
@@ -49,7 +50,6 @@
     "npm-check-updates": "latest",
     "nyc": "latest",
     "prettier-standard": "latest",
-    "qs": "latest",
     "rollup-plugin-babel": "latest",
     "rollup-plugin-commonjs": "latest",
     "rollup-plugin-filesize": "latest",
