@@ -1,4 +1,4 @@
-import { stringify } from 'qs'
+import { encode as stringify } from 'qss'
 import isUrlHttp from 'is-url-http'
 import ky from 'ky-universal'
 
