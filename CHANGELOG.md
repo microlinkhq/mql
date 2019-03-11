@@ -1,3 +1,37 @@
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="0.2.11"></a>
+## [0.2.11](https://github.com/microlinkhq/mql/compare/v0.2.6...v0.2.11) (2019-03-11)
+
+
+### Bug Fixes
+
+* add missing browser dependency ([ec1ed09](https://github.com/microlinkhq/mql/commit/ec1ed09))
+
+
+
+<a name="0.2.10"></a>
+## 0.2.10 (2019-03-03)
+
+
+
+<a name="0.2.9"></a>
+## 0.2.9 (2019-03-03)
+
+
+
+<a name="0.2.8"></a>
+## 0.2.8 (2019-03-03)
+
+
+
+<a name="0.2.7"></a>
+## 0.2.7 (2019-03-03)
+
+
+
 <a name="0.2.10"></a>
 ## 0.2.10 (2019-03-03)
 
