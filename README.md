@@ -69,7 +69,7 @@ where a rule is defined by two things:
 Type: `string`</br>
 Default: `undefined`
 
-It defined the [data shape](https://docs.microlink.io/api/#introduction) to use for the value extracted.
+It defines the [data shape](https://docs.microlink.io/api/#introduction) to use for the value extracted.
 
 If you define a valid type, It will validate and alter the original value to strictly accomplish the shape.
 
