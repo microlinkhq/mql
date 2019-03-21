@@ -1,6 +1,7 @@
 'use strict'
 
 import test from 'ava'
+
 import mqlBrowser from '../src/browser'
 import mqlNode from '../src/node'
   ;[

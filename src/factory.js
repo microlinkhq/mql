@@ -8,7 +8,7 @@ const ERRORS_CODE = {
   FAILED: 'EFAILED'
 }
 
-function factory ({ MicrolinkError, isUrlHttp, stringify, got }) {
+function factory ({ MicrolinkError, isUrlHttp, stringify, got, flatten }) {
   const assertUrl = url => {
     if (!isUrlHttp(url)) {
       throw new MicrolinkError({
@@ -18,6 +18,14 @@ function factory ({ MicrolinkError, isUrlHttp, stringify, got }) {
         }is not a valid HTTP URL.`.trim()
       })
     }
+  }
+
+  const mapRules = (rules = {}) => {
+    const flatRules = flatten(rules)
+    return Object.keys(flatRules).reduce(
+      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key] }),
+      {}
+    )
   }
 
   const fetchFromApi = async (url, opts) => {
@@ -39,10 +47,15 @@ function factory ({ MicrolinkError, isUrlHttp, stringify, got }) {
     }
   }
 
-  const apiUrl = (url, { apiKey, ...opts } = {}) => {
+  const apiUrl = (url, { rules, apiKey, ...opts } = {}) => {
     const isPro = !!apiKey
     const endpoint = ENDPOINT[isPro ? 'PRO' : 'FREE']
-    const apiUrl = `${endpoint}?${stringify({ url: url, ...opts })}`
+    const apiUrl = `${endpoint}?${stringify({
+      url: url,
+      ...mapRules(rules),
+      ...opts
+    })}`
+
     const headers = isPro ? { 'x-api-key': apiKey } : {}
     return [apiUrl, { headers }]
   }
@@ -58,6 +71,7 @@ function factory ({ MicrolinkError, isUrlHttp, stringify, got }) {
 
   mql.MicrolinkError = MicrolinkError
   mql.apiUrl = apiUrl
+  mql.mapRules = mapRules
 
   return mql
 }

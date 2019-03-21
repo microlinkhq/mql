@@ -25,6 +25,7 @@
     "query"
   ],
   "dependencies": {
+    "flat": "~4.1.0",
     "got": "~9.6.0",
     "is-url-http": "~1.1.3",
     "ky": "~0.9.0",
@@ -58,7 +59,6 @@
     "rollup-plugin-terser": "latest",
     "rollup-plugin-visualizer": "latest",
     "standard": "latest",
-    "standard-markdown": "latest",
     "standard-version": "latest"
   },
   "engines": {
@@ -71,7 +71,7 @@
     "build": "rollup -c rollup.config.js",
     "clean": "rm -rf node_modules",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "standard-markdown README.md && standard",
+    "lint": "standard",
     "postrelease": "npm run release:tags && npm run release:github && ci-publish",
     "precommit": "lint-staged",
     "prerelease": "git-dirty && npm run update:check && npm test && git-authors-cli",
@@ -108,10 +108,6 @@
       ],
       "*.js,!*.min.js": [
         "prettier-standard",
-        "git add"
-      ],
-      "*.md": [
-        "standard-markdown",
         "git add"
       ]
     }

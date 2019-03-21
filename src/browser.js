@@ -1,6 +1,7 @@
 import { encode as stringify } from 'qss'
 import isUrlHttp from 'is-url-http'
 import ky from 'ky-universal'
+import flatten from 'flat'
 
 const factory = require('./factory')
 
@@ -26,5 +27,6 @@ export default factory({
   MicrolinkError,
   isUrlHttp,
   stringify,
-  got
+  got,
+  flatten
 })

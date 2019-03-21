@@ -14,7 +14,7 @@ npm install @microlink/mql
 
 The purpose of the library is to provide a good developer experience while you interact with [Microlink API](https://docs.microlink.io/api).
 
-You can do exactly the same thing than performing a cURL or any other HTTP client.
+You can do exactly the same thing than performing a `cURL` or any other HTTP client.
 
 ```js
 const mql = require('@microlink/mql')
@@ -26,7 +26,7 @@ const mql = require('@microlink/mql')
 })()
 ```
 
-Additionally, you pass the same [API Parameters](https://docs.microlink.io/api/#api-parameters/url).
+Additionally, you pass any [API Parameter](https://docs.microlink.io/api/#api-parameters/url) as second argument.
 
 ```js
 const mql = require('@microlink/mql')
@@ -40,6 +40,81 @@ const mql = require('@microlink/mql')
   console.log(`My screenshot at ${data.screenshot.url}`)
 })()
 ```
+
+## Custom Rules
+
+[Custom Rule](https://microlink.io/blog/custom-rules/) allows you setup your own rules for getting specific content.
+
+```js
+const { status, data } = await mql('https://kikobeats.com', {
+  palette: true,
+  rules: {
+    avatar: {
+      type: 'image',
+      selectors: [
+        {
+          selector: '#avatar',
+          attr: 'href'
+        }
+      ],
+    }
+  }
+})
+```
+
+where a rule is defined by two things:
+
+#### type
+
+Type: `string`</br>
+Default: `undefined`
+
+It defines the [data shape](https://docs.microlink.io/api/#introduction) to use for the value extracted.
+
+If you define a valid type, It will validate and alter the original value to strictly accomplish the shape.
+
+For example, if you define a rule with `date` type, then, if the value extracted is a `number` and not possible to cast into `new Date()`, the value extracted will be `null`.
+
+If you don't specify a `type`, then it returns the raw value extracted.
+
+The `type` is also important if you are interested in combine the value extracted with the rest of [API Parameters](https://docs.microlink.io/api).
+
+For example, if you enable [palette](https://docs.microlink.io/api/#api-parameters/palette), then all the fields in the payload with `image` type will have extra color information. 
+
+####  **selectors**
+
+*Required*<br>
+Type: `array`
+
+It defines the rules to be apply into the target url markup for extracting the value.
+
+The position into the collection matters: The first rule that returns a truthy value after applying `type` will be used, not being applying the rest of the rules.
+
+A selector rule should be defined as:
+
+##### selector
+
+*Required*<br>
+Type: `string`
+
+It defines the HTML element you want to get from the HTML of the targeted URL.
+
+You can specify the selector using:
+
+- An HTML tag, e.g. `img`.
+- An CSS class or pseudo class, id or data-attribute, e.g. `.avatar`.
+- A combination of both, e.g. `first:img`.
+
+##### attr
+
+Type: `string`<br>
+default: `html`
+
+It defines which property from the matched selector should be picked.
+
+For example, if you want to extract an `img`, probably you are interested in `src` property, so you should specify it.
+
+Not defining the `attr` means you are going to get the `html` of the matched selector.
 
 ## Cache Support
 
