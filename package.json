@@ -109,10 +109,6 @@
       "*.js,!*.min.js": [
         "prettier-standard",
         "git add"
-      ],
-      "*.md": [
-        "standard-markdown",
-        "git add"
       ]
     }
   },
