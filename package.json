@@ -5,6 +5,9 @@
   "version": "0.3.0",
   "browser": "src/browser.js",
   "main": "src/node.js",
+  "bin": {
+    "mql-run": "./bin/index.js"
+  },
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
     "name": "Kiko Beats",
@@ -39,18 +42,29 @@
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "ava": "latest",
+    "beauty-error": "latest",
+    "chalk": "latest",
     "ci-publish": "latest",
+    "clipboardy": "latest",
     "conventional-github-releaser": "latest",
     "coveralls": "latest",
     "esm": "latest",
+    "exists-file": "latest",
     "finepack": "latest",
     "git-authors-cli": "latest",
     "git-dirty": "latest",
+    "gradient-string": "latest",
     "husky": "latest",
+    "indent-string": "latest",
+    "jsome": "latest",
     "lint-staged": "latest",
+    "meow": "latest",
     "npm-check-updates": "latest",
     "nyc": "latest",
+    "object-sizeof": "latest",
     "prettier-standard": "latest",
+    "pretty-bytes": "latest",
+    "pretty-ms": "latest",
     "rollup-plugin-babel": "latest",
     "rollup-plugin-commonjs": "latest",
     "rollup-plugin-filesize": "latest",
@@ -59,7 +73,9 @@
     "rollup-plugin-terser": "latest",
     "rollup-plugin-visualizer": "latest",
     "standard": "latest",
-    "standard-version": "latest"
+    "standard-version": "latest",
+    "terminal-link": "latest",
+    "time-span": "latest"
   },
   "engines": {
     "node": ">= 8"
