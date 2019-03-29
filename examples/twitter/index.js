@@ -31,27 +31,30 @@ module.exports = async ({ query }) => {
           attr: 'text'
         }
       },
-      tweetsIds: {
+      tweets: {
         selectors: {
-          selector: 'ol > li a',
-          attr: 'data-conversation-id'
-        }
-      },
-      tweetsText: {
-        selectors: {
-          selector: 'ol > li p',
-          attr: 'text'
+          selector: 'ol > li',
+          attr: {
+            id: {
+              selector: '.tweet-timestamp',
+              attr: 'data-conversation-id',
+              type: value => `https://twitter.com/${value}`
+            },
+            text: {
+              selector: '.tweet-text',
+              attr: 'text'
+            },
+            tweetUrl: {
+              selector: '.tweet-timestamp',
+              attr: 'href'
+            }
+          }
         }
       }
     }
   })
 
-  const { tweetsIds, tweetsText, bio, name, avatarUrl } = data
-
-  const tweets = tweetsIds.map((id, index) => ({
-    id,
-    text: tweetsText[index]
-  }))
+  const { tweets, bio, name, avatarUrl } = data
 
   const [pinnedTweet, ...restTweets] = tweets
 
