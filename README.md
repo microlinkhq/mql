@@ -107,7 +107,7 @@ You can specify the selector using:
 
 ##### attr
 
-Type: `string`<br>
+Type: `string|array`<br>
 default: `html`
 
 It defines which property from the matched selector should be picked.
@@ -115,6 +115,8 @@ It defines which property from the matched selector should be picked.
 For example, if you want to extract an `img`, probably you are interested in `src` property, so you should specify it.
 
 Not defining the `attr` means you are going to get the `html` of the matched selector.
+
+If you provide a collection, they will be used as fallbacks for getting the value.
 
 ## Cache Support
 
