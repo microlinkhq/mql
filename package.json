@@ -5,9 +5,6 @@
   "version": "0.3.3",
   "browser": "src/browser.js",
   "main": "src/node.js",
-  "bin": {
-    "mql-run": "./bin/index.js"
-  },
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
     "name": "Kiko Beats",
@@ -45,7 +42,6 @@
     "beauty-error": "latest",
     "chalk": "latest",
     "ci-publish": "latest",
-    "clipboardy": "latest",
     "conventional-github-releaser": "latest",
     "coveralls": "latest",
     "eachdir": "latest",
@@ -54,19 +50,12 @@
     "finepack": "latest",
     "git-authors-cli": "latest",
     "git-dirty": "latest",
-    "gradient-string": "latest",
     "husky": "latest",
-    "if-env": "latest",
-    "indent-string": "latest",
-    "jsome": "latest",
     "lint-staged": "latest",
     "meow": "latest",
     "npm-check-updates": "latest",
     "nyc": "latest",
-    "object-sizeof": "latest",
     "prettier-standard": "latest",
-    "pretty-bytes": "latest",
-    "pretty-ms": "latest",
     "rollup-plugin-babel": "latest",
     "rollup-plugin-commonjs": "latest",
     "rollup-plugin-filesize": "latest",
@@ -75,16 +64,12 @@
     "rollup-plugin-terser": "latest",
     "rollup-plugin-visualizer": "latest",
     "standard": "latest",
-    "standard-version": "latest",
-    "terminal-link": "latest",
-    "time-span": "latest"
+    "standard-version": "latest"
   },
   "engines": {
     "node": ">= 8"
   },
   "files": [
-    "bin",
-    "examples",
     "src"
   ],
   "scripts": {
@@ -92,7 +77,6 @@
     "clean": "rm -rf node_modules",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "standard",
-    "postinstall": "if-env NODE_ENV=production && exit 0 || cd examples && eachdir 'mkdir -p node_modules/@microlink && ln -s ../../../../ node_modules/@microlink/mql'",
     "postrelease": "npm run release:tags && npm run release:github && ci-publish",
     "precommit": "lint-staged",
     "prerelease": "git-dirty && npm run update:check && npm test && git-authors-cli",
