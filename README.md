@@ -1,6 +1,4 @@
-<h1 align="center">
-  <img src="https://microlink.io/banner_mql.png" alt="microlink logo">
-</h1>
+![](https://microlink.io/banner_mql.png)
 
 Microlink Query Language (MQL) is the way to interact with the [Microlink API](https://docs.microlink.io/api).
 
