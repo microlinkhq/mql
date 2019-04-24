@@ -9,13 +9,11 @@ const ERRORS_CODE = {
 }
 
 function factory ({ MicrolinkError, isUrlHttp, stringify, got, flatten }) {
-  const assertUrl = url => {
+  const assertUrl = (url = '') => {
     if (!isUrlHttp(url)) {
       throw new MicrolinkError({
         code: ERRORS_CODE.INVALID_URL,
-        message: `The \`url\` value ${
-          url ? `'${url}' ` : ''
-        }is not a valid HTTP URL.`.trim()
+        message: `The URL \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
       })
     }
   }
@@ -37,6 +35,7 @@ function factory ({ MicrolinkError, isUrlHttp, stringify, got, flatten }) {
       const statusCode = err.statusCode || 500
       const message = err.body ? err.body.message : err.message
       const status = err.body ? err.body.status : 'fail'
+
       throw MicrolinkError({
         ...err,
         status,
