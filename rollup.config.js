@@ -18,7 +18,6 @@ const umd = () => ({
     alias({
       'ky-universal': './ky-umd'
     }),
-
     shim({
       'clean-stack': `export default str => str`
     }),
