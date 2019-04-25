@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.5](https://github.com/microlinkhq/mql/compare/v0.3.4...v0.3.5) (2019-04-25)
+
+
+### Bug Fixes
+
+* **package:** update ky to version 0.10.0 ([9947a0e](https://github.com/microlinkhq/mql/commit/9947a0e))
+* **package:** update ky-universal to version 0.2.0 ([5cd3d89](https://github.com/microlinkhq/mql/commit/5cd3d89))
+
+
+
 <a name="0.3.4"></a>
 ## [0.3.4](https://github.com/microlinkhq/mql/compare/v0.3.3...v0.3.4) (2019-04-08)
 
