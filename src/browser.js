@@ -28,7 +28,7 @@ const browser = factory({
   stringify,
   got,
   flatten,
-  VERSION: 'process.env.MQL_VERSION'
+  VERSION: '__VERSION__'
 })
 
 module.exports = browser

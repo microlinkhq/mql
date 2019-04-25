@@ -7,12 +7,12 @@ import alias from 'rollup-plugin-alias'
 import replace from 'rollup-plugin-re'
 import shim from 'rollup-plugin-shim'
 
-const umd = () => ({
+const umd = ({ compress } = {}) => ({
   input: './src/browser.js',
   output: {
     name: 'mql',
     format: 'umd',
-    file: `src/umd.min.js`
+    file: compress ? `dist/mql.min.js` : `dist/mql.js`
   },
   plugins: [
     alias({
@@ -23,15 +23,18 @@ const umd = () => ({
     }),
     replace({
       replaces: {
-        'process.env.MQL_VERSION': require('./package.json').version
+        '__VERSION__': require('./package.json').version
       }
     }),
     resolve(),
     commonjs(),
-    terser(),
+    compress && terser(),
     filesize(),
     visualizer()
   ]
 })
 
-export default [umd()]
+export default [
+  umd(),
+  umd({ compress: true })
+]
