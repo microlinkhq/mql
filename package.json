@@ -120,7 +120,7 @@
   },
   "standard": {
     "ignore": [
-      "src/umd.min.js"
+      "dist"
     ]
   },
   "umd:main": "src/umd.min.js"
