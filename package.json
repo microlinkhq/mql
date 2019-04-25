@@ -70,6 +70,7 @@
     "node": ">= 8"
   },
   "files": [
+    "dist",
     "src"
   ],
   "scripts": {
