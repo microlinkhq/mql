@@ -21,7 +21,6 @@ const umd = () => ({
 
     shim({
       'clean-stack': `export default str => str`
-      // 'ky-universal': ky
     }),
     replace({
       replaces: {
