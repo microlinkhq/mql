@@ -12,7 +12,8 @@ const umd = ({ compress } = {}) => ({
   output: {
     name: 'mql',
     format: 'umd',
-    file: compress ? `dist/mql.min.js` : `dist/mql.js`
+    file: compress ? `dist/mql.min.js` : `dist/mql.js`,
+    sourcemap: true
   },
   plugins: [
     alias({
