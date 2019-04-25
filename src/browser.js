@@ -1,11 +1,10 @@
-import { encode as stringify } from 'qss'
-import isUrlHttp from 'is-url-http'
-import ky from 'ky-universal'
-import flatten from 'flat'
+const MicrolinkError = require('whoops')('MicrolinkError')
+const { encode: stringify } = require('qss')
+const isUrlHttp = require('is-url-http')
+const ky = require('ky-universal')
+const flatten = require('flat')
 
 const factory = require('./factory')
-
-const MicrolinkError = require('whoops')('MicrolinkError')
 
 // TODO: `cache` is destructuring because is not supported on browser side yet.
 // TODO: `json` because always is the output serialized.
@@ -23,10 +22,13 @@ const got = async (url, { json, headers, cache, ...opts }) => {
   }
 }
 
-export default factory({
+const browser = factory({
   MicrolinkError,
   isUrlHttp,
   stringify,
   got,
-  flatten
+  flatten,
+  VERSION: 'process.env.MQL_VERSION'
 })
+
+module.exports = browser

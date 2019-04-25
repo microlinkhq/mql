@@ -3,5 +3,6 @@ module.exports = require('./factory')({
   isUrlHttp: require('is-url-http'),
   stringify: require('querystring').stringify,
   got: require('got'),
-  flatten: require('flat')
+  flatten: require('flat'),
+  VERSION: require('../package.json').version
 })

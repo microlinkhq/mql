@@ -8,7 +8,7 @@ const ERRORS_CODE = {
   FAILED: 'EFAILED'
 }
 
-function factory ({ MicrolinkError, isUrlHttp, stringify, got, flatten }) {
+function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) {
   const assertUrl = (url = '') => {
     if (!isUrlHttp(url)) {
       throw new MicrolinkError({
@@ -71,9 +71,9 @@ function factory ({ MicrolinkError, isUrlHttp, stringify, got, flatten }) {
   mql.MicrolinkError = MicrolinkError
   mql.apiUrl = apiUrl
   mql.mapRules = mapRules
+  mql.version = VERSION
 
   return mql
 }
 
 module.exports = factory
-module.exports.default = factory

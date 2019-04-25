@@ -1,37 +1,38 @@
-import builtins from 'rollup-plugin-node-builtins'
 import visualizer from 'rollup-plugin-visualizer' // eslint-disable-line
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import filesize from 'rollup-plugin-filesize'
-import babel from 'rollup-plugin-babel'
-import fs from 'fs'
-
-const babelRc = JSON.parse(fs.readFileSync('./.babelrc'))
-
-const name = 'mql'
+import alias from 'rollup-plugin-alias'
+import replace from 'rollup-plugin-re'
+import shim from 'rollup-plugin-shim'
 
 const umd = () => ({
   input: './src/browser.js',
-  output: { name, format: 'umd', file: `src/umd.min.js` },
+  output: {
+    name: 'mql',
+    format: 'umd',
+    file: `src/umd.min.js`
+  },
   plugins: [
-    builtins(),
-    resolve({
-      browser: true,
-      jsnext: true,
-      main: true
+    alias({
+      'ky-universal': './ky-umd'
     }),
-    commonjs({
-      include: 'node_modules/**'
+
+    shim({
+      'clean-stack': `export default str => str`
+      // 'ky-universal': ky
     }),
-    babel({
-      babelrc: false,
-      externalHelpers: false,
-      ...babelRc
+    replace({
+      replaces: {
+        'process.env.MQL_VERSION': require('./package.json').version
+      }
     }),
+    resolve(),
+    commonjs(),
     terser(),
-    filesize()
-    // visualizer()
+    filesize(),
+    visualizer()
   ]
 })
 
