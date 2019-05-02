@@ -8,7 +8,14 @@ const ERRORS_CODE = {
   FAILED: 'EFAILED'
 }
 
-function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) {
+function factory ({
+  VERSION,
+  MicrolinkError,
+  isUrlHttp,
+  stringify,
+  got,
+  flatten
+}) {
   const assertUrl = (url = '') => {
     if (!isUrlHttp(url)) {
       throw new MicrolinkError({
@@ -46,10 +53,11 @@ function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten 
     }
   }
 
-  const apiUrl = (url, { rules, apiKey, ...opts } = {}) => {
+  const apiUrl = (url, { rules, apiKey, endpoint, ...opts } = {}) => {
     const isPro = !!apiKey
-    const endpoint = ENDPOINT[isPro ? 'PRO' : 'FREE']
-    const apiUrl = `${endpoint}?${stringify({
+    const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
+
+    const apiUrl = `${apiEndpoint}?${stringify({
       url: url,
       ...mapRules(rules),
       ...opts
@@ -61,11 +69,25 @@ function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten 
 
   const mql = async (
     targetUrl,
-    { cache = null, retry = 3, timeout = 25000, ...opts } = {}
+    {
+      encoding = 'utf8',
+      cache = null,
+      retry = 3,
+      timeout = 25000,
+      json = true,
+      ...opts
+    } = {}
   ) => {
     assertUrl(targetUrl)
     const [url, { headers }] = apiUrl(targetUrl, opts)
-    return fetchFromApi(url, { cache, retry, timeout, headers, json: true })
+    return fetchFromApi(url, {
+      encoding,
+      cache,
+      retry,
+      timeout,
+      headers,
+      json
+    })
   }
 
   mql.MicrolinkError = MicrolinkError
