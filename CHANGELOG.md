@@ -1,6 +1,20 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.3.7](https://github.com/microlinkhq/mql/compare/v1.0.3...v0.3.7) (2019-05-20)
+
+
+### Bug Fixes
+
+* **package:** update is-url-http to version 1.2.0 ([fb85fae](https://github.com/microlinkhq/mql/commit/fb85fae))
+
+
+### Tests
+
+* update snapshots ([101c989](https://github.com/microlinkhq/mql/commit/101c989))
+
+
 
 ## [0.3.6](https://github.com/microlinkhq/mql/compare/v0.3.5...v0.3.6) (2019-04-25)
 
