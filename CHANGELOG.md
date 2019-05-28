@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.9](https://github.com/microlinkhq/mql/compare/v1.0.5...v0.3.9) (2019-05-28)
+
+
+### Build System
+
+* associate url with the error ([605f913](https://github.com/microlinkhq/mql/commit/605f913))
+
+
+### Tests
+
+* avoid date ([a21c21c](https://github.com/microlinkhq/mql/commit/a21c21c))
+
+
+
 ### [0.3.8](https://github.com/microlinkhq/mql/compare/v1.0.4...v0.3.8) (2019-05-28)
 
 

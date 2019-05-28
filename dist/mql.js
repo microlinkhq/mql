@@ -2350,6 +2350,7 @@
 	  const assertUrl = (url = '') => {
 	    if (!isUrlHttp(url)) {
 	      throw new MicrolinkError({
+	        url,
 	        code: ERRORS_CODE.INVALID_URL,
 	        message: `The URL \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
 	      })
@@ -2372,7 +2373,7 @@
 	    } catch (err) {
 	      const body = err.body ? JSON.parse(err.body) : { message: err.message, status: 'fail' };
 	      const { statusCode = 500 } = err;
-	      throw MicrolinkError({ ...body, statusCode, code: ERRORS_CODE.FAILED })
+	      throw MicrolinkError({ ...body, url, statusCode, code: ERRORS_CODE.FAILED })
 	    }
 	  };
 
@@ -2453,7 +2454,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.3.7'
+	  VERSION: '0.3.8'
 	});
 
 	var browser_1 = browser;
