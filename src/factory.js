@@ -39,17 +39,9 @@ function factory ({
       const { body } = response
       return { ...body, response }
     } catch (err) {
-      const statusCode = err.statusCode || 500
-      const message = err.body ? err.body.message : err.message
-      const status = err.body ? err.body.status : 'fail'
-
-      throw MicrolinkError({
-        ...err,
-        status,
-        message,
-        statusCode,
-        code: ERRORS_CODE.FAILED
-      })
+      const body = err.body ? JSON.parse(err.body) : { message: err.message, status: 'fail' }
+      const { statusCode = 500 } = err
+      throw MicrolinkError({ ...body, statusCode, code: ERRORS_CODE.FAILED })
     }
   }
 
