@@ -10,6 +10,7 @@ import mqlNode from '../src/node'
   test(`${target} » empty url`, async t => {
     const error = await t.throwsAsync(mql(), { instanceOf: mql.MicrolinkError })
     t.is(error.code, 'ENOVALIDURL')
+    t.is(error.url, '')
     t.is(error.description, 'The URL `` is not valid. Ensure it has protocol (http or https) and hostname.')
   })
 
@@ -17,6 +18,7 @@ import mqlNode from '../src/node'
     const error = await t.throwsAsync(mql('pacopepe'), {
       instanceOf: mql.MicrolinkError
     })
+    t.is(error.url, 'pacopepe')
     t.is(error.code, 'ENOVALIDURL')
     t.is(
       error.description,
@@ -42,6 +44,7 @@ import mqlNode from '../src/node'
     t.true(!!error.status)
     t.true(!!error.code)
     t.true(!!error.message)
+    t.true(!!error.url)
     t.true(!!error.statusCode)
   })
 })
