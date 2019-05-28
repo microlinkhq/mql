@@ -12,8 +12,9 @@ import mqlNode from '../src/node'
     const { status, data, response } = await mql(
       'https://kikobeats.com?ref=mql'
     )
+    const { date, ...restData } = data
     t.snapshot(status)
-    t.snapshot(data)
+    t.snapshot(restData)
     t.snapshot(response.url)
   })
 
