@@ -2371,9 +2371,18 @@
 	      const { body } = response;
 	      return { ...body, response }
 	    } catch (err) {
-	      const body = err.body ? JSON.parse(err.body) : { message: err.message, status: 'fail' };
+	      const body = err.body
+	        ? typeof err.body === 'object'
+	          ? err.body
+	          : JSON.parse(err.body)
+	        : { message: err.message, status: 'fail' };
 	      const { statusCode = 500 } = err;
-	      throw MicrolinkError({ ...body, url, statusCode, code: ERRORS_CODE.FAILED })
+	      throw MicrolinkError({
+	        ...body,
+	        url,
+	        statusCode,
+	        code: ERRORS_CODE.FAILED
+	      })
 	    }
 	  };
 
@@ -2454,7 +2463,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.3.8'
+	  VERSION: '0.3.9'
 	});
 
 	var browser_1 = browser;

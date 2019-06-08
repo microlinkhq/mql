@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.10](https://github.com/microlinkhq/mql/compare/v1.0.6...v0.3.10) (2019-06-08)
+
+
+### Bug Fixes
+
+* just parse when the body is an string ([2612577](https://github.com/microlinkhq/mql/commit/2612577))
+
+
+### Build System
+
+* update dependencies ([9e1a31c](https://github.com/microlinkhq/mql/commit/9e1a31c))
+
+
+### Tests
+
+* update snapshot ([0caa920](https://github.com/microlinkhq/mql/commit/0caa920))
+
+
+
 ### [0.3.9](https://github.com/microlinkhq/mql/compare/v1.0.5...v0.3.9) (2019-05-28)
 
 
