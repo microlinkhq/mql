@@ -1,8 +1,10 @@
-const MicrolinkError = require('whoops')('MicrolinkError')
-const { default: ky } = require('ky-universal')
-const { encode: stringify } = require('qss')
-const isUrlHttp = require('is-url-http')
-const flatten = require('flat')
+import { encode as stringify } from 'qss'
+import isUrlHttp from 'is-url-http'
+import ky from 'ky-universal'
+import whoops from 'whoops'
+import flatten from 'flat'
+
+const MicrolinkError = whoops('MicrolinkError')
 
 const factory = require('./factory')
 
@@ -31,4 +33,4 @@ const browser = factory({
   VERSION: '__VERSION__'
 })
 
-module.exports = browser
+export default browser
