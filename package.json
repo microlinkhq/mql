@@ -123,5 +123,6 @@
       "dist"
     ]
   },
-  "umd:main": "src/umd.min.js"
+  "umd:main": "dist/mql.min.js",
+  "unpkg": "dist/mql.min.js"
 }
