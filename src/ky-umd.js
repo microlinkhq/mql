@@ -1,1 +1,1 @@
-module.exports = require('ky/umd').default
+module.exports = require('ky/umd')
