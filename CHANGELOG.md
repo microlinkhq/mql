@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.12](https://github.com/microlinkhq/mql/compare/v0.3.11...v0.3.12) (2019-06-09)
+
+
+### Bug Fixes
+
+* require ([2eb2416](https://github.com/microlinkhq/mql/commit/2eb2416))
+
+
+### Build System
+
+* generate bundle ([37ec175](https://github.com/microlinkhq/mql/commit/37ec175))
+
+
+
 ### [0.3.11](https://github.com/microlinkhq/mql/compare/v0.3.10...v0.3.11) (2019-06-09)
 
 
