@@ -2436,7 +2436,7 @@
 	const MicrolinkError = lib('MicrolinkError');
 	const { encode: stringify } = qss_m;
 
-
+	const { default: ky } = kyUmd;
 
 
 
@@ -2445,7 +2445,7 @@
 	// TODO: `json` because always is the output serialized.
 	const got = async (url, { json, headers, cache, ...opts }) => {
 	  try {
-	    const response = await kyUmd(url, opts);
+	    const response = await ky(url, opts);
 	    const body = await response.json();
 	    const { headers, status: statusCode, statusText: statusMessage } = response;
 	    return { url: response.url, body, headers, statusCode, statusMessage }
@@ -2463,7 +2463,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.3.9'
+	  VERSION: '0.3.11'
 	});
 
 	var browser_1 = browser;
