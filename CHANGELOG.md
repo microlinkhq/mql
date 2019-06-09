@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.11](https://github.com/microlinkhq/mql/compare/v0.3.10...v0.3.11) (2019-06-09)
+
+
+### Bug Fixes
+
+* setup umd main file properly ([4804c27](https://github.com/microlinkhq/mql/commit/4804c27))
+* umd ([ac37de9](https://github.com/microlinkhq/mql/commit/ac37de9))
+* use default constructor ([ee75e1c](https://github.com/microlinkhq/mql/commit/ee75e1c))
+
+
+### Build System
+
+* generate build after release ([4920073](https://github.com/microlinkhq/mql/commit/4920073))
+* ignore stats.html ([c43e0cc](https://github.com/microlinkhq/mql/commit/c43e0cc))
+
+
+
 ### [0.3.10](https://github.com/microlinkhq/mql/compare/v1.0.6...v0.3.10) (2019-06-08)
 
 
