@@ -1,7 +1,7 @@
 const MicrolinkError = require('whoops')('MicrolinkError')
+const { default: ky } = require('ky-universal')
 const { encode: stringify } = require('qss')
 const isUrlHttp = require('is-url-http')
-const ky = require('ky-universal')
 const flatten = require('flat')
 
 const factory = require('./factory')
