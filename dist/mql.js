@@ -2206,7 +2206,7 @@
 
 	unwrapExports(umd);
 
-	var kyUmd = umd.default;
+	var kyUmd = umd;
 
 	/*!
 	 * Determine if an object is a Buffer
@@ -2463,7 +2463,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.3.11'
+	  VERSION: '0.3.12'
 	});
 
 	var browser_1 = browser;
