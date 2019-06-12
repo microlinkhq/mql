@@ -2372,9 +2372,9 @@
 	      return { ...body, response }
 	    } catch (err) {
 	      const body = err.body
-	        ? typeof err.body === 'object'
-	          ? err.body
-	          : JSON.parse(err.body)
+	        ? typeof err.body === 'string' || Buffer.isBuffer(err.body)
+	          ? JSON.parse(err.body)
+	          : err.body
 	        : { message: err.message, status: 'fail' };
 	      const { statusCode = 500 } = err;
 	      throw MicrolinkError({
@@ -2463,7 +2463,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.3.12'
+	  VERSION: '0.3.13'
 	});
 
 	var browser_1 = browser;
