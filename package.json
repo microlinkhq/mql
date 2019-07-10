@@ -108,16 +108,14 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "package.json": [
-        "finepack",
-        "git add"
-      ],
-      "*.js,!*.min.js": [
-        "prettier-standard",
-        "git add"
-      ]
-    }
+    "package.json": [
+      "finepack",
+      "git add"
+    ],
+    "*.js,!*.min.js": [
+      "prettier-standard",
+      "git add"
+    ]
   },
   "standard": {
     "ignore": [
