@@ -1800,7 +1800,7 @@
 
 	var umd = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
-		factory(exports);
+		 factory(exports) ;
 	}(commonjsGlobal, function (exports) {
 		/*! MIT License © Sindre Sorhus */
 
@@ -2463,7 +2463,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.3.13'
+	  VERSION: '0.3.14'
 	});
 
 	var browser_1 = browser;
