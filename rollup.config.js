@@ -24,7 +24,7 @@ const umd = ({ compress } = {}) => ({
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
-      '__VERSION__': require('./package.json').version
+      __VERSION__: require('./package.json').version
     }),
     resolve(),
     commonjs(),
@@ -34,7 +34,4 @@ const umd = ({ compress } = {}) => ({
   ]
 })
 
-export default [
-  umd(),
-  umd({ compress: true })
-]
+export default [umd(), umd({ compress: true })]
