@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.15](https://github.com/microlinkhq/mql/compare/v1.0.9...v0.3.15) (2019-07-31)
+
+
+### Bug Fixes
+
+* linter ([f7f985b](https://github.com/microlinkhq/mql/commit/f7f985b))
+
 ### [0.3.14](https://github.com/microlinkhq/mql/compare/v1.0.7...v0.3.14) (2019-07-10)
 
 
