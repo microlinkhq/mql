@@ -96,6 +96,7 @@ function factory ({
   mql.apiUrl = apiUrl
   mql.mapRules = mapRules
   mql.version = VERSION
+  mql.stream = got.stream
 
   return mql
 }
