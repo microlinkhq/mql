@@ -1,6 +1,6 @@
-<h1 align="center">
+<div align="center">
   <img src="https://cdn.microlink.io/banner/mql.png" alt="microlink logo">
-</h1>
+</div>
 
 ###### [Documentation](https://microlink.io/docs/mql) | [CLI](https://github.com/microlinkhq/mql-cli) | [Chat](https://microlink.io/chat)
 
