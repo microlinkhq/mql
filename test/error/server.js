@@ -3,7 +3,7 @@
 import test from 'ava'
 import mqlBrowser from '../../src/browser'
 import mqlNode from '../../src/node'
-  ;[
+;[
   { constructor: mqlNode, target: 'node' },
   { constructor: mqlBrowser, target: 'browser' }
 ].forEach(({ constructor: mql, target }) => {
