@@ -3,11 +3,6 @@ const ENDPOINT = {
   PRO: 'https://pro.microlink.io'
 }
 
-const ERRORS_CODE = {
-  INVALID_URL: 'ENOVALIDURL',
-  FAILED: 'EFAILED'
-}
-
 function factory ({
   VERSION,
   MicrolinkError,
@@ -20,8 +15,8 @@ function factory ({
     if (!isUrlHttp(url)) {
       throw new MicrolinkError({
         url,
-        code: ERRORS_CODE.INVALID_URL,
-        message: `The URL \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
+        code: 'EINVALURLCLIENT',
+        message: `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
       })
     }
   }
@@ -45,12 +40,18 @@ function factory ({
           ? JSON.parse(err.body)
           : err.body
         : { message: err.message, status: 'fail' }
+
+      const message = body.data
+        ? body.data[Object.keys(body.data)[0]]
+        : body.message
+
       const { statusCode = 500 } = err
+
       throw MicrolinkError({
         ...body,
+        message,
         url,
-        statusCode,
-        code: ERRORS_CODE.FAILED
+        statusCode
       })
     }
   }
@@ -73,9 +74,9 @@ function factory ({
     targetUrl,
     {
       encoding = 'utf8',
-      cache = null,
-      retry = 3,
-      timeout = 25000,
+      cache = false,
+      retry = 2,
+      timeout = 30000,
       json = true,
       ...opts
     } = {}
