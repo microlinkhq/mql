@@ -15,9 +15,11 @@ const got = async (url, { json, headers, cache, ...opts }) => {
     const { headers, status: statusCode, statusText: statusMessage } = response
     return { url: response.url, body, headers, statusCode, statusMessage }
   } catch (err) {
-    err.body = err.response ? await err.response.json() : ''
-    err.statusCode = err.response.status
-    err.headers = err.response.headers
+    if (err.response) {
+      err.body = await err.response.json()
+      err.statusCode = err.response.status
+      err.headers = err.response.headers
+    }
     throw err
   }
 }

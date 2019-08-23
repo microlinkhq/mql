@@ -12,7 +12,7 @@ const umd = ({ compress } = {}) => ({
   output: {
     name: 'mql',
     format: 'umd',
-    file: compress ? `dist/mql.min.js` : `dist/mql.js`,
+    file: compress ? 'dist/mql.min.js' : 'dist/mql.js',
     sourcemap: true
   },
   plugins: [
@@ -20,7 +20,7 @@ const umd = ({ compress } = {}) => ({
       'ky-universal': './ky-umd'
     }),
     shim({
-      'clean-stack': `export default str => str`
+      'clean-stack': 'export default str => str'
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
