@@ -35,3 +35,4 @@ coverage
 .env
 .envrc
 stats.html
+example.js
