@@ -13,10 +13,14 @@ function factory ({
 }) {
   const assertUrl = (url = '') => {
     if (!isUrlHttp(url)) {
+      const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
       throw new MicrolinkError({
         url,
+        data: { url: message },
+        status: 'fail',
         code: 'EINVALURLCLIENT',
-        message: `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
+        message,
+        more: 'https://microlink.io/docs/api/api-parameters/url'
       })
     }
   }
@@ -29,24 +33,34 @@ function factory ({
     )
   }
 
-  const fetchFromApi = async (url, opts) => {
+  const fetchFromApi = async (url, apiUrl, opts) => {
     try {
-      const response = await got(url, opts)
+      const response = await got(apiUrl, opts)
       const { body } = response
       return { ...body, response }
     } catch (err) {
+      if (err.name === 'TimeoutError') {
+        const message = `The \`url\` as \`${url}\` reached timeout after ${
+          opts.retry.maxRetryAfter
+        }ms.`
+        throw new MicrolinkError({
+          url,
+          data: { url: message },
+          status: 'fail',
+          code: 'ETIMEOUTCLIENT',
+          message,
+          more: 'https://microlink.io/docs/api/api-parameters/url'
+        })
+      }
       const body = err.body
         ? typeof err.body === 'string' || Buffer.isBuffer(err.body)
           ? JSON.parse(err.body)
           : err.body
         : { message: err.message, status: 'fail' }
-
       const message = body.data
         ? body.data[Object.keys(body.data)[0]]
         : body.message
-
       const { statusCode = 500 } = err
-
       throw MicrolinkError({
         ...body,
         message,
@@ -56,7 +70,7 @@ function factory ({
     }
   }
 
-  const apiUrl = (url, { rules, apiKey, endpoint, ...opts } = {}) => {
+  const getApiUrl = (url, { rules, apiKey, endpoint, ...opts } = {}) => {
     const isPro = !!apiKey
     const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
 
@@ -71,7 +85,7 @@ function factory ({
   }
 
   const mql = async (
-    targetUrl,
+    url,
     {
       encoding = 'utf8',
       cache = false,
@@ -81,9 +95,10 @@ function factory ({
       ...opts
     } = {}
   ) => {
-    assertUrl(targetUrl)
-    const [url, { headers }] = apiUrl(targetUrl, opts)
-    return fetchFromApi(url, {
+    assertUrl(url)
+    const [apiUrl, { headers }] = getApiUrl(url, opts)
+
+    return fetchFromApi(url, apiUrl, {
       encoding,
       cache,
       retry,
@@ -94,7 +109,7 @@ function factory ({
   }
 
   mql.MicrolinkError = MicrolinkError
-  mql.apiUrl = apiUrl
+  mql.apiUrl = getApiUrl
   mql.mapRules = mapRules
   mql.version = VERSION
   mql.stream = got.stream
