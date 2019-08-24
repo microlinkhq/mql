@@ -2,8 +2,8 @@ import visualizer from 'rollup-plugin-visualizer' // eslint-disable-line
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
-import filesize from 'rollup-plugin-filesize'
 import alias from 'rollup-plugin-alias'
+import filesize from 'rollup-plugin-filesize'
 import replace from 'rollup-plugin-replace'
 import shim from 'rollup-plugin-shim'
 
@@ -17,7 +17,7 @@ const umd = ({ compress } = {}) => ({
   },
   plugins: [
     alias({
-      'ky-universal': './ky-umd'
+      entries: [{ find: 'ky-universal', replacement: './ky-umd' }]
     }),
     shim({
       'clean-stack': 'export default str => str'
