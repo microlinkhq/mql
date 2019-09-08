@@ -3,6 +3,14 @@ const ENDPOINT = {
   PRO: 'https://pro.microlink.io'
 }
 
+const isTimeoutError = err =>
+  // client side error
+  err.name === 'TimeoutError' ||
+  // server side error
+  (err.name === 'HTTPError' && err.statusCode.toString()[0] === '5') ||
+  // browser side unexpected error
+  err.type === 'invalid-json'
+
 function factory ({
   VERSION,
   MicrolinkError,
@@ -39,7 +47,9 @@ function factory ({
       const { body } = response
       return { ...body, response }
     } catch (err) {
-      if (err.name === 'TimeoutError') {
+      const { name, statusCode = 500, body: rawBody, message: rawMessage } = err
+
+      if (isTimeoutError(err)) {
         const message = `The \`url\` as \`${url}\` reached timeout after ${
           opts.retry.maxRetryAfter
         }ms.`
@@ -47,20 +57,22 @@ function factory ({
           url,
           data: { url: message },
           status: 'fail',
-          code: 'ETIMEOUTCLIENT',
+          code: name === 'TimeoutError' ? 'ETIMEOUTCLIENT' : 'ETIMEOUT',
           message,
-          more: 'https://microlink.io/docs/api/api-parameters/url'
+          more: 'https://microlink.io/docs/api/api-parameters/url',
+          statusCode
         })
       }
-      const body = err.body
-        ? typeof err.body === 'string' || Buffer.isBuffer(err.body)
-          ? JSON.parse(err.body)
-          : err.body
-        : { message: err.message, status: 'fail' }
+
+      const body = rawBody
+        ? typeof rawBody === 'string' || Buffer.isBuffer(rawBody)
+          ? JSON.parse(rawBody)
+          : rawBody
+        : { message: rawMessage, status: 'fail' }
       const message = body.data
         ? body.data[Object.keys(body.data)[0]]
         : body.message
-      const { statusCode = 500 } = err
+
       throw MicrolinkError({
         ...body,
         message,
