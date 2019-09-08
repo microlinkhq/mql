@@ -40,7 +40,7 @@ import mqlNode from '../../src/node'
     t.true(error.code === 'ETIMEOUTCLIENT')
     t.true(error.status === 'fail')
     t.true(error.more === 'https://microlink.io/docs/api/api-parameters/url')
-    t.true(error.statusCode === undefined)
+    t.true(error.statusCode === 500)
     t.true(!!error.data)
     t.true(!!error.message)
     t.true(!!error.description)
