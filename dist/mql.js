@@ -2518,7 +2518,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.4.2'
+	  VERSION: '0.4.3'
 	});
 
 	var browser_1 = browser;
