@@ -23,7 +23,8 @@ import mqlNode from '../../src/node'
   })
   test(`${target} » server side timeout`, async t => {
     const error = await t.throwsAsync(
-      mql('https://www.twitch.tv/shroud/clip/AuspiciousTubularBunnyFUNgineer', {
+      mql('https://kikobeats.com', {
+        waitFor: 31000,
         screenshot: true,
         retry: 0
       }),
