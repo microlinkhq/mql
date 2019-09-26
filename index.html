@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Microlink Query Language</title>
 </head>
+
 <body>
+  <h1><code>Open Devtool Console</code></h1>
   <script src="./dist/mql.min.js"></script>
   <script>
-    mql('https://kikobeats.com').then(({status, data}) => {
+    mql('https://example.com').then(({ status, data }) => {
       console.log(`status`, status)
       console.log(data)
     })
     console.log(`mql.version`, mql.version)
   </script>
 </body>
+
 </html>
