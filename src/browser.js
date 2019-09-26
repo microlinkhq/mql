@@ -8,7 +8,7 @@ const factory = require('./factory')
 
 // TODO: `cache` is destructuring because is not supported on browser side yet.
 // TODO: `json` because always is the output serialized.
-const got = async (url, { json, headers, cache, ...opts }) => {
+const got = async (url, { json, cache, ...opts }) => {
   try {
     const response = await ky(url, opts)
     const body = await response.json()
