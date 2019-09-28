@@ -1804,40 +1804,71 @@
 	}(commonjsGlobal, function (exports) {
 		/*! MIT License © Sindre Sorhus */
 
-		const getGlobal = property => {
-			/* istanbul ignore next */
-			if (typeof self !== 'undefined' && self && property in self) {
-				return self[property];
+		const globals = {};
+
+		{
+			const getGlobal = property => {
+				let parent;
+
+				/* istanbul ignore next */
+				if (typeof self !== 'undefined' && self && property in self) {
+					parent = self;
+				}
+
+				/* istanbul ignore next */
+				if (typeof window !== 'undefined' && window && property in window) {
+					parent = window;
+				}
+
+				if (typeof commonjsGlobal !== 'undefined' && commonjsGlobal && property in commonjsGlobal) {
+					parent = commonjsGlobal;
+				}
+
+				/* istanbul ignore next */
+				if (typeof globalThis !== 'undefined' && globalThis) {
+					parent = globalThis;
+				}
+
+				if (typeof parent === 'undefined') {
+					return;
+				}
+
+				const globalProperty = parent[property];
+
+				if (typeof globalProperty === 'function') {
+					return globalProperty.bind(parent);
+				}
+
+				return globalProperty;
+			};
+
+			const globalProperties = [
+				'document',
+				'Headers',
+				'Request',
+				'Response',
+				'ReadableStream',
+				'fetch',
+				'AbortController',
+				'FormData'
+			];
+
+			const props = {};
+			for (const property of globalProperties) {
+				props[property] = {
+					get() {
+						return getGlobal(property);
+					}
+				};
 			}
 
-			/* istanbul ignore next */
-			if (typeof window !== 'undefined' && window && property in window) {
-				return window[property];
-			}
-
-			if (typeof commonjsGlobal !== 'undefined' && commonjsGlobal && property in commonjsGlobal) {
-				return commonjsGlobal[property];
-			}
-
-			/* istanbul ignore next */
-			if (typeof globalThis !== 'undefined' && globalThis) {
-				return globalThis[property];
-			}
-		};
-
-		const document = getGlobal('document');
-		const Headers = getGlobal('Headers');
-		const Request = getGlobal('Request');
-		const Response = getGlobal('Response');
-		const ReadableStream = getGlobal('ReadableStream');
-		const fetch = getGlobal('fetch');
-		const AbortController = getGlobal('AbortController');
-		const FormData = getGlobal('FormData');
+			Object.defineProperties(globals, props);
+		}
 
 		const isObject = value => value !== null && typeof value === 'object';
-		const supportsAbortController = typeof AbortController === 'function';
-		const supportsStreams = typeof ReadableStream === 'function';
-		const supportsFormData = typeof FormData === 'function';
+		const supportsAbortController = typeof globals.AbortController === 'function';
+		const supportsStreams = typeof globals.ReadableStream === 'function';
+		const supportsFormData = typeof globals.FormData === 'function';
 
 		const deepMerge = (...sources) => {
 			let returnValue = {};
@@ -1953,6 +1984,38 @@
 
 		const normalizeRequestMethod = input => requestMethods.includes(input) ? input.toUpperCase() : input;
 
+		const defaultRetryOptions = {
+			limit: 2,
+			methods: retryMethods,
+			statusCodes: retryStatusCodes,
+			afterStatusCodes: retryAfterStatusCodes
+		};
+
+		const normalizeRetryOptions = retry => {
+			if (typeof retry === 'number') {
+				return {
+					...defaultRetryOptions,
+					limit: retry
+				};
+			}
+
+			if (retry.methods && !Array.isArray(retry.methods)) {
+				throw new Error('retry.methods must be an array');
+			}
+
+			if (retry.statusCodes && !Array.isArray(retry.statusCodes)) {
+				throw new Error('retry.statusCodes must be an array');
+			}
+
+			return {
+				...defaultRetryOptions,
+				...retry,
+				methods: retry.methods ? new Set(retry.methods) : defaultRetryOptions.methods,
+				statusCodes: retry.statusCodes ? new Set(retry.statusCodes) : defaultRetryOptions.statusCodes,
+				afterStatusCodes: retryAfterStatusCodes
+			};
+		};
+
 		class Ky {
 			constructor(input, {
 				timeout = 10000,
@@ -1960,6 +2023,7 @@
 				throwHttpErrors = true,
 				searchParams,
 				json,
+				retry = {},
 				...otherOptions
 			}) {
 				this._retryCount = 0;
@@ -1967,11 +2031,11 @@
 				this._options = {
 					method: 'get',
 					credentials: 'same-origin', // TODO: This can be removed when the spec change is implemented in all browsers. Context: https://www.chromestatus.com/feature/4539473312350208
-					retry: 2,
+					retry: normalizeRetryOptions(retry),
 					...otherOptions
 				};
 
-				if (input instanceof Request) {
+				if (input instanceof globals.Request) {
 					this._input = input;
 
 					// `ky` options have precedence over `Request` options
@@ -1997,7 +2061,7 @@
 					this._input = this._options.prefixUrl + this._input;
 
 					if (searchParams) {
-						const url = new URL(this._input, document && document.baseURI);
+						const url = new URL(this._input, globals.document && globals.document.baseURI);
 						if (typeof searchParams === 'string' || (URLSearchParams && searchParams instanceof URLSearchParams)) {
 							url.search = searchParams;
 						} else if (Object.values(searchParams).every(param => typeof param === 'number' || typeof param === 'string')) {
@@ -2011,7 +2075,7 @@
 				}
 
 				if (supportsAbortController) {
-					this.abortController = new AbortController();
+					this.abortController = new globals.AbortController();
 					if (this._options.signal) {
 						this._options.signal.addEventListener('abort', () => {
 							this.abortController.abort();
@@ -2026,13 +2090,14 @@
 				this._timeout = timeout;
 				this._hooks = deepMerge({
 					beforeRequest: [],
+					beforeRetry: [],
 					afterResponse: []
 				}, hooks);
 				this._throwHttpErrors = throwHttpErrors;
 
-				const headers = new Headers(this._options.headers || {});
+				const headers = new globals.Headers(this._options.headers || {});
 
-				if (((supportsFormData && this._options.body instanceof FormData) || this._options.body instanceof URLSearchParams) && headers.has('content-type')) {
+				if (((supportsFormData && this._options.body instanceof globals.FormData) || this._options.body instanceof URLSearchParams) && headers.has('content-type')) {
 					throw new Error(`The \`content-type\` header cannot be used with a ${this._options.body.constructor.name} body. It will be set automatically.`);
 				}
 
@@ -2053,9 +2118,13 @@
 
 					for (const hook of this._hooks.afterResponse) {
 						// eslint-disable-next-line no-await-in-loop
-						const modifiedResponse = await hook(response.clone());
+						const modifiedResponse = await hook(
+							this._input,
+							this._options,
+							response.clone()
+						);
 
-						if (modifiedResponse instanceof Response) {
+						if (modifiedResponse instanceof globals.Response) {
 							response = modifiedResponse;
 						}
 					}
@@ -2081,7 +2150,7 @@
 					return response;
 				};
 
-				const isRetriableMethod = retryMethods.has(this._options.method.toLowerCase());
+				const isRetriableMethod = this._options.retry.methods.has(this._options.method.toLowerCase());
 				const result = isRetriableMethod ? this._retry(fn) : fn();
 
 				for (const [type, mimeType] of Object.entries(responseTypes)) {
@@ -2097,19 +2166,23 @@
 			_calculateRetryDelay(error) {
 				this._retryCount++;
 
-				if (this._retryCount < this._options.retry && !(error instanceof TimeoutError)) {
+				if (this._retryCount < this._options.retry.limit && !(error instanceof TimeoutError)) {
 					if (error instanceof HTTPError) {
-						if (!retryStatusCodes.has(error.response.status)) {
+						if (!this._options.retry.statusCodes.has(error.response.status)) {
 							return 0;
 						}
 
 						const retryAfter = error.response.headers.get('Retry-After');
-						if (retryAfter && retryAfterStatusCodes.has(error.response.status)) {
+						if (retryAfter && this._options.retry.afterStatusCodes.has(error.response.status)) {
 							let after = Number(retryAfter);
 							if (Number.isNaN(after)) {
 								after = Date.parse(retryAfter) - Date.now();
 							} else {
 								after *= 1000;
+							}
+
+							if (typeof this._options.retry.maxRetryAfter !== 'undefined' && after > this._options.retry.maxRetryAfter) {
+								return 0;
 							}
 
 							return after;
@@ -2134,6 +2207,17 @@
 					const ms = this._calculateRetryDelay(error);
 					if (ms !== 0 && this._retryCount > 0) {
 						await delay(ms);
+
+						for (const hook of this._hooks.beforeRetry) {
+							// eslint-disable-next-line no-await-in-loop
+							await hook(
+								this._input,
+								this._options,
+								error,
+								this._retryCount,
+							);
+						}
+
 						return this._retry(fn);
 					}
 
@@ -2146,14 +2230,18 @@
 			async _fetch() {
 				for (const hook of this._hooks.beforeRequest) {
 					// eslint-disable-next-line no-await-in-loop
-					await hook(this._options);
+					const result = await hook(this._input, this._options);
+
+					if (result instanceof Response) {
+						return result;
+					}
 				}
 
 				if (this._timeout === false) {
-					return fetch(this._input, this._options);
+					return globals.fetch(this._input, this._options);
 				}
 
-				return timeout(fetch(this._input, this._options), this._timeout, this.abortController);
+				return timeout(globals.fetch(this._input, this._options), this._timeout, this.abortController);
 			}
 
 			/* istanbul ignore next */
@@ -2161,8 +2249,8 @@
 				const totalBytes = Number(response.headers.get('content-length')) || 0;
 				let transferredBytes = 0;
 
-				return new Response(
-					new ReadableStream({
+				return new globals.Response(
+					new globals.ReadableStream({
 						start(controller) {
 							const reader = response.body.getReader();
 
@@ -2437,13 +2525,13 @@
 	    }
 	  };
 
-	  const getApiUrl = (url, { rules, apiKey, endpoint, ...opts } = {}) => {
+	  const getApiUrl = (url, { data, apiKey, endpoint, ...opts } = {}) => {
 	    const isPro = !!apiKey;
 	    const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE'];
 
 	    const apiUrl = `${apiEndpoint}?${stringify({
       url: url,
-      ...mapRules(rules),
+      ...mapRules(data),
       ...opts
     })}`;
 
@@ -2518,7 +2606,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.4.4'
+	  VERSION: '0.4.5'
 	});
 
 	var browser_1 = browser;
