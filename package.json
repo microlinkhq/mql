@@ -82,7 +82,7 @@
     "prerelease": "git-dirty && npm run update:check && npm test",
     "pretest": "npm run lint",
     "release": "git-authors-cli && finepack && git add package.json && standard-version -a",
-    "release:build": "npm run build && git add dist/ && git commit -m \"build: generate bundle\"",
+    "release:build": "npm run build && git add dist/ && git commit -m \"build(no-release): generate bundle\"",
     "release:github": "conventional-github-releaser -p angular",
     "release:tags": "git push --follow-tags origin master",
     "test": "nyc ava --verbose",
