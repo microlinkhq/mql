@@ -82,13 +82,13 @@ function factory ({
     }
   }
 
-  const getApiUrl = (url, { rules, apiKey, endpoint, ...opts } = {}) => {
+  const getApiUrl = (url, { data, apiKey, endpoint, ...opts } = {}) => {
     const isPro = !!apiKey
     const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
 
     const apiUrl = `${apiEndpoint}?${stringify({
       url: url,
-      ...mapRules(rules),
+      ...mapRules(data),
       ...opts
     })}`
 
