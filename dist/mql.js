@@ -2564,7 +2564,8 @@
 	  };
 
 	  mql.MicrolinkError = MicrolinkError;
-	  mql.apiUrl = getApiUrl;
+	  mql.getApiUrl = getApiUrl;
+	  mql.fetchFromApi = fetchFromApi;
 	  mql.mapRules = mapRules;
 	  mql.version = VERSION;
 	  mql.stream = got.stream;
@@ -2606,7 +2607,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.4.5'
+	  VERSION: '0.5.0'
 	});
 
 	var browser_1 = browser;
