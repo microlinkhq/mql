@@ -8,10 +8,10 @@ import mqlNode from '../src/node'
   { constructor: mqlBrowser, target: 'browser' }
 ].forEach(({ constructor: mql, target }) => {
   test(`${target} » url without query params`, t => {
-    t.snapshot(mql.apiUrl('https://kikobeats.com'))
+    t.snapshot(mql.getApiUrl('https://kikobeats.com'))
   })
 
   test(`${target} » apiKey`, t => {
-    t.snapshot(mql.apiUrl('https://kikobeats.com', { apiKey: 'foobar' }))
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { apiKey: 'foobar' }))
   })
 })

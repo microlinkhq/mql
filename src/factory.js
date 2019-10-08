@@ -121,7 +121,7 @@ function factory ({
   }
 
   mql.MicrolinkError = MicrolinkError
-  mql.apiUrl = getApiUrl
+  mql.getApiUrl = getApiUrl
   mql.mapRules = mapRules
   mql.version = VERSION
   mql.stream = got.stream
