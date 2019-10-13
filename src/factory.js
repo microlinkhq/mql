@@ -51,7 +51,7 @@ function factory ({
 
       if (isTimeoutError(err)) {
         const message = `The \`url\` as \`${url}\` reached timeout after ${
-          opts.retry.maxRetryAfter
+          opts.timeout
         }ms.`
         throw new MicrolinkError({
           url,
