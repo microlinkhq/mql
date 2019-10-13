@@ -41,7 +41,16 @@ function factory ({
     )
   }
 
-  const fetchFromApi = async (url, apiUrl, opts) => {
+  const fetchFromApiOpts = {
+    encoding: 'utf8',
+    cache: false,
+    retry: 2,
+    timeout: 30000,
+    json: true
+  }
+
+  const fetchFromApi = async (url, apiUrl, opts = {}) => {
+    opts = { ...fetchFromApiOpts, ...opts }
     try {
       const response = await got(apiUrl, opts)
       const { body } = response
@@ -96,28 +105,10 @@ function factory ({
     return [apiUrl, { headers }]
   }
 
-  const mql = async (
-    url,
-    {
-      encoding = 'utf8',
-      cache = false,
-      retry = 2,
-      timeout = 30000,
-      json = true,
-      ...opts
-    } = {}
-  ) => {
+  const mql = async (url, opts = {}) => {
     assertUrl(url)
-    const [apiUrl, { headers }] = getApiUrl(url, opts)
-
-    return fetchFromApi(url, apiUrl, {
-      encoding,
-      cache,
-      retry,
-      timeout,
-      headers,
-      json
-    })
+    const [apiUrl, fetchOpts] = getApiUrl(url, opts)
+    return fetchFromApi(url, apiUrl, { ...opts, ...fetchOpts })
   }
 
   mql.MicrolinkError = MicrolinkError
