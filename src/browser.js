@@ -33,6 +33,8 @@ const mql = factory({
   VERSION: '__VERSION__'
 })
 
-// For TypeScript and Babel:
+mql.default = mql
+
+// For TypeScript and Babel
 exports = module.exports = mql
 Object.defineProperty(exports, '__esModule', { value: true })
