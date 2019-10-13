@@ -1,10 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('url')) :
-	typeof define === 'function' && define.amd ? define(['url'], factory) :
-	(global = global || self, global.mql = factory(global.url));
-}(this, function (url) { 'use strict';
-
-	url = url && url.hasOwnProperty('default') ? url['default'] : url;
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global = global || self, global.mql = factory());
+}(this, function () { 'use strict';
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -20,10 +18,10 @@
 		return n && n['default'] || n;
 	}
 
-	var _rollupPluginShim1 = str => str;
+	var _rollupPluginShim2 = str => str;
 
-	var _rollupPluginShim1$1 = /*#__PURE__*/Object.freeze({
-		'default': _rollupPluginShim1
+	var _rollupPluginShim2$1 = /*#__PURE__*/Object.freeze({
+		'default': _rollupPluginShim2
 	});
 
 	const mimicFn = (to, from) => {
@@ -69,7 +67,7 @@
 
 	var addErrorProps = interfaceObject;
 
-	var cleanStack = getCjsExportFromNamespace(_rollupPluginShim1$1);
+	var cleanStack = getCjsExportFromNamespace(_rollupPluginShim2$1);
 
 	const {isString} = helpers;
 
@@ -712,6 +710,12 @@
 	var qss_m = /*#__PURE__*/Object.freeze({
 		encode: encode,
 		decode: decode
+	});
+
+
+
+	var _rollupPluginShim1 = /*#__PURE__*/Object.freeze({
+		'default': window
 	});
 
 	const word = '[a-fA-F\\d:]';
@@ -2309,7 +2313,9 @@
 		return options.exact ? new RegExp(`(?:^${regex}$)`, 'i') : new RegExp(regex, 'ig');
 	};
 
-	const URL$1 = commonjsGlobal.window ? window.URL : url.URL;
+	var require$$0 = getCjsExportFromNamespace(_rollupPluginShim1);
+
+	const { URL: URL$1 } = require$$0;
 	const urlRegex$1 = urlRegex({ exact: true });
 
 	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
@@ -2318,6 +2324,7 @@
 	  try {
 	    return new URL$1(url) && REGEX_HTTP_PROTOCOL.test(url) && urlRegex$1.test(url)
 	  } catch (err) {
+	    console.log('err', err);
 	    return false
 	  }
 	};
@@ -2568,7 +2575,7 @@
 
 	var factory_1 = factory;
 
-	var browser = createCommonjsModule(function (module) {
+	var browser = createCommonjsModule(function (module, exports) {
 	const MicrolinkError = lib('MicrolinkError');
 	const { default: ky } = kyUmd;
 	const { encode: stringify } = qss_m;
@@ -2595,17 +2602,25 @@
 	  }
 	};
 
-	module.exports.default = module.exports = factory_1({
+	const mql = factory_1({
 	  MicrolinkError,
 	  isUrlHttp,
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.3'
-	});
+	  VERSION: '0.5.4'
 	});
 
-	return browser;
+	mql.default = mql;
+
+	// For TypeScript and Babel
+	exports = module.exports = mql;
+	Object.defineProperty(exports, '__esModule', { value: true });
+	});
+
+	var browser$1 = unwrapExports(browser);
+
+	return browser$1;
 
 }));
 //# sourceMappingURL=mql.js.map
