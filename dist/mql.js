@@ -2496,7 +2496,7 @@
 
 	      if (isTimeoutError(err)) {
 	        const message = `The \`url\` as \`${url}\` reached timeout after ${
-          opts.retry.maxRetryAfter
+          opts.timeout
         }ms.`;
 	        throw new MicrolinkError({
 	          url,
@@ -2603,20 +2603,16 @@
 	  }
 	};
 
-	const browser = factory_1({
+	var browser = factory_1({
 	  MicrolinkError,
 	  isUrlHttp,
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.1'
+	  VERSION: '0.5.2'
 	});
 
-	var browser_1 = browser;
-	var default_1$1 = browser;
-	browser_1.default = default_1$1;
-
-	return browser_1;
+	return browser;
 
 }));
 //# sourceMappingURL=mql.js.map
