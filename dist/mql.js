@@ -6,6 +6,20 @@
 
 	url = url && url.hasOwnProperty('default') ? url['default'] : url;
 
+	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+	function unwrapExports (x) {
+		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+	}
+
+	function createCommonjsModule(fn, module) {
+		return module = { exports: {} }, fn(module, module.exports), module.exports;
+	}
+
+	function getCjsExportFromNamespace (n) {
+		return n && n['default'] || n;
+	}
+
 	var _rollupPluginShim1 = str => str;
 
 	var _rollupPluginShim1$1 = /*#__PURE__*/Object.freeze({
@@ -54,20 +68,6 @@
 	}
 
 	var addErrorProps = interfaceObject;
-
-	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-	function unwrapExports (x) {
-		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-	}
-
-	function createCommonjsModule(fn, module) {
-		return module = { exports: {} }, fn(module, module.exports), module.exports;
-	}
-
-	function getCjsExportFromNamespace (n) {
-		return n && n['default'] || n;
-	}
 
 	var cleanStack = getCjsExportFromNamespace(_rollupPluginShim1$1);
 
@@ -2486,7 +2486,16 @@
 	    )
 	  };
 
-	  const fetchFromApi = async (url, apiUrl, opts) => {
+	  const fetchFromApiOpts = {
+	    encoding: 'utf8',
+	    cache: false,
+	    retry: 2,
+	    timeout: 30000,
+	    json: true
+	  };
+
+	  const fetchFromApi = async (url, apiUrl, opts = {}) => {
+	    opts = { ...fetchFromApiOpts, ...opts };
 	    try {
 	      const response = await got(apiUrl, opts);
 	      const { body } = response;
@@ -2541,28 +2550,10 @@
 	    return [apiUrl, { headers }]
 	  };
 
-	  const mql = async (
-	    url,
-	    {
-	      encoding = 'utf8',
-	      cache = false,
-	      retry = 2,
-	      timeout = 30000,
-	      json = true,
-	      ...opts
-	    } = {}
-	  ) => {
+	  const mql = async (url, opts = {}) => {
 	    assertUrl(url);
-	    const [apiUrl, { headers }] = getApiUrl(url, opts);
-
-	    return fetchFromApi(url, apiUrl, {
-	      encoding,
-	      cache,
-	      retry,
-	      timeout,
-	      headers,
-	      json
-	    })
+	    const [apiUrl, fetchOpts] = getApiUrl(url, opts);
+	    return fetchFromApi(url, apiUrl, { ...opts, ...fetchOpts })
 	  };
 
 	  mql.MicrolinkError = MicrolinkError;
@@ -2577,6 +2568,7 @@
 
 	var factory_1 = factory;
 
+	var browser = createCommonjsModule(function (module) {
 	const MicrolinkError = lib('MicrolinkError');
 	const { default: ky } = kyUmd;
 	const { encode: stringify } = qss_m;
@@ -2603,13 +2595,14 @@
 	  }
 	};
 
-	var browser = factory_1({
+	module.exports.default = module.exports = factory_1({
 	  MicrolinkError,
 	  isUrlHttp,
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.2'
+	  VERSION: '0.5.3'
+	});
 	});
 
 	return browser;
