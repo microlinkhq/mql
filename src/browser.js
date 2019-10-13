@@ -24,7 +24,7 @@ const got = async (url, { json, cache, ...opts }) => {
   }
 }
 
-module.exports = factory({
+module.exports.default = module.exports = factory({
   MicrolinkError,
   isUrlHttp,
   stringify,
