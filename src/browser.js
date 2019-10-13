@@ -24,7 +24,7 @@ const got = async (url, { json, cache, ...opts }) => {
   }
 }
 
-const browser = factory({
+module.exports = factory({
   MicrolinkError,
   isUrlHttp,
   stringify,
@@ -32,6 +32,3 @@ const browser = factory({
   flatten,
   VERSION: '__VERSION__'
 })
-
-module.exports = browser
-module.exports.default = browser
