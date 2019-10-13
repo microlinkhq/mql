@@ -20,6 +20,7 @@ const umd = ({ compress } = {}) => ({
       entries: [{ find: 'ky-universal', replacement: './ky-umd' }]
     }),
     shim({
+      url: 'export default window',
       'clean-stack': 'export default str => str'
     }),
     replace({

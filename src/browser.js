@@ -24,7 +24,7 @@ const got = async (url, { json, cache, ...opts }) => {
   }
 }
 
-module.exports.default = module.exports = factory({
+const mql = factory({
   MicrolinkError,
   isUrlHttp,
   stringify,
@@ -32,3 +32,7 @@ module.exports.default = module.exports = factory({
   flatten,
   VERSION: '__VERSION__'
 })
+
+// For TypeScript and Babel:
+exports = module.exports = mql
+Object.defineProperty(exports, '__esModule', { value: true })
