@@ -2607,7 +2607,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.5'
+	  VERSION: '0.5.6'
 	});
 
 	return browser;
