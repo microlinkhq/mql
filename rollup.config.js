@@ -2,23 +2,21 @@ import visualizer from 'rollup-plugin-visualizer' // eslint-disable-line
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
-import alias from 'rollup-plugin-alias'
 import filesize from 'rollup-plugin-filesize'
 import replace from 'rollup-plugin-replace'
 import shim from 'rollup-plugin-shim'
 
-const umd = ({ compress } = {}) => ({
-  input: './src/browser.js',
+const build = ({ file, exports, input, compress, plugins = [] } = {}) => ({
+  input,
   output: {
+    exports,
     name: 'mql',
     format: 'umd',
-    file: compress ? 'dist/mql.min.js' : 'dist/mql.js',
+    file,
     sourcemap: true
   },
   plugins: [
-    alias({
-      entries: [{ find: 'ky-universal', replacement: './ky-umd' }]
-    }),
+    ...plugins,
     shim({
       url: 'export default window',
       'clean-stack': 'export default str => str'
@@ -27,7 +25,9 @@ const umd = ({ compress } = {}) => ({
       'process.env.NODE_ENV': JSON.stringify('production'),
       __VERSION__: require('./package.json').version
     }),
-    resolve(),
+    resolve({
+      mainFields: ['browser', 'module', 'main']
+    }),
     commonjs(),
     compress && terser({ sourcemap: true }),
     filesize(),
@@ -35,4 +35,27 @@ const umd = ({ compress } = {}) => ({
   ]
 })
 
-export default [umd(), umd({ compress: true })]
+export default [
+  build({
+    file: 'dist/mql.js',
+    compress: false,
+    input: './src/browser.js'
+  }),
+  build({
+    file: 'dist/mql.min.js',
+    compress: true,
+    input: './src/browser.js'
+  }),
+  build({
+    file: 'dist/mql.m.js',
+    exports: 'named',
+    compress: false,
+    input: './src/browser.js'
+  }),
+  build({
+    file: 'dist/mql.m.min.js',
+    exports: 'named',
+    compress: true,
+    input: './src/browser.js'
+  })
+]

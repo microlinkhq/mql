@@ -1,10 +1,13 @@
-const MicrolinkError = require('whoops')('MicrolinkError')
-const { default: ky } = require('ky-universal')
+'use strict'
+
 const { encode: stringify } = require('qss')
 const isUrlHttp = require('is-url-http')
 const flatten = require('flat')
+const whoops = require('whoops')
+const ky = require('ky')
 
 const factory = require('./factory')
+const MicrolinkError = whoops('MicrolinkError')
 
 // TODO: `cache` is destructuring because is not supported on browser side yet.
 // TODO: `json` because always is the output serialized.
@@ -24,7 +27,7 @@ const got = async (url, { json, cache, ...opts }) => {
   }
 }
 
-const mql = factory({
+module.exports = factory({
   MicrolinkError,
   isUrlHttp,
   stringify,
@@ -32,9 +35,3 @@ const mql = factory({
   flatten,
   VERSION: '__VERSION__'
 })
-
-mql.default = mql
-
-// For TypeScript and Babel
-exports = module.exports = mql
-Object.defineProperty(exports, '__esModule', { value: true })
