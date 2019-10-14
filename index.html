@@ -10,10 +10,8 @@
 
 <body>
   <h1><code>Open Devtool Console</code></h1>
-  <script src="./dist/mql.m.js"></script>
+  <script src="./dist/mql.js"></script>
   <script>
-    mql = mql.default || mql
-
     mql('https://example.com').then(({ status, data }) => {
       console.log(`status`, status)
       console.log(data)

@@ -1,10 +1,10 @@
 'use strict'
 
+const { default: ky } = require('ky-universal')
 const { encode: stringify } = require('qss')
 const isUrlHttp = require('is-url-http')
 const flatten = require('flat')
 const whoops = require('whoops')
-const ky = require('ky')
 
 const factory = require('./factory')
 const MicrolinkError = whoops('MicrolinkError')
