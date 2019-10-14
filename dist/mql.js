@@ -1,8 +1,10 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global = global || self, global.mql = factory());
-}(this, function () { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('url')) :
+	typeof define === 'function' && define.amd ? define(['url'], factory) :
+	(global = global || self, global.mql = factory(global.url));
+}(this, function (url) { 'use strict';
+
+	url = url && url.hasOwnProperty('default') ? url['default'] : url;
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -589,12 +591,6 @@
 	var qss_m = /*#__PURE__*/Object.freeze({
 		encode: encode,
 		decode: decode
-	});
-
-
-
-	var _rollupPluginShim1 = /*#__PURE__*/Object.freeze({
-		'default': window
 	});
 
 	const word = '[a-fA-F\\d:]';
@@ -2192,9 +2188,7 @@
 		return options.exact ? new RegExp(`(?:^${regex}$)`, 'i') : new RegExp(regex, 'ig');
 	};
 
-	var require$$0 = getCjsExportFromNamespace(_rollupPluginShim1);
-
-	const { URL: URL$1 } = require$$0;
+	const URL$1 = commonjsGlobal.window ? window.URL : url.URL;
 	const urlRegex$1 = urlRegex({ exact: true });
 
 	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
@@ -2328,10 +2322,10 @@
 	  return result
 	}
 
-	var _rollupPluginShim2 = str => str;
+	var _rollupPluginShim1 = str => str;
 
-	var _rollupPluginShim2$1 = /*#__PURE__*/Object.freeze({
-		'default': _rollupPluginShim2
+	var _rollupPluginShim1$1 = /*#__PURE__*/Object.freeze({
+		'default': _rollupPluginShim1
 	});
 
 	const mimicFn = (to, from) => {
@@ -2377,7 +2371,7 @@
 
 	var addErrorProps = interfaceObject;
 
-	var cleanStack = getCjsExportFromNamespace(_rollupPluginShim2$1);
+	var cleanStack = getCjsExportFromNamespace(_rollupPluginShim1$1);
 
 	const {isString} = helpers;
 
@@ -2607,7 +2601,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.6'
+	  VERSION: '0.5.7'
 	});
 
 	return browser;
