@@ -18,127 +18,6 @@
 		return n && n['default'] || n;
 	}
 
-	var _rollupPluginShim2 = str => str;
-
-	var _rollupPluginShim2$1 = /*#__PURE__*/Object.freeze({
-		'default': _rollupPluginShim2
-	});
-
-	const mimicFn = (to, from) => {
-		for (const prop of Reflect.ownKeys(from)) {
-			Object.defineProperty(to, prop, Object.getOwnPropertyDescriptor(from, prop));
-		}
-
-		return to;
-	};
-
-	var mimicFn_1 = mimicFn;
-	var default_1 = mimicFn;
-	mimicFn_1.default = default_1;
-
-	var helpers = {
-	  isFunction: obj => typeof obj === 'function',
-	  isString: obj => typeof obj === 'string',
-	  composeErrorMessage: (code, description) => `${code}, ${description}`,
-	  inherits: (ctor, superCtor) => {
-	    ctor.super_ = superCtor;
-	    ctor.prototype = Object.create(superCtor.prototype, {
-	      constructor: {
-	        value: ctor,
-	        enumerable: false,
-	        writable: true,
-	        configurable: true
-	      }
-	    });
-	  }
-	};
-
-	const {isFunction, composeErrorMessage} = helpers;
-
-	function interfaceObject (error, ...props) {
-	  Object.assign(error, ...props);
-
-	  error.description = isFunction(error.message) ? error.message(error) : error.message;
-
-	  error.message = error.code
-	   ? composeErrorMessage(error.code, error.description)
-	   : error.description;
-	}
-
-	var addErrorProps = interfaceObject;
-
-	var cleanStack = getCjsExportFromNamespace(_rollupPluginShim2$1);
-
-	const {isString} = helpers;
-
-	function createExtendError (ErrorClass, classProps) {
-	  function ExtendError (props) {
-	    const error = new ErrorClass();
-	    const errorProps = isString(props) ? {message: props} : props;
-	    addErrorProps(error, classProps, errorProps);
-
-	    error.stack = cleanStack(error.stack);
-	    return error
-	  }
-
-	  ExtendError.prototype = ErrorClass.prototype;
-	  mimicFn_1(ExtendError, ErrorClass);
-
-	  return ExtendError
-	}
-
-	var createExtendError_1 = createExtendError;
-
-	const {inherits} = helpers;
-
-
-	const REGEX_CLASS_NAME = /[^0-9a-zA-Z_$]/;
-
-	function createError (className) {
-	  if (typeof className !== 'string') {
-	    throw new TypeError('Expected className to be a string')
-	  }
-
-	  if (REGEX_CLASS_NAME.test(className)) {
-	    throw new Error('className contains invalid characters')
-	  }
-
-	  function ErrorClass () {
-	    Object.defineProperty(this, 'name', {
-	      configurable: true,
-	      value: className,
-	      writable: true
-	    });
-
-	    Error.captureStackTrace(this, this.constructor);
-	  }
-
-	  inherits(ErrorClass, Error);
-	  mimicFn_1(ErrorClass, Error);
-	  return ErrorClass
-	}
-
-	var createError_1 = createError;
-
-	const createErrorClass = ErrorClass => (className, props) => {
-	  const errorClass = createError_1(className || ErrorClass.name);
-	  return createExtendError_1(errorClass, props)
-	};
-
-	var lib = createErrorClass(Error);
-	var type = createErrorClass(TypeError);
-	var range = createErrorClass(RangeError);
-	var eval_1 = createErrorClass(EvalError);
-	var syntax = createErrorClass(SyntaxError);
-	var reference = createErrorClass(ReferenceError);
-	var uri = createErrorClass(URIError);
-	lib.type = type;
-	lib.range = range;
-	lib.eval = eval_1;
-	lib.syntax = syntax;
-	lib.reference = reference;
-	lib.uri = uri;
-
 	var umd = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
 		 factory(exports) ;
@@ -2324,7 +2203,6 @@
 	  try {
 	    return new URL$1(url) && REGEX_HTTP_PROTOCOL.test(url) && urlRegex$1.test(url)
 	  } catch (err) {
-	    console.log('err', err);
 	    return false
 	  }
 	};
@@ -2449,6 +2327,127 @@
 
 	  return result
 	}
+
+	var _rollupPluginShim2 = str => str;
+
+	var _rollupPluginShim2$1 = /*#__PURE__*/Object.freeze({
+		'default': _rollupPluginShim2
+	});
+
+	const mimicFn = (to, from) => {
+		for (const prop of Reflect.ownKeys(from)) {
+			Object.defineProperty(to, prop, Object.getOwnPropertyDescriptor(from, prop));
+		}
+
+		return to;
+	};
+
+	var mimicFn_1 = mimicFn;
+	var default_1 = mimicFn;
+	mimicFn_1.default = default_1;
+
+	var helpers = {
+	  isFunction: obj => typeof obj === 'function',
+	  isString: obj => typeof obj === 'string',
+	  composeErrorMessage: (code, description) => `${code}, ${description}`,
+	  inherits: (ctor, superCtor) => {
+	    ctor.super_ = superCtor;
+	    ctor.prototype = Object.create(superCtor.prototype, {
+	      constructor: {
+	        value: ctor,
+	        enumerable: false,
+	        writable: true,
+	        configurable: true
+	      }
+	    });
+	  }
+	};
+
+	const {isFunction, composeErrorMessage} = helpers;
+
+	function interfaceObject (error, ...props) {
+	  Object.assign(error, ...props);
+
+	  error.description = isFunction(error.message) ? error.message(error) : error.message;
+
+	  error.message = error.code
+	   ? composeErrorMessage(error.code, error.description)
+	   : error.description;
+	}
+
+	var addErrorProps = interfaceObject;
+
+	var cleanStack = getCjsExportFromNamespace(_rollupPluginShim2$1);
+
+	const {isString} = helpers;
+
+	function createExtendError (ErrorClass, classProps) {
+	  function ExtendError (props) {
+	    const error = new ErrorClass();
+	    const errorProps = isString(props) ? {message: props} : props;
+	    addErrorProps(error, classProps, errorProps);
+
+	    error.stack = cleanStack(error.stack);
+	    return error
+	  }
+
+	  ExtendError.prototype = ErrorClass.prototype;
+	  mimicFn_1(ExtendError, ErrorClass);
+
+	  return ExtendError
+	}
+
+	var createExtendError_1 = createExtendError;
+
+	const {inherits} = helpers;
+
+
+	const REGEX_CLASS_NAME = /[^0-9a-zA-Z_$]/;
+
+	function createError (className) {
+	  if (typeof className !== 'string') {
+	    throw new TypeError('Expected className to be a string')
+	  }
+
+	  if (REGEX_CLASS_NAME.test(className)) {
+	    throw new Error('className contains invalid characters')
+	  }
+
+	  function ErrorClass () {
+	    Object.defineProperty(this, 'name', {
+	      configurable: true,
+	      value: className,
+	      writable: true
+	    });
+
+	    Error.captureStackTrace(this, this.constructor);
+	  }
+
+	  inherits(ErrorClass, Error);
+	  mimicFn_1(ErrorClass, Error);
+	  return ErrorClass
+	}
+
+	var createError_1 = createError;
+
+	const createErrorClass = ErrorClass => (className, props) => {
+	  const errorClass = createError_1(className || ErrorClass.name);
+	  return createExtendError_1(errorClass, props)
+	};
+
+	var lib = createErrorClass(Error);
+	var type = createErrorClass(TypeError);
+	var range = createErrorClass(RangeError);
+	var eval_1 = createErrorClass(EvalError);
+	var syntax = createErrorClass(SyntaxError);
+	var reference = createErrorClass(ReferenceError);
+	var uri = createErrorClass(URIError);
+	lib.type = type;
+	lib.range = range;
+	lib.eval = eval_1;
+	lib.syntax = syntax;
+	lib.reference = reference;
+	lib.uri = uri;
 
 	const ENDPOINT = {
 	  FREE: 'https://api.microlink.io',
@@ -2575,14 +2574,14 @@
 
 	var factory_1 = factory;
 
-	var browser = createCommonjsModule(function (module, exports) {
-	const MicrolinkError = lib('MicrolinkError');
 	const { default: ky } = kyUmd;
 	const { encode: stringify } = qss_m;
 
 
 
 
+
+	const MicrolinkError = lib('MicrolinkError');
 
 	// TODO: `cache` is destructuring because is not supported on browser side yet.
 	// TODO: `json` because always is the output serialized.
@@ -2602,7 +2601,7 @@
 	  }
 	};
 
-	const mql = factory_1({
+	var browser = factory_1({
 	  MicrolinkError,
 	  isUrlHttp,
 	  stringify,
@@ -2611,16 +2610,7 @@
 	  VERSION: '0.5.4'
 	});
 
-	mql.default = mql;
-
-	// For TypeScript and Babel
-	exports = module.exports = mql;
-	Object.defineProperty(exports, '__esModule', { value: true });
-	});
-
-	var browser$1 = unwrapExports(browser);
-
-	return browser$1;
+	return browser;
 
 }));
 //# sourceMappingURL=mql.js.map
