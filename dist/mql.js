@@ -2505,7 +2505,7 @@
 
 	      if (isTimeoutError(err)) {
 	        const message = `The \`url\` as \`${url}\` reached timeout after ${
-          opts.timeout
+          opts.retry.maxRetryAfter
         }ms.`;
 	        throw new MicrolinkError({
 	          url,
@@ -2601,7 +2601,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.7'
+	  VERSION: '0.5.8'
 	});
 
 	return browser;
