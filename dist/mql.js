@@ -2489,7 +2489,7 @@
 	  const fetchFromApiOpts = {
 	    encoding: 'utf8',
 	    cache: false,
-	    retry: 2,
+	    retry: 3,
 	    timeout: 30000,
 	    json: true
 	  };
@@ -2601,7 +2601,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.9'
+	  VERSION: '0.5.10'
 	});
 
 	return browser;
