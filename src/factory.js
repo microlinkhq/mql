@@ -44,7 +44,7 @@ function factory ({
   const fetchFromApiOpts = {
     encoding: 'utf8',
     cache: false,
-    retry: 2,
+    retry: 3,
     timeout: 30000,
     json: true
   }
