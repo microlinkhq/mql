@@ -4,7 +4,8 @@
   "homepage": "https://nicedoc.io/microlinkhq/mql",
   "version": "0.5.10",
   "browser": "src/browser.js",
-  "main": "src/node.js",
+  "main": "src/index.js",
+  "module": "src/browser.js",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
     "name": "Kiko Beats",
