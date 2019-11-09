@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.11](https://github.com/microlinkhq/mql/compare/v0.5.10...v0.5.11) (2019-11-09)
+
 ### [0.5.10](https://github.com/microlinkhq/mql/compare/v0.5.9...v0.5.10) (2019-10-23)
 
 ### [0.5.9](https://github.com/microlinkhq/mql/compare/v0.5.8...v0.5.9) (2019-10-18)
