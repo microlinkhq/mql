@@ -2,7 +2,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('url')) :
 	typeof define === 'function' && define.amd ? define(['url'], factory) :
 	(global = global || self, global.mql = factory(global.url));
-}(this, function (url) { 'use strict';
+}(this, (function (url) { 'use strict';
 
 	url = url && url.hasOwnProperty('default') ? url['default'] : url;
 
@@ -23,68 +23,50 @@
 	var umd = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
 		 factory(exports) ;
-	}(commonjsGlobal, function (exports) {
+	}(commonjsGlobal, (function (exports) {
 		/*! MIT License © Sindre Sorhus */
 
 		const globals = {};
 
-		{
-			const getGlobal = property => {
-				let parent;
-
-				/* istanbul ignore next */
-				if (typeof self !== 'undefined' && self && property in self) {
-					parent = self;
-				}
-
-				/* istanbul ignore next */
-				if (typeof window !== 'undefined' && window && property in window) {
-					parent = window;
-				}
-
-				if (typeof commonjsGlobal !== 'undefined' && commonjsGlobal && property in commonjsGlobal) {
-					parent = commonjsGlobal;
-				}
-
-				/* istanbul ignore next */
-				if (typeof globalThis !== 'undefined' && globalThis) {
-					parent = globalThis;
-				}
-
-				if (typeof parent === 'undefined') {
-					return;
-				}
-
-				const globalProperty = parent[property];
-
-				if (typeof globalProperty === 'function') {
-					return globalProperty.bind(parent);
-				}
-
-				return globalProperty;
-			};
-
-			const globalProperties = [
-				'document',
-				'Headers',
-				'Request',
-				'Response',
-				'ReadableStream',
-				'fetch',
-				'AbortController',
-				'FormData'
-			];
-
-			const props = {};
-			for (const property of globalProperties) {
-				props[property] = {
-					get() {
-						return getGlobal(property);
-					}
-				};
+		const getGlobal = property => {
+			/* istanbul ignore next */
+			if (typeof self !== 'undefined' && self && property in self) {
+				return self;
 			}
 
-			Object.defineProperties(globals, props);
+			/* istanbul ignore next */
+			if (typeof window !== 'undefined' && window && property in window) {
+				return window;
+			}
+
+			if (typeof commonjsGlobal !== 'undefined' && commonjsGlobal && property in commonjsGlobal) {
+				return commonjsGlobal;
+			}
+
+			/* istanbul ignore next */
+			if (typeof globalThis !== 'undefined' && globalThis) {
+				return globalThis;
+			}
+		};
+
+		const globalProperties = [
+			'Headers',
+			'Request',
+			'Response',
+			'ReadableStream',
+			'fetch',
+			'AbortController',
+			'FormData'
+		];
+
+		for (const property of globalProperties) {
+			Object.defineProperty(globals, property, {
+				get() {
+					const globalObject = getGlobal(property);
+					const value = globalObject && globalObject[property];
+					return typeof value === 'function' ? value.bind(globalObject) : value;
+				}
+			});
 		}
 
 		const isObject = value => value !== null && typeof value === 'object';
@@ -133,16 +115,16 @@
 			blob: '*/*'
 		};
 
-		const retryMethods = new Set([
+		const retryMethods = [
 			'get',
 			'put',
 			'head',
 			'delete',
 			'options',
 			'trace'
-		]);
+		];
 
-		const retryStatusCodes = new Set([
+		const retryStatusCodes = [
 			408,
 			413,
 			429,
@@ -150,13 +132,15 @@
 			502,
 			503,
 			504
-		]);
+		];
 
-		const retryAfterStatusCodes = new Set([
+		const retryAfterStatusCodes = [
 			413,
 			429,
 			503
-		]);
+		];
+
+		const stop = Symbol('stop');
 
 		class HTTPError extends Error {
 			constructor(response) {
@@ -173,26 +157,18 @@
 			}
 		}
 
-		const safeTimeout = (resolve, reject, ms) => {
-			if (ms > 2147483647) { // The maximum value of a 32bit int (see #117)
-				reject(new RangeError('The `timeout` option cannot be greater than 2147483647'));
-			}
-
-			return setTimeout(resolve, ms);
-		};
-
-		const delay = ms => new Promise((resolve, reject) => safeTimeout(resolve, reject, ms));
+		const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 		// `Promise.race()` workaround (#91)
 		const timeout = (promise, ms, abortController) =>
 			new Promise((resolve, reject) => {
-				const timeoutID = safeTimeout(() => {
-					if (supportsAbortController) {
+				const timeoutID = setTimeout(() => {
+					if (abortController) {
 						abortController.abort();
 					}
 
 					reject(new TimeoutError());
-				}, reject, ms);
+				}, ms);
 
 				/* eslint-disable promise/prefer-await-to-then */
 				promise
@@ -213,7 +189,7 @@
 			afterStatusCodes: retryAfterStatusCodes
 		};
 
-		const normalizeRetryOptions = retry => {
+		const normalizeRetryOptions = (retry = {}) => {
 			if (typeof retry === 'number') {
 				return {
 					...defaultRetryOptions,
@@ -232,70 +208,47 @@
 			return {
 				...defaultRetryOptions,
 				...retry,
-				methods: retry.methods ? new Set(retry.methods) : defaultRetryOptions.methods,
-				statusCodes: retry.statusCodes ? new Set(retry.statusCodes) : defaultRetryOptions.statusCodes,
 				afterStatusCodes: retryAfterStatusCodes
 			};
 		};
 
-		class Ky {
-			constructor(input, {
-				timeout = 10000,
-				hooks,
-				throwHttpErrors = true,
-				searchParams,
-				json,
-				retry = {},
-				...otherOptions
-			}) {
-				this._retryCount = 0;
+		// The maximum value of a 32bit int (see issue #117)
+		const maxSafeTimeout = 2147483647;
 
+		class Ky {
+			constructor(input, options = {}) {
+				this._retryCount = 0;
+				this._input = input;
 				this._options = {
-					method: 'get',
-					credentials: 'same-origin', // TODO: This can be removed when the spec change is implemented in all browsers. Context: https://www.chromestatus.com/feature/4539473312350208
-					retry: normalizeRetryOptions(retry),
-					...otherOptions
+					// TODO: credentials can be removed when the spec change is implemented in all browsers. Context: https://www.chromestatus.com/feature/4539473312350208
+					credentials: this._input.credentials || 'same-origin',
+					...options,
+					hooks: deepMerge({
+						beforeRequest: [],
+						beforeRetry: [],
+						afterResponse: []
+					}, options.hooks),
+					method: normalizeRequestMethod(options.method || this._input.method),
+					prefixUrl: String(options.prefixUrl || ''),
+					retry: normalizeRetryOptions(options.retry),
+					throwHttpErrors: options.throwHttpErrors !== false,
+					timeout: typeof options.timeout === 'undefined' ? 10000 : options.timeout
 				};
 
-				if (input instanceof globals.Request) {
-					this._input = input;
-
-					// `ky` options have precedence over `Request` options
-					this._options = {
-						...this._options,
-						method: otherOptions.method || input.method,
-						headers: otherOptions.headers || input.headers,
-						body: otherOptions.body || input.body,
-						credentials: otherOptions.credentials || input.credentials
-					};
-				} else if (!(input instanceof URL) && typeof input !== 'string') {
+				if (typeof this._input !== 'string' && !(this._input instanceof URL || this._input instanceof globals.Request)) {
 					throw new TypeError('`input` must be a string, URL, or Request');
-				} else {
-					this._input = String(input || '');
-					this._options.prefixUrl = String(this._options.prefixUrl || '');
+				}
 
-					if (this._options.prefixUrl && this._input.startsWith('/')) {
+				if (this._options.prefixUrl && typeof this._input === 'string') {
+					if (this._input.startsWith('/')) {
 						throw new Error('`input` must not begin with a slash when using `prefixUrl`');
 					}
 
-					if (this._options.prefixUrl && !this._options.prefixUrl.endsWith('/')) {
+					if (!this._options.prefixUrl.endsWith('/')) {
 						this._options.prefixUrl += '/';
 					}
 
 					this._input = this._options.prefixUrl + this._input;
-
-					if (searchParams) {
-						const url = new URL(this._input, globals.document && globals.document.baseURI);
-						if (typeof searchParams === 'string' || (URLSearchParams && searchParams instanceof URLSearchParams)) {
-							url.search = searchParams;
-						} else if (Object.values(searchParams).every(param => typeof param === 'number' || typeof param === 'string')) {
-							url.search = new URLSearchParams(searchParams).toString();
-						} else {
-							throw new Error('The `searchParams` option must be either a string, `URLSearchParams` instance or an object with string and number values');
-						}
-
-						this._input = url.toString();
-					}
 				}
 
 				if (supportsAbortController) {
@@ -304,46 +257,40 @@
 						this._options.signal.addEventListener('abort', () => {
 							this.abortController.abort();
 						});
+						this._options.signal = this.abortController.signal;
 					}
-
-					this._options.signal = this.abortController.signal;
 				}
 
-				this._options.method = normalizeRequestMethod(this._options.method);
+				this.request = new globals.Request(this._input, this._options);
 
-				this._timeout = timeout;
-				this._hooks = deepMerge({
-					beforeRequest: [],
-					beforeRetry: [],
-					afterResponse: []
-				}, hooks);
-				this._throwHttpErrors = throwHttpErrors;
+				if (this._options.searchParams) {
+					const url = new URL(this.request.url);
+					url.search = new URLSearchParams(this._options.searchParams);
+					this.request = new globals.Request(url, this.request);
+				}
 
-				const headers = new globals.Headers(this._options.headers || {});
-
-				if (((supportsFormData && this._options.body instanceof globals.FormData) || this._options.body instanceof URLSearchParams) && headers.has('content-type')) {
+				if (((supportsFormData && this._options.body instanceof globals.FormData) || this._options.body instanceof URLSearchParams) && this.request.headers.has('content-type')) {
 					throw new Error(`The \`content-type\` header cannot be used with a ${this._options.body.constructor.name} body. It will be set automatically.`);
 				}
 
-				if (json) {
-					if (this._options.body) {
-						throw new Error('The `json` option cannot be used with the `body` option');
-					}
-
-					headers.set('content-type', 'application/json');
-					this._options.body = JSON.stringify(json);
+				if (this._options.json) {
+					this._options.body = JSON.stringify(this._options.json);
+					this.request.headers.set('content-type', 'application/json');
+					this.request = new globals.Request(this.request, {body: this._options.body});
 				}
 
-				this._options.headers = headers;
-
 				const fn = async () => {
+					if (this._options.timeout > maxSafeTimeout) {
+						throw new RangeError(`The \`timeout\` option cannot be greater than ${maxSafeTimeout}`);
+					}
+
 					await delay(1);
 					let response = await this._fetch();
 
-					for (const hook of this._hooks.afterResponse) {
+					for (const hook of this._options.hooks.afterResponse) {
 						// eslint-disable-next-line no-await-in-loop
 						const modifiedResponse = await hook(
-							this._input,
+							this.request,
 							this._options,
 							response.clone()
 						);
@@ -353,7 +300,7 @@
 						}
 					}
 
-					if (!response.ok && this._throwHttpErrors) {
+					if (!response.ok && this._options.throwHttpErrors) {
 						throw new HTTPError(response);
 					}
 
@@ -374,13 +321,14 @@
 					return response;
 				};
 
-				const isRetriableMethod = this._options.retry.methods.has(this._options.method.toLowerCase());
+				const isRetriableMethod = this._options.retry.methods.includes(this.request.method.toLowerCase());
 				const result = isRetriableMethod ? this._retry(fn) : fn();
 
 				for (const [type, mimeType] of Object.entries(responseTypes)) {
 					result[type] = async () => {
-						headers.set('accept', mimeType);
-						return (await result).clone()[type]();
+						this.request.headers.set('accept', this.request.headers.get('accept') || mimeType);
+						const response = (await result).clone();
+						return (type === 'json' && response.status === 204) ? '' : response[type]();
 					};
 				}
 
@@ -392,12 +340,12 @@
 
 				if (this._retryCount < this._options.retry.limit && !(error instanceof TimeoutError)) {
 					if (error instanceof HTTPError) {
-						if (!this._options.retry.statusCodes.has(error.response.status)) {
+						if (!this._options.retry.statusCodes.includes(error.response.status)) {
 							return 0;
 						}
 
 						const retryAfter = error.response.headers.get('Retry-After');
-						if (retryAfter && this._options.retry.afterStatusCodes.has(error.response.status)) {
+						if (retryAfter && this._options.retry.afterStatusCodes.includes(error.response.status)) {
 							let after = Number(retryAfter);
 							if (Number.isNaN(after)) {
 								after = Date.parse(retryAfter) - Date.now();
@@ -428,44 +376,54 @@
 				try {
 					return await fn();
 				} catch (error) {
-					const ms = this._calculateRetryDelay(error);
+					const ms = Math.min(this._calculateRetryDelay(error), maxSafeTimeout);
 					if (ms !== 0 && this._retryCount > 0) {
 						await delay(ms);
 
-						for (const hook of this._hooks.beforeRetry) {
+						for (const hook of this._options.hooks.beforeRetry) {
 							// eslint-disable-next-line no-await-in-loop
-							await hook(
-								this._input,
+							const hookResult = await hook(
+								this.request,
 								this._options,
 								error,
-								this._retryCount,
+								this._retryCount
 							);
+
+							// If `stop` is returned from the hook, the retry process is stopped
+							if (hookResult === stop) {
+								return;
+							}
 						}
 
 						return this._retry(fn);
 					}
 
-					if (this._throwHttpErrors) {
+					if (this._options.throwHttpErrors) {
 						throw error;
 					}
 				}
 			}
 
 			async _fetch() {
-				for (const hook of this._hooks.beforeRequest) {
+				for (const hook of this._options.hooks.beforeRequest) {
 					// eslint-disable-next-line no-await-in-loop
-					const result = await hook(this._input, this._options);
+					const result = await hook(this.request, this._options);
+
+					if (result instanceof Request) {
+						this.request = result;
+						break;
+					}
 
 					if (result instanceof Response) {
 						return result;
 					}
 				}
 
-				if (this._timeout === false) {
-					return globals.fetch(this._input, this._options);
+				if (this._options.timeout === false) {
+					return globals.fetch(this.request);
 				}
 
-				return timeout(globals.fetch(this._input, this._options), this._timeout, this.abortController);
+				return timeout(globals.fetch(this.request), this._options.timeout, this.abortController);
 			}
 
 			/* istanbul ignore next */
@@ -525,6 +483,7 @@
 
 			ky.create = newDefaults => createInstance(validateAndMerge(newDefaults));
 			ky.extend = newDefaults => createInstance(validateAndMerge(defaults, newDefaults));
+			ky.stop = stop;
 
 			return ky;
 		};
@@ -537,7 +496,7 @@
 
 		Object.defineProperty(exports, '__esModule', { value: true });
 
-	}));
+	})));
 	});
 
 	unwrapExports(umd);
@@ -589,6 +548,7 @@
 	}
 
 	var qss_m = /*#__PURE__*/Object.freeze({
+		__proto__: null,
 		encode: encode,
 		decode: decode
 	});
@@ -2365,6 +2325,7 @@
 	var _rollupPluginShim1 = str => str;
 
 	var _rollupPluginShim1$1 = /*#__PURE__*/Object.freeze({
+		__proto__: null,
 		'default': _rollupPluginShim1
 	});
 
@@ -2641,10 +2602,10 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.11'
+	  VERSION: '0.5.12'
 	});
 
 	return browser;
 
-}));
+})));
 //# sourceMappingURL=mql.js.map
