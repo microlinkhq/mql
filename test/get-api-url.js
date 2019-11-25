@@ -14,4 +14,10 @@ import mqlNode from '../src/node'
   test(`${target} » apiKey`, t => {
     t.snapshot(mql.getApiUrl('https://kikobeats.com', { apiKey: 'foobar' }))
   })
+
+  test(`${target} » flatten options`, t => {
+    t.snapshot(
+      mql.getApiUrl('https://kikobeats.com', { overlay: { browser: 'dark' } })
+    )
+  })
 })

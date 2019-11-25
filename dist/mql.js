@@ -2544,7 +2544,7 @@
 	    const apiUrl = `${apiEndpoint}?${stringify({
       url: url,
       ...mapRules(data),
-      ...opts
+      ...flatten({ ...opts })
     })}`;
 
 	    const headers = isPro ? { 'x-api-key': apiKey } : {};
