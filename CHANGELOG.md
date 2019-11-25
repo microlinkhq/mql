@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.13](https://github.com/microlinkhq/mql/compare/v0.5.12...v0.5.13) (2019-11-25)
+
+
+### Bug Fixes
+
+* ensure to flatten options passed ([3afeb3d](https://github.com/microlinkhq/mql/commit/3afeb3d930af220b312ca0be1a3048d0f2899114))
+
 ### [0.5.12](https://github.com/microlinkhq/mql/compare/v0.5.11...v0.5.12) (2019-11-18)
 
 ### [0.5.11](https://github.com/microlinkhq/mql/compare/v0.5.10...v0.5.11) (2019-11-09)
