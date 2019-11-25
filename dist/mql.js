@@ -2602,7 +2602,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.12'
+	  VERSION: '0.5.13'
 	});
 
 	return browser;
