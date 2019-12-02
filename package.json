@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "flat": "~5.0.0",
-    "got": "~9.6.0",
+    "got": "~10.0.1",
     "is-url-http": "~1.2.4",
     "ky": "~0.16.0",
     "ky-universal": "~0.3.0",
