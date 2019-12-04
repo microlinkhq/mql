@@ -2544,7 +2544,7 @@
 	    const apiUrl = `${apiEndpoint}?${stringify({
       url: url,
       ...mapRules(data),
-      ...flatten({ ...opts })
+      ...flatten(opts)
     })}`;
 
 	    const headers = isPro ? { 'x-api-key': apiKey } : {};
@@ -2602,7 +2602,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.13'
+	  VERSION: '0.5.14'
 	});
 
 	return browser;
