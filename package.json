@@ -2,7 +2,7 @@
   "name": "@microlink/mql",
   "description": "Microlink Query Language",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "browser": "src/browser.js",
   "main": "src/node.js",
   "module": "src/browser.js",
