@@ -32,7 +32,7 @@
     "ky": "~0.16.0",
     "ky-universal": "~0.3.0",
     "qss": "~2.0.3",
-    "whoops": "~4.0.2"
+    "whoops": "~4.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
