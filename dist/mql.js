@@ -2457,14 +2457,7 @@
 	  // browser side unexpected error
 	  err.type === 'invalid-json';
 
-	function factory ({
-	  VERSION,
-	  MicrolinkError,
-	  isUrlHttp,
-	  stringify,
-	  got,
-	  flatten
-	}) {
+	function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) {
 	  const assertUrl = (url = '') => {
 	    if (!isUrlHttp(url)) {
 	      const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`;
@@ -2479,7 +2472,8 @@
 	    }
 	  };
 
-	  const mapRules = (rules = {}) => {
+	  const mapRules = rules => {
+	    if (typeof rules !== 'object') return
 	    const flatRules = flatten(rules);
 	    return Object.keys(flatRules).reduce(
 	      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key] }),
@@ -2505,9 +2499,7 @@
 	      const { name, statusCode = 500, body: rawBody, message: rawMessage } = err;
 
 	      if (isTimeoutError(err)) {
-	        const message = `The \`url\` as \`${url}\` reached timeout after ${
-          opts.retry.maxRetryAfter
-        }ms.`;
+	        const message = `The \`url\` as \`${url}\` reached timeout after ${opts.retry.maxRetryAfter}ms.`;
 	        throw new MicrolinkError({
 	          url,
 	          data: { url: message },
@@ -2524,9 +2516,7 @@
 	          ? JSON.parse(rawBody)
 	          : rawBody
 	        : { message: rawMessage, status: 'fail' };
-	      const message = body.data
-	        ? body.data[Object.keys(body.data)[0]]
-	        : body.message;
+	      const message = body.data ? body.data[Object.keys(body.data)[0]] : body.message;
 
 	      throw MicrolinkError({
 	        ...body,
@@ -2542,7 +2532,7 @@
 	    const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE'];
 
 	    const apiUrl = `${apiEndpoint}?${stringify({
-      url: url,
+      url,
       ...mapRules(data),
       ...flatten(opts)
     })}`;
@@ -2602,7 +2592,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.14'
+	  VERSION: '0.5.15'
 	});
 
 	return browser;
