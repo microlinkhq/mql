@@ -16,8 +16,6 @@ import mqlNode from '../src/node'
   })
 
   test(`${target} » flatten options`, t => {
-    t.snapshot(
-      mql.getApiUrl('https://kikobeats.com', { overlay: { browser: 'dark' } })
-    )
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { overlay: { browser: 'dark' } }))
   })
 })

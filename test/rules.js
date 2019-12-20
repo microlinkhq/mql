@@ -9,7 +9,9 @@ import mqlNode from '../src/node'
   { constructor: mqlBrowser, target: 'browser' }
 ].forEach(({ constructor: mql, target }) => {
   test(`${target} » no rules`, t => {
-    t.deepEqual(mql.mapRules(), {})
+    t.deepEqual(mql.mapRules(), undefined)
+    t.deepEqual(mql.mapRules(false), undefined)
+    t.deepEqual(mql.mapRules('false'), undefined)
     t.deepEqual(mql.mapRules({}), {})
     t.deepEqual(mql.mapRules([]), {})
   })
