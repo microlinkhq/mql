@@ -9,9 +9,8 @@ const whoops = require('whoops')
 const factory = require('./factory')
 const MicrolinkError = whoops('MicrolinkError')
 
-// TODO: `cache` is destructuring because is not supported on browser side yet.
 // TODO: `json` because always is the output serialized.
-const got = async (url, { json, cache, ...opts }) => {
+const got = async (url, { json, ...opts }) => {
   try {
     const response = await ky(url, opts)
     const body = await response.json()

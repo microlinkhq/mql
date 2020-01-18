@@ -36,8 +36,6 @@ function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten 
   }
 
   const fetchFromApiOpts = {
-    encoding: 'utf8',
-    cache: false,
     retry: 3,
     timeout: 30000,
     json: true
