@@ -2329,17 +2329,74 @@
 		'default': _rollupPluginShim1
 	});
 
-	const mimicFn = (to, from) => {
-		for (const prop of Reflect.ownKeys(from)) {
-			Object.defineProperty(to, prop, Object.getOwnPropertyDescriptor(from, prop));
+	const copyProperty = (to, from, property, ignoreNonConfigurable) => {
+		// `Function#length` should reflect the parameters of `to` not `from` since we keep its body.
+		// `Function#prototype` is non-writable and non-configurable so can never be modified.
+		if (property === 'length' || property === 'prototype') {
+			return;
 		}
+
+		const toDescriptor = Object.getOwnPropertyDescriptor(to, property);
+		const fromDescriptor = Object.getOwnPropertyDescriptor(from, property);
+
+		if (!canCopyProperty(toDescriptor, fromDescriptor) && ignoreNonConfigurable) {
+			return;
+		}
+
+		Object.defineProperty(to, property, fromDescriptor);
+	};
+
+	// `Object.defineProperty()` throws if the property exists, is not configurable and either:
+	//  - one its descriptors is changed
+	//  - it is non-writable and its value is changed
+	const canCopyProperty = function (toDescriptor, fromDescriptor) {
+		return toDescriptor === undefined || toDescriptor.configurable || (
+			toDescriptor.writable === fromDescriptor.writable &&
+			toDescriptor.enumerable === fromDescriptor.enumerable &&
+			toDescriptor.configurable === fromDescriptor.configurable &&
+			(toDescriptor.writable || toDescriptor.value === fromDescriptor.value)
+		);
+	};
+
+	const changePrototype = (to, from) => {
+		const fromPrototype = Object.getPrototypeOf(from);
+		if (fromPrototype === Object.getPrototypeOf(to)) {
+			return;
+		}
+
+		Object.setPrototypeOf(to, fromPrototype);
+	};
+
+	const wrappedToString = (withName, fromBody) => `/* Wrapped ${withName}*/\n${fromBody}`;
+
+	const toStringDescriptor = Object.getOwnPropertyDescriptor(Function.prototype, 'toString');
+	const toStringName = Object.getOwnPropertyDescriptor(Function.prototype.toString, 'name');
+
+	// We call `from.toString()` early (not lazily) to ensure `from` can be garbage collected.
+	// We use `bind()` instead of a closure for the same reason.
+	// Calling `from.toString()` early also allows caching it in case `to.toString()` is called several times.
+	const changeToString = (to, from, name) => {
+		const withName = name === '' ? '' : `with ${name.trim()}() `;
+		const newToString = wrappedToString.bind(null, withName, from.toString());
+		// Ensure `to.toString.toString` is non-enumerable and has the same `same`
+		Object.defineProperty(newToString, 'name', toStringName);
+		Object.defineProperty(to, 'toString', {...toStringDescriptor, value: newToString});
+	};
+
+	const mimicFn = (to, from, {ignoreNonConfigurable = false} = {}) => {
+		const {name} = to;
+
+		for (const property of Reflect.ownKeys(from)) {
+			copyProperty(to, from, property, ignoreNonConfigurable);
+		}
+
+		changePrototype(to, from);
+		changeToString(to, from, name);
 
 		return to;
 	};
 
 	var mimicFn_1 = mimicFn;
-	var default_1 = mimicFn;
-	mimicFn_1.default = default_1;
 
 	var helpers = {
 	  isFunction: obj => typeof obj === 'function',
@@ -2482,8 +2539,6 @@
 	  };
 
 	  const fetchFromApiOpts = {
-	    encoding: 'utf8',
-	    cache: false,
 	    retry: 3,
 	    timeout: 30000,
 	    json: true
@@ -2568,9 +2623,8 @@
 
 	const MicrolinkError = lib('MicrolinkError');
 
-	// TODO: `cache` is destructuring because is not supported on browser side yet.
 	// TODO: `json` because always is the output serialized.
-	const got = async (url, { json, cache, ...opts }) => {
+	const got = async (url, { json, ...opts }) => {
 	  try {
 	    const response = await ky(url, opts);
 	    const body = await response.json();
@@ -2592,7 +2646,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.15'
+	  VERSION: '0.5.16'
 	});
 
 	return browser;
