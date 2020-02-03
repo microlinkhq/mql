@@ -27,10 +27,10 @@
   ],
   "dependencies": {
     "flat": "~5.0.0",
-    "got": "~9.6.0",
+    "got": "~10.4.0",
     "is-url-http": "~1.2.4",
-    "ky": "~0.16.1",
-    "ky-universal": "~0.3.0",
+    "ky": "~0.17.0",
+    "ky-universal": "~0.4.0",
     "qss": "~2.0.3",
     "whoops": "~4.1.0"
   },
@@ -95,7 +95,8 @@
   "ava": {
     "require": [
       "esm"
-    ]
+    ],
+    "timeout": "1m"
   },
   "commitlint": {
     "extends": [
@@ -110,12 +111,10 @@
   },
   "lint-staged": {
     "package.json": [
-      "finepack",
-      "git add"
+      "finepack"
     ],
     "*.js,!*.min.js": [
-      "prettier-standard",
-      "git add"
+      "prettier-standard"
     ]
   },
   "standard": {

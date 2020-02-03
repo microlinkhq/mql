@@ -9,9 +9,7 @@ import mqlNode from '../src/node'
   { constructor: mqlBrowser, target: 'browser' }
 ].forEach(({ constructor: mql, target }) => {
   test(`${target} » url`, async t => {
-    const { status, data, response } = await mql(
-      'https://kikobeats.com?ref=mql'
-    )
+    const { status, data, response } = await mql('https://kikobeats.com?ref=mql')
     const { date, ...restData } = data
     t.snapshot(status)
     t.snapshot(restData)
@@ -23,9 +21,9 @@ import mqlNode from '../src/node'
       const cache = new Map()
       let data
       data = await mql('https://kikobeats.com?ref=mql', { cache })
-      t.is(data.response.fromCache, false)
+      t.is(data.response.isFromCache, false)
       data = await mql('https://kikobeats.com?ref=mql', { cache })
-      t.is(data.response.fromCache, true)
+      t.is(data.response.isFromCache, true)
     })
   }
 })

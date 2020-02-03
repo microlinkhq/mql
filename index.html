@@ -12,11 +12,11 @@
   <h1><code>Open Devtool Console</code></h1>
   <script src="./dist/mql.js"></script>
   <script>
+    console.log(`mql.version:`, mql.version)
     mql('https://example.com').then(({ status, data }) => {
-      console.log(`status`, status)
-      console.log(data)
+      console.log(`status:`, status)
+      console.log(JSON.stringify(data, null, 2))
     })
-    console.log(`mql.version`, mql.version)
   </script>
 </body>
 

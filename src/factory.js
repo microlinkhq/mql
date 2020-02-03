@@ -3,11 +3,11 @@ const ENDPOINT = {
   PRO: 'https://pro.microlink.io'
 }
 
-const isTimeoutError = err =>
+const isTimeoutError = (err, statusCode) =>
   // client side error
   err.name === 'TimeoutError' ||
   // server side error
-  (err.name === 'HTTPError' && err.statusCode.toString()[0] === '5') ||
+  (err.name === 'HTTPError' && statusCode.toString()[0] === '5') ||
   // browser side unexpected error
   err.type === 'invalid-json'
 
@@ -38,7 +38,7 @@ function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten 
   const fetchFromApiOpts = {
     retry: 3,
     timeout: 30000,
-    json: true
+    responseType: 'json'
   }
 
   const fetchFromApi = async (url, apiUrl, opts = {}) => {
@@ -48,9 +48,10 @@ function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten 
       const { body } = response
       return { ...body, response }
     } catch (err) {
-      const { name, statusCode = 500, body: rawBody, message: rawMessage } = err
+      const { name, message: rawMessage, response = {} } = err
+      const { statusCode = 500, body: rawBody } = response
 
-      if (isTimeoutError(err)) {
+      if (isTimeoutError(err, statusCode)) {
         const message = `The \`url\` as \`${url}\` reached timeout after ${opts.retry.maxRetryAfter}ms.`
         throw new MicrolinkError({
           url,
@@ -68,6 +69,7 @@ function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten 
           ? JSON.parse(rawBody)
           : rawBody
         : { message: rawMessage, status: 'fail' }
+
       const message = body.data ? body.data[Object.keys(body.data)[0]] : body.message
 
       throw MicrolinkError({

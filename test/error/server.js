@@ -8,10 +8,10 @@ import mqlNode from '../../src/node'
   { constructor: mqlBrowser, target: 'browser' }
 ].forEach(({ constructor: mql, target }) => {
   test(`${target} » server side generic error`, async t => {
-    const error = await t.throwsAsync(
-      mql('https://microlink.io', { ttl: 100, retry: 0 }),
-      { instanceOf: mql.MicrolinkError }
-    )
+    const error = await t.throwsAsync(mql('https://microlink.io', { ttl: 100, retry: 0 }), {
+      instanceOf: mql.MicrolinkError
+    })
+
     t.true(!!error.url)
     t.true(!!error.code)
     t.true(!!error.status)
