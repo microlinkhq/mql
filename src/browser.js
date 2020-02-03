@@ -1,13 +1,25 @@
 'use strict'
 
 const { encode: stringify } = require('qss')
-const isUrlHttp = require('is-url-http')
 const ky = require('ky-universal')
 const whoops = require('whoops')
 const flatten = require('flat')
+const { URL } = require('url')
 
 const factory = require('./factory')
+
+const REGEX_HTTP_PROTOCOL = /^https?:\/\//i
+
 const MicrolinkError = whoops('MicrolinkError')
+
+// lightweight version of `is-url-http`
+const isUrlHttp = url => {
+  try {
+    return REGEX_HTTP_PROTOCOL.test(new URL(url).href)
+  } catch (err) {
+    return false
+  }
+}
 
 const got = async (url, { responseType, ...opts }) => {
   try {
