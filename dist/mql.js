@@ -4,56 +4,6 @@
 	(global = global || self, global.mql = factory());
 }(this, (function () { 'use strict';
 
-	function encode(obj, pfx) {
-		var k, i, tmp, str='';
-
-		for (k in obj) {
-			if ((tmp = obj[k]) !== void 0) {
-				if (Array.isArray(tmp)) {
-					for (i=0; i < tmp.length; i++) {
-						str && (str += '&');
-						str += encodeURIComponent(k) + '=' + encodeURIComponent(tmp[i]);
-					}
-				} else {
-					str && (str += '&');
-					str += encodeURIComponent(k) + '=' + encodeURIComponent(tmp);
-				}
-			}
-		}
-
-		return (pfx || '') + str;
-	}
-
-	function toValue(mix) {
-		if (!mix) return '';
-		var str = decodeURIComponent(mix);
-		if (str === 'false') return false;
-		if (str === 'true') return true;
-		return (+str * 0 === 0) ? (+str) : str;
-	}
-
-	function decode(str) {
-		var tmp, k, out={}, arr=str.split('&');
-
-		while (tmp = arr.shift()) {
-			tmp = tmp.split('=');
-			k = tmp.shift();
-			if (out[k] !== void 0) {
-				out[k] = [].concat(out[k], toValue(tmp.shift()));
-			} else {
-				out[k] = toValue(tmp.shift());
-			}
-		}
-
-		return out;
-	}
-
-	var qss_m = /*#__PURE__*/Object.freeze({
-		__proto__: null,
-		encode: encode,
-		decode: decode
-	});
-
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 	function createCommonjsModule(fn, module) {
@@ -538,6 +488,56 @@
 
 	var kyUmd = umd;
 
+	function encode(obj, pfx) {
+		var k, i, tmp, str='';
+
+		for (k in obj) {
+			if ((tmp = obj[k]) !== void 0) {
+				if (Array.isArray(tmp)) {
+					for (i=0; i < tmp.length; i++) {
+						str && (str += '&');
+						str += encodeURIComponent(k) + '=' + encodeURIComponent(tmp[i]);
+					}
+				} else {
+					str && (str += '&');
+					str += encodeURIComponent(k) + '=' + encodeURIComponent(tmp);
+				}
+			}
+		}
+
+		return (pfx || '') + str;
+	}
+
+	function toValue(mix) {
+		if (!mix) return '';
+		var str = decodeURIComponent(mix);
+		if (str === 'false') return false;
+		if (str === 'true') return true;
+		return (+str * 0 === 0) ? (+str) : str;
+	}
+
+	function decode(str) {
+		var tmp, k, out={}, arr=str.split('&');
+
+		while (tmp = arr.shift()) {
+			tmp = tmp.split('=');
+			k = tmp.shift();
+			if (out[k] !== void 0) {
+				out[k] = [].concat(out[k], toValue(tmp.shift()));
+			} else {
+				out[k] = toValue(tmp.shift());
+			}
+		}
+
+		return out;
+	}
+
+	var qss_m = /*#__PURE__*/Object.freeze({
+		__proto__: null,
+		encode: encode,
+		decode: decode
+	});
+
 	var _rollupPluginShim1 = str => str;
 
 	var _rollupPluginShim1$1 = /*#__PURE__*/Object.freeze({
@@ -999,13 +999,13 @@
 
 	var factory_1 = factory;
 
-	var require$$1 = getCjsExportFromNamespace(_rollupPluginShim2);
+	var require$$2 = getCjsExportFromNamespace(_rollupPluginShim2);
 
+	const ky = kyUmd.default || kyUmd;
 	const { encode: stringify } = qss_m;
 
 
-
-	const { URL: URL$1 } = require$$1;
+	const { URL: URL$1 } = require$$2;
 
 
 
@@ -1024,7 +1024,7 @@
 
 	const got = async (url, { responseType, ...opts }) => {
 	  try {
-	    const response = await kyUmd(url, opts);
+	    const response = await ky(url, opts);
 	    const body = await response.json();
 	    const { headers, status: statusCode, statusText: statusMessage } = response;
 	    return { url: response.url, body, headers, statusCode, statusMessage }
@@ -1043,7 +1043,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.17'
+	  VERSION: '0.5.18'
 	});
 
 	return browser;
