@@ -1,7 +1,7 @@
 'use strict'
 
+const ky = require('ky-universal').default || require('ky-universal')
 const { encode: stringify } = require('qss')
-const ky = require('ky-universal')
 const whoops = require('whoops')
 const flatten = require('flat')
 const { URL } = require('url')
