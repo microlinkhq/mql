@@ -26,8 +26,7 @@ const build = ({ format, exports, input } = {}) => {
         entries: [{ find: 'ky-universal', replacement: './ky-umd' }]
       }),
       shim({
-        'clean-stack': 'export default str => str',
-        url: 'export default window'
+        'clean-stack': 'export default str => str'
       }),
       nodeResolve({
         mainFields: ['browser', 'module', 'main']
