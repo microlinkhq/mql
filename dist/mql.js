@@ -1,8 +1,10 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global = global || self, global.mql = factory());
-}(this, (function () { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('url')) :
+	typeof define === 'function' && define.amd ? define(['url'], factory) :
+	(global = global || self, global.mql = factory(global.url));
+}(this, (function (url) { 'use strict';
+
+	url = url && url.hasOwnProperty('default') ? url['default'] : url;
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -488,6 +490,17 @@
 
 	var kyUmd = umd;
 
+	const URL$1 = commonjsGlobal.window ? window.URL : url.URL;
+	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
+
+	var lightweight = url => {
+	  try {
+	    return REGEX_HTTP_PROTOCOL.test(new URL$1(url).href)
+	  } catch (err) {
+	    return false
+	  }
+	};
+
 	function encode(obj, pfx) {
 		var k, i, tmp, str='';
 
@@ -877,13 +890,6 @@
 	  return result
 	}
 
-
-
-	var _rollupPluginShim2 = /*#__PURE__*/Object.freeze({
-		__proto__: null,
-		'default': window
-	});
-
 	const ENDPOINT = {
 	  FREE: 'https://api.microlink.io',
 	  PRO: 'https://pro.microlink.io'
@@ -999,28 +1005,15 @@
 
 	var factory_1 = factory;
 
-	var require$$2 = getCjsExportFromNamespace(_rollupPluginShim2);
-
 	const ky = kyUmd.default || kyUmd;
+
 	const { encode: stringify } = qss_m;
 
 
-	const { URL: URL$1 } = require$$2;
 
 
-
-	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
 
 	const MicrolinkError = lib('MicrolinkError');
-
-	// lightweight version of `is-url-http`
-	const isUrlHttp = url => {
-	  try {
-	    return REGEX_HTTP_PROTOCOL.test(new URL$1(url).href)
-	  } catch (err) {
-	    return false
-	  }
-	};
 
 	const got = async (url, { responseType, ...opts }) => {
 	  try {
@@ -1039,11 +1032,11 @@
 
 	var browser = factory_1({
 	  MicrolinkError,
-	  isUrlHttp,
+	  isUrlHttp: lightweight,
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.18'
+	  VERSION: '0.5.19'
 	});
 
 	return browser;
