@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.18](https://github.com/microlinkhq/mql/compare/v0.5.17...v0.5.18) (2020-02-05)
+
+
+### Bug Fixes
+
+* ensure ky is loaded properly ([9f44ee2](https://github.com/microlinkhq/mql/commit/9f44ee20e2ac99e23d258b3651fec66290949e4f))
+
 ### [0.5.17](https://github.com/microlinkhq/mql/compare/v0.5.16...v0.5.17) (2020-02-03)
 
 
