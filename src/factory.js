@@ -3,6 +3,12 @@ const ENDPOINT = {
   PRO: 'https://pro.microlink.io'
 }
 
+const GOT_DEFAULTS = {
+  retry: 3,
+  timeout: 30000,
+  responseType: 'json'
+}
+
 const isTimeoutError = (err, statusCode) =>
   // client side error
   err.name === 'TimeoutError' ||
@@ -35,16 +41,9 @@ function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten 
     )
   }
 
-  const fetchFromApiOpts = {
-    retry: 3,
-    timeout: 30000,
-    responseType: 'json'
-  }
-
   const fetchFromApi = async (url, apiUrl, opts = {}) => {
-    opts = { ...fetchFromApiOpts, ...opts }
     try {
-      const response = await got(apiUrl, opts)
+      const response = await got(apiUrl, { ...GOT_DEFAULTS, ...opts })
       const { body } = response
       return { ...body, response }
     } catch (err) {
