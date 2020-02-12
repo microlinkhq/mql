@@ -9,6 +9,11 @@ const GOT_DEFAULTS = {
   responseType: 'json'
 }
 
+const pickBy = obj => {
+  Object.keys(obj).forEach(key => obj[key] == null && delete obj[key])
+  return obj
+}
+
 const isTimeoutError = (err, statusCode) =>
   // client side error
   err.name === 'TimeoutError' ||
@@ -17,7 +22,7 @@ const isTimeoutError = (err, statusCode) =>
   // browser side unexpected error
   err.type === 'invalid-json'
 
-function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) {
+const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) => {
   const assertUrl = (url = '') => {
     if (!isUrlHttp(url)) {
       const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
@@ -87,7 +92,7 @@ function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten 
     const apiUrl = `${apiEndpoint}?${stringify({
       url,
       ...mapRules(data),
-      ...flatten(opts)
+      ...flatten(pickBy(opts))
     })}`
 
     const headers = isPro ? { 'x-api-key': apiKey } : {}

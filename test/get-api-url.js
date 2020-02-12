@@ -18,4 +18,14 @@ import mqlNode from '../src/node'
   test(`${target} » flatten options`, t => {
     t.snapshot(mql.getApiUrl('https://kikobeats.com', { overlay: { browser: 'dark' } }))
   })
+
+  test(`${target} » don't pass null`, t => {
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { colorScheme: undefined }))
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { colorScheme: null }))
+  })
+
+  test(`${target} » don't pass undefined`, t => {
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { colorScheme: undefined }))
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { colorScheme: null }))
+  })
 })
