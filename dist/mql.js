@@ -895,6 +895,17 @@
 	  PRO: 'https://pro.microlink.io'
 	};
 
+	const GOT_DEFAULTS = {
+	  retry: 3,
+	  timeout: 30000,
+	  responseType: 'json'
+	};
+
+	const pickBy = obj => {
+	  Object.keys(obj).forEach(key => obj[key] == null && delete obj[key]);
+	  return obj
+	};
+
 	const isTimeoutError = (err, statusCode) =>
 	  // client side error
 	  err.name === 'TimeoutError' ||
@@ -903,7 +914,7 @@
 	  // browser side unexpected error
 	  err.type === 'invalid-json';
 
-	function factory ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) {
+	const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) => {
 	  const assertUrl = (url = '') => {
 	    if (!isUrlHttp(url)) {
 	      const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`;
@@ -927,16 +938,9 @@
 	    )
 	  };
 
-	  const fetchFromApiOpts = {
-	    retry: 3,
-	    timeout: 30000,
-	    responseType: 'json'
-	  };
-
 	  const fetchFromApi = async (url, apiUrl, opts = {}) => {
-	    opts = { ...fetchFromApiOpts, ...opts };
 	    try {
-	      const response = await got(apiUrl, opts);
+	      const response = await got(apiUrl, { ...GOT_DEFAULTS, ...opts });
 	      const { body } = response;
 	      return { ...body, response }
 	    } catch (err) {
@@ -980,7 +984,7 @@
 	    const apiUrl = `${apiEndpoint}?${stringify({
       url,
       ...mapRules(data),
-      ...flatten(opts)
+      ...flatten(pickBy(opts))
     })}`;
 
 	    const headers = isPro ? { 'x-api-key': apiKey } : {};
@@ -1001,7 +1005,7 @@
 	  mql.stream = got.stream;
 
 	  return mql
-	}
+	};
 
 	var factory_1 = factory;
 
@@ -1036,7 +1040,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.20'
+	  VERSION: '0.5.21'
 	});
 
 	return browser;
