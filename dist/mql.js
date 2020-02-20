@@ -895,12 +895,6 @@
 	  PRO: 'https://pro.microlink.io'
 	};
 
-	const GOT_DEFAULTS = {
-	  retry: 3,
-	  timeout: 30000,
-	  responseType: 'json'
-	};
-
 	const pickBy = obj => {
 	  Object.keys(obj).forEach(key => obj[key] == null && delete obj[key]);
 	  return obj
@@ -940,7 +934,7 @@
 
 	  const fetchFromApi = async (url, apiUrl, opts = {}) => {
 	    try {
-	      const response = await got(apiUrl, { ...GOT_DEFAULTS, ...opts });
+	      const response = await got(apiUrl, opts);
 	      const { body } = response;
 	      return { ...body, response }
 	    } catch (err) {
@@ -977,7 +971,19 @@
 	    }
 	  };
 
-	  const getApiUrl = (url, { data, apiKey, endpoint, ...opts } = {}) => {
+	  const getApiUrl = (
+	    url,
+	    {
+	      data,
+	      apiKey,
+	      endpoint,
+	      isStream = false,
+	      retry = 4,
+	      timeout = 30000,
+	      responseType = 'json',
+	      ...opts
+	    } = {}
+	  ) => {
 	    const isPro = !!apiKey;
 	    const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE'];
 
@@ -988,7 +994,7 @@
     })}`;
 
 	    const headers = isPro ? { 'x-api-key': apiKey } : {};
-	    return [apiUrl, { headers }]
+	    return [apiUrl, { retry, timeout, responseType, isStream, headers }]
 	  };
 
 	  const mql = async (url, opts = {}) => {
@@ -1002,7 +1008,7 @@
 	  mql.fetchFromApi = fetchFromApi;
 	  mql.mapRules = mapRules;
 	  mql.version = VERSION;
-	  mql.stream = got.stream;
+	  mql.stream = (url, opts) => mql(url, { ...opts, isStream: true });
 
 	  return mql
 	};
@@ -1040,7 +1046,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.21'
+	  VERSION: '0.5.22'
 	});
 
 	return browser;
