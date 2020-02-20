@@ -85,7 +85,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
       data,
       apiKey,
       endpoint,
-      isStream,
+      isStream = false,
       retry = 4,
       timeout = 30000,
       responseType = 'json',
