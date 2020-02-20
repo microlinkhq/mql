@@ -3,12 +3,6 @@ const ENDPOINT = {
   PRO: 'https://pro.microlink.io'
 }
 
-const GOT_DEFAULTS = {
-  retry: 3,
-  timeout: 30000,
-  responseType: 'json'
-}
-
 const pickBy = obj => {
   Object.keys(obj).forEach(key => obj[key] == null && delete obj[key])
   return obj
@@ -48,7 +42,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
 
   const fetchFromApi = async (url, apiUrl, opts = {}) => {
     try {
-      const response = await got(apiUrl, { ...GOT_DEFAULTS, ...opts })
+      const response = await got(apiUrl, opts)
       const { body } = response
       return { ...body, response }
     } catch (err) {
@@ -85,7 +79,19 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     }
   }
 
-  const getApiUrl = (url, { data, apiKey, endpoint, ...opts } = {}) => {
+  const getApiUrl = (
+    url,
+    {
+      data,
+      apiKey,
+      endpoint,
+      isStream,
+      retry = 4,
+      timeout = 30000,
+      responseType = 'json',
+      ...opts
+    } = {}
+  ) => {
     const isPro = !!apiKey
     const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
 
@@ -96,7 +102,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     })}`
 
     const headers = isPro ? { 'x-api-key': apiKey } : {}
-    return [apiUrl, { headers }]
+    return [apiUrl, { retry, timeout, responseType, isStream, headers }]
   }
 
   const mql = async (url, opts = {}) => {
@@ -110,7 +116,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
   mql.fetchFromApi = fetchFromApi
   mql.mapRules = mapRules
   mql.version = VERSION
-  mql.stream = got.stream
+  mql.stream = (url, opts) => mql(url, { ...opts, isStream: true })
 
   return mql
 }
