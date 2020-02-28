@@ -252,8 +252,9 @@
 						this._options.signal.addEventListener('abort', () => {
 							this.abortController.abort();
 						});
-						this._options.signal = this.abortController.signal;
 					}
+
+					this._options.signal = this.abortController.signal;
 				}
 
 				this.request = new globals.Request(this._input, this._options);
@@ -373,12 +374,13 @@
 
 						for (const hook of this._options.hooks.beforeRetry) {
 							// eslint-disable-next-line no-await-in-loop
-							const hookResult = await hook(
-								this.request,
-								this._options,
+							const hookResult = await hook({
+								request: this.request,
+								options: this._options,
 								error,
-								this._retryCount
-							);
+								response: error.response.clone(),
+								retryCount: this._retryCount
+							});
 
 							// If `stop` is returned from the hook, the retry process is stopped
 							if (hookResult === stop) {
@@ -1046,7 +1048,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.5.22'
+	  VERSION: '0.5.23'
 	});
 
 	return browser;
