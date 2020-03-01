@@ -1012,7 +1012,7 @@
 	  mql.fetchFromApi = fetchFromApi;
 	  mql.mapRules = mapRules;
 	  mql.version = VERSION;
-	  mql.stream = (url, opts) => mql(url, { ...opts, isStream: true });
+	  mql.stream = (url, opts) => got.stream(url, { retry: 3, timeout: 30000, ...opts });
 
 	  return mql
 	};
@@ -1050,7 +1050,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.0'
+	  VERSION: '0.6.1'
 	});
 
 	return browser;
