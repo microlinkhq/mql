@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.24](https://github.com/microlinkhq/mql/compare/v0.5.23...v0.5.24) (2020-03-01)
+
+
+### Features
+
+* better error handling ([17bee3b](https://github.com/microlinkhq/mql/commit/17bee3b051803f21ac761967439b2fcd4fe8d409))
+
 ### [0.5.23](https://github.com/microlinkhq/mql/compare/v0.5.22...v0.5.23) (2020-02-28)
 
 ### [0.5.22](https://github.com/microlinkhq/mql/compare/v0.5.21...v0.5.22) (2020-02-20)
