@@ -40,25 +40,28 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     )
   }
 
-  const fetchFromApi = async (url, apiUrl, opts = {}) => {
+  const fetchFromApi = async (apiUrl, opts = {}) => {
     try {
       const response = await got(apiUrl, opts)
       const { body } = response
       return { ...body, response }
     } catch (err) {
       const { name, message: rawMessage, response = {} } = err
-      const { statusCode = 500, body: rawBody } = response
+      const { statusCode = 500, body: rawBody, headers, url: uri = apiUrl } = response
+      const retryTime = Number((opts.retry * opts.timeout).toFixed(0))
+      const isClientError = name === 'TimeoutError'
 
       if (isTimeoutError(err, statusCode)) {
-        const message = `The \`url\` as \`${url}\` reached timeout after ${opts.retry.maxRetryAfter}ms.`
+        const message = `The request reached timeout after ${retryTime}ms.`
         throw new MicrolinkError({
-          url,
+          url: uri,
           data: { url: message },
           status: 'fail',
-          code: name === 'TimeoutError' ? 'ETIMEOUTCLIENT' : 'ETIMEOUT',
+          code: isClientError ? 'ETIMEOUTCLIENT' : 'ETIMEOUT',
           message,
-          more: 'https://microlink.io/docs/api/api-parameters/url',
-          statusCode
+          more: `https://microlink.io/${isClientError ? 'etimeoutclient' : 'etimeout'}`,
+          statusCode,
+          headers
         })
       }
 
@@ -68,13 +71,12 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
           : rawBody
         : { message: rawMessage, status: 'fail' }
 
-      const message = body.data ? body.data[Object.keys(body.data)[0]] : body.message
-
       throw MicrolinkError({
         ...body,
-        message,
-        url,
-        statusCode
+        message: body.message,
+        url: uri,
+        statusCode,
+        headers
       })
     }
   }
@@ -86,7 +88,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
       apiKey,
       endpoint,
       isStream = false,
-      retry = 4,
+      retry = 3,
       timeout = 30000,
       responseType = 'json',
       ...opts
@@ -108,7 +110,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
   const mql = async (url, opts = {}) => {
     assertUrl(url)
     const [apiUrl, fetchOpts] = getApiUrl(url, opts)
-    return fetchFromApi(url, apiUrl, { ...opts, ...fetchOpts })
+    return fetchFromApi(apiUrl, { ...opts, ...fetchOpts })
   }
 
   mql.MicrolinkError = MicrolinkError
