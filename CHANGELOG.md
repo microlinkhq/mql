@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.2](https://github.com/microlinkhq/mql/compare/v0.6.1...v0.6.2) (2020-03-03)
+
+
+### Bug Fixes
+
+* headers serialization on browser ([23fde59](https://github.com/microlinkhq/mql/commit/23fde599afbe700a94be9a522ab9dfdcfc6f31da))
+
 ### [0.6.1](https://github.com/microlinkhq/mql/compare/v0.6.0...v0.6.1) (2020-03-01)
 
 
