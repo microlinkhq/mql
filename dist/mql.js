@@ -1038,7 +1038,15 @@
 	  } catch (err) {
 	    if (err.response) {
 	      const { response } = err;
-	      err.response = { ...response, statusCode: response.status, body: await response.json() };
+	      err.response = {
+	        ...response,
+	        headers: [...response.headers.entries()].reduce(
+	          (acc, [key, value]) => ({ ...acc, [key]: value }),
+	          {}
+	        ),
+	        statusCode: response.status,
+	        body: await response.json()
+	      };
 	    }
 	    throw err
 	  }
@@ -1050,7 +1058,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.1'
+	  VERSION: '0.6.2'
 	});
 
 	return browser;
