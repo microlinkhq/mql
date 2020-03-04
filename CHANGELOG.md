@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.3](https://github.com/microlinkhq/mql/compare/v0.6.2...v0.6.3) (2020-03-04)
+
+
+### Bug Fixes
+
+* remove isStream prop ([afe5f6f](https://github.com/microlinkhq/mql/commit/afe5f6f802d5f947011a2829ae51c3dc79ac0fe6))
+
 ### [0.6.2](https://github.com/microlinkhq/mql/compare/v0.6.1...v0.6.2) (2020-03-03)
 
 
