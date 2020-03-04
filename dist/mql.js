@@ -977,16 +977,7 @@
 
 	  const getApiUrl = (
 	    url,
-	    {
-	      data,
-	      apiKey,
-	      endpoint,
-	      isStream = false,
-	      retry = 3,
-	      timeout = 30000,
-	      responseType = 'json',
-	      ...opts
-	    } = {}
+	    { data, apiKey, endpoint, retry = 3, timeout = 30000, responseType = 'json', ...opts } = {}
 	  ) => {
 	    const isPro = !!apiKey;
 	    const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE'];
@@ -998,7 +989,7 @@
     })}`;
 
 	    const headers = isPro ? { 'x-api-key': apiKey } : {};
-	    return [apiUrl, { retry, timeout, responseType, isStream, headers }]
+	    return [apiUrl, { retry, timeout, responseType, headers }]
 	  };
 
 	  const mql = async (url, opts = {}) => {
@@ -1058,7 +1049,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.2'
+	  VERSION: '0.6.3'
 	});
 
 	return browser;
