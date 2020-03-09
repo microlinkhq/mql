@@ -4,7 +4,7 @@
 	(global = global || self, global.mql = factory(global.url));
 }(this, (function (url) { 'use strict';
 
-	url = url && url.hasOwnProperty('default') ? url['default'] : url;
+	url = url && Object.prototype.hasOwnProperty.call(url, 'default') ? url['default'] : url;
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -68,6 +68,7 @@
 		const isObject = value => value !== null && typeof value === 'object';
 		const supportsAbortController = typeof globals.AbortController === 'function';
 		const supportsStreams = typeof globals.ReadableStream === 'function';
+		const supportsFormData = typeof globals.FormData === 'function';
 
 		const deepMerge = (...sources) => {
 			let returnValue = {};
@@ -262,6 +263,12 @@
 				if (this._options.searchParams) {
 					const url = new URL(this.request.url);
 					url.search = new URLSearchParams(this._options.searchParams);
+
+					// To provide correct form boundary, Content-Type header should be deleted each time when new Request instantiated from another one
+					if (((supportsFormData && this._options.body instanceof globals.FormData) || this._options.body instanceof URLSearchParams) && !(this._options.headers && this._options.headers['content-type'])) {
+						this.request.headers.delete('content-type');
+					}
+
 					this.request = new globals.Request(new globals.Request(url, this.request), this._options);
 				}
 
@@ -1049,7 +1056,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.3'
+	  VERSION: '0.6.4'
 	});
 
 	return browser;
