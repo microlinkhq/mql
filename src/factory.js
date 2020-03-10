@@ -109,7 +109,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
   mql.fetchFromApi = fetchFromApi
   mql.mapRules = mapRules
   mql.version = VERSION
-  mql.stream = (url, opts) => got.stream(url, { retry: 3, timeout: 30000, ...opts })
+  mql.stream = (url, opts) => got.stream(url, { retry: 2, timeout: 30000, ...opts })
 
   return mql
 }
