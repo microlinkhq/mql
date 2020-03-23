@@ -909,14 +909,6 @@
 	  return obj
 	};
 
-	const isTimeoutError = (err, statusCode) =>
-	  // client side error
-	  err.name === 'TimeoutError' ||
-	  // server side error
-	  (err.name === 'HTTPError' && statusCode.toString()[0] === '5') ||
-	  // browser side unexpected error
-	  err.type === 'invalid-json';
-
 	const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) => {
 	  const assertUrl = (url = '') => {
 	    if (!isUrlHttp(url)) {
@@ -947,24 +939,8 @@
 	      const { body } = response;
 	      return { ...body, response }
 	    } catch (err) {
-	      const { name, message: rawMessage, response = {} } = err;
-	      const { statusCode = 500, body: rawBody, headers, url: uri = apiUrl } = response;
-	      const retryTime = Number((opts.retry * opts.timeout).toFixed(0));
-	      const isClientError = name === 'TimeoutError';
-
-	      if (isTimeoutError(err, statusCode)) {
-	        const message = `The request reached timeout after ${retryTime}ms.`;
-	        throw new MicrolinkError({
-	          url: uri,
-	          data: { url: message },
-	          status: 'fail',
-	          code: isClientError ? 'ETIMEOUTCLIENT' : 'ETIMEOUT',
-	          message,
-	          more: `https://microlink.io/${isClientError ? 'etimeoutclient' : 'etimeout'}`,
-	          statusCode,
-	          headers
-	        })
-	      }
+	      const { message: rawMessage, response = {} } = err;
+	      const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response;
 
 	      const body = rawBody
 	        ? typeof rawBody === 'string' || Buffer.isBuffer(rawBody)
@@ -982,10 +958,7 @@
 	    }
 	  };
 
-	  const getApiUrl = (
-	    url,
-	    { data, apiKey, endpoint, retry = 3, timeout = 30000, responseType = 'json', ...opts } = {}
-	  ) => {
+	  const getApiUrl = (url, { data, apiKey, endpoint, retry, cache, ...opts } = {}) => {
 	    const isPro = !!apiKey;
 	    const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE'];
 
@@ -996,13 +969,13 @@
     })}`;
 
 	    const headers = isPro ? { 'x-api-key': apiKey } : {};
-	    return [apiUrl, { retry, timeout, responseType, headers }]
+	    return [apiUrl, { cache, retry, timeout: undefined, responseType: 'json', headers }]
 	  };
 
 	  const mql = async (url, opts = {}) => {
 	    assertUrl(url);
 	    const [apiUrl, fetchOpts] = getApiUrl(url, opts);
-	    return fetchFromApi(apiUrl, { ...opts, ...fetchOpts })
+	    return fetchFromApi(apiUrl, fetchOpts)
 	  };
 
 	  mql.MicrolinkError = MicrolinkError;
@@ -1010,7 +983,7 @@
 	  mql.fetchFromApi = fetchFromApi;
 	  mql.mapRules = mapRules;
 	  mql.version = VERSION;
-	  mql.stream = (url, opts) => got.stream(url, { retry: 2, timeout: 30000, ...opts });
+	  mql.stream = got.stream;
 
 	  return mql
 	};
@@ -1027,7 +1000,7 @@
 
 	const MicrolinkError = lib('MicrolinkError');
 
-	const got = async (url, { responseType, ...opts }) => {
+	const got = async (url, opts) => {
 	  try {
 	    const response = await ky(url, opts);
 	    const body = await response.json();
@@ -1056,7 +1029,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.5'
+	  VERSION: '0.6.6'
 	});
 
 	return browser;
