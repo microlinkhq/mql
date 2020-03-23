@@ -19,33 +19,4 @@ import mqlNode from '../../src/node'
     t.true(!!error.message)
     t.true(!!error.description)
   })
-
-  test(`${target} » ETIMEOUTCLIENT`, async t => {
-    const url = 'https://kikobeats.com'
-    const error = await t.throwsAsync(
-      mql(url, {
-        timeout: 1,
-        screenshot: true,
-        video: true,
-        waitFor: 40000,
-        force: true,
-        retry: 0
-      }),
-      {
-        instanceOf: mql.MicrolinkError
-      }
-    )
-
-    t.true(
-      error.url ===
-        'https://api.microlink.io?url=https%3A%2F%2Fkikobeats.com&screenshot=true&video=true&waitFor=40000&force=true'
-    )
-    t.true(error.code === 'ETIMEOUTCLIENT')
-    t.true(error.status === 'fail')
-    t.true(error.more === 'https://microlink.io/etimeoutclient')
-    t.true(error.statusCode === 500)
-    t.true(!!error.data)
-    t.true(!!error.message)
-    t.true(!!error.description)
-  })
 })

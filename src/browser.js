@@ -10,7 +10,7 @@ const factory = require('./factory')
 
 const MicrolinkError = whoops('MicrolinkError')
 
-const got = async (url, { responseType, ...opts }) => {
+const got = async (url, opts) => {
   try {
     const response = await ky(url, opts)
     const body = await response.json()

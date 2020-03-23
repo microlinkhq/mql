@@ -24,12 +24,13 @@ import mqlNode from '../../src/node'
   test(`${target} » server side timeout`, async t => {
     const error = await t.throwsAsync(
       mql('https://kikobeats.com', {
-        waitFor: 31000,
+        timeout: 50,
         screenshot: true,
         retry: 0
       }),
       { instanceOf: mql.MicrolinkError }
     )
+
     t.true(!!error.url)
     t.true(!!error.code)
     t.true(!!error.status)
