@@ -958,7 +958,7 @@
 	    }
 	  };
 
-	  const getApiUrl = (url, { data, apiKey, endpoint, retry, cache, ...opts } = {}) => {
+	  const getApiUrl = (url, { data, apiKey, endpoint, retry, cache, ...opts } = {}, gotOpts) => {
 	    const isPro = !!apiKey;
 	    const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE'];
 
@@ -969,21 +969,23 @@
     })}`;
 
 	    const headers = isPro ? { 'x-api-key': apiKey } : {};
-	    return [apiUrl, { cache, retry, timeout: undefined, responseType: 'json', headers }]
+	    return [apiUrl, { ...gotOpts, cache, retry, headers, timeout: undefined }]
 	  };
 
-	  const mql = async (url, opts = {}) => {
+	  const createMql = gotOpts => async (url, opts = {}) => {
 	    assertUrl(url);
-	    const [apiUrl, fetchOpts] = getApiUrl(url, opts);
+	    const [apiUrl, fetchOpts] = getApiUrl(url, opts, gotOpts);
 	    return fetchFromApi(apiUrl, fetchOpts)
 	  };
 
+	  const mql = createMql({ responseType: 'json' });
 	  mql.MicrolinkError = MicrolinkError;
 	  mql.getApiUrl = getApiUrl;
 	  mql.fetchFromApi = fetchFromApi;
 	  mql.mapRules = mapRules;
 	  mql.version = VERSION;
 	  mql.stream = got.stream;
+	  mql.buffer = createMql({ responseType: 'buffer' });
 
 	  return mql
 	};
@@ -1029,7 +1031,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.6'
+	  VERSION: '0.6.7'
 	});
 
 	return browser;
