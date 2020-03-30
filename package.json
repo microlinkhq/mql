@@ -64,7 +64,8 @@
     "rollup-plugin-terser": "latest",
     "rollup-plugin-visualizer": "latest",
     "standard": "latest",
-    "standard-version": "latest"
+    "standard-version": "latest",
+    "stream-to-promise": "latest"
   },
   "engines": {
     "node": ">= 8"
