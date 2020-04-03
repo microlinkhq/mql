@@ -973,7 +973,7 @@
     })}`;
 
 	    const headers = isPro ? { 'x-api-key': apiKey } : {};
-	    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers, timeout: undefined }]
+	    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers, timeout: false }]
 	  };
 
 	  const createMql = gotOpts => async (url, opts = {}) => {
@@ -1035,7 +1035,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.10'
+	  VERSION: '0.6.11'
 	});
 
 	return browser;
