@@ -28,4 +28,9 @@ import mqlNode from '../src/node'
     t.snapshot(mql.getApiUrl('https://kikobeats.com', { colorScheme: undefined }))
     t.snapshot(mql.getApiUrl('https://kikobeats.com', { colorScheme: null }))
   })
+
+  test(`${target} » timeout`, t => {
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { timeout: 15000 }))
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { timeout: 28000 }))
+  })
 })

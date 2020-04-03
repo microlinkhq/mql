@@ -72,7 +72,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     })}`
 
     const headers = isPro ? { 'x-api-key': apiKey } : {}
-    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers, timeout: undefined }]
+    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers, timeout: false }]
   }
 
   const createMql = gotOpts => async (url, opts = {}) => {
