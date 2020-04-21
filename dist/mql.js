@@ -140,7 +140,15 @@
 
 		class HTTPError extends Error {
 			constructor(response) {
-				super(response.statusText);
+				// Set the message to the status text, such as Unauthorized,
+				// with some fallbacks. This message should never be undefined.
+				super(
+					response.statusText ||
+					String(
+						(response.status === 0 || response.status) ?
+							response.status : 'Unknown response error'
+					)
+				);
 				this.name = 'HTTPError';
 				this.response = response;
 			}
@@ -973,7 +981,7 @@
     })}`;
 
 	    const headers = isPro ? { 'x-api-key': apiKey } : {};
-	    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers, timeout: false }]
+	    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
 	  };
 
 	  const createMql = gotOpts => async (url, opts = {}) => {
@@ -1008,6 +1016,7 @@
 
 	const got = async (url, opts) => {
 	  try {
+	    if (opts.timeout === undefined) opts.timeout = false;
 	    const response = await ky(url, opts);
 	    const body = await response.json();
 	    const { headers, status: statusCode, statusText: statusMessage } = response;
@@ -1035,7 +1044,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.11'
+	  VERSION: '0.6.12'
 	});
 
 	return browser;
