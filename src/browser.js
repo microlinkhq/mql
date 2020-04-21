@@ -12,6 +12,7 @@ const MicrolinkError = whoops('MicrolinkError')
 
 const got = async (url, opts) => {
   try {
+    if (opts.timeout === undefined) opts.timeout = false
     const response = await ky(url, opts)
     const body = await response.json()
     const { headers, status: statusCode, statusText: statusMessage } = response
