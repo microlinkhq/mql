@@ -20,6 +20,6 @@ import mqlNode from '../src/node'
 
     await toPromise(stream)
 
-    t.is(headers['content-type'], 'image/webp')
+    t.true(['image/webp', 'image/png'].includes(headers['content-type']))
   })
 })
