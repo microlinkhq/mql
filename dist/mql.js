@@ -1044,7 +1044,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.12'
+	  VERSION: '0.6.13'
 	});
 
 	return browser;
