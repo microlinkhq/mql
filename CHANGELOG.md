@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.14](https://github.com/microlinkhq/mql/compare/v0.6.13...v0.6.14) (2020-05-17)
+
+
+### Bug Fixes
+
+* ensure to parse body ([6d66e43](https://github.com/microlinkhq/mql/commit/6d66e43128b62065cf2868d3614e62cb1668d56c))
+
 ### [0.6.13](https://github.com/microlinkhq/mql/compare/v0.6.12...v0.6.13) (2020-05-04)
 
 ### [0.6.12](https://github.com/microlinkhq/mql/compare/v0.6.11...v0.6.12) (2020-04-21)
