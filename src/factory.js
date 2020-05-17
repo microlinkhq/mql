@@ -3,9 +3,19 @@ const ENDPOINT = {
   PRO: 'https://pro.microlink.io'
 }
 
+const isObject = input => typeof input === 'object'
+
 const pickBy = obj => {
   Object.keys(obj).forEach(key => obj[key] == null && delete obj[key])
   return obj
+}
+
+const parseBody = (input, message) => {
+  try {
+    return JSON.parse(input)
+  } catch (err) {
+    return { status: 'error', message: input || message }
+  }
 }
 
 const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) => {
@@ -24,7 +34,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
   }
 
   const mapRules = rules => {
-    if (typeof rules !== 'object') return
+    if (!isObject(rules)) return
     const flatRules = flatten(rules)
     return Object.keys(flatRules).reduce(
       (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key] }),
@@ -40,12 +50,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     } catch (err) {
       const { message: rawMessage, response = {} } = err
       const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response
-
-      const body = rawBody
-        ? typeof rawBody === 'string' || Buffer.isBuffer(rawBody)
-          ? JSON.parse(rawBody)
-          : rawBody
-        : { message: rawMessage, status: 'fail' }
+      const body = isObject(rawBody) ? rawBody : parseBody(rawBody, rawMessage)
 
       throw MicrolinkError({
         ...body,
