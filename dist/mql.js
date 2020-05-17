@@ -70,8 +70,25 @@
 		const supportsStreams = typeof globals.ReadableStream === 'function';
 		const supportsFormData = typeof globals.FormData === 'function';
 
+		const mergeHeaders = (source1, source2) => {
+			const result = new globals.Headers(source1);
+			const isHeadersInstance = source2 instanceof globals.Headers;
+			const source = new globals.Headers(source2);
+
+			for (const [key, value] of source) {
+				if ((isHeadersInstance && value === 'undefined') || value === undefined) {
+					result.delete(key);
+				} else {
+					result.set(key, value);
+				}
+			}
+
+			return result;
+		};
+
 		const deepMerge = (...sources) => {
 			let returnValue = {};
+			let headers = {};
 
 			for (const source of sources) {
 				if (Array.isArray(source)) {
@@ -88,7 +105,13 @@
 
 						returnValue = {...returnValue, [key]: value};
 					}
+
+					if (isObject(source.headers)) {
+						headers = mergeHeaders(headers, source.headers);
+					}
 				}
+
+				returnValue.headers = headers;
 			}
 
 			return returnValue;
@@ -227,6 +250,7 @@
 					// TODO: credentials can be removed when the spec change is implemented in all browsers. Context: https://www.chromestatus.com/feature/4539473312350208
 					credentials: this._input.credentials || 'same-origin',
 					...options,
+					headers: mergeHeaders(this._input.headers, options.headers),
 					hooks: deepMerge({
 						beforeRequest: [],
 						beforeRetry: [],
@@ -912,9 +936,28 @@
 	  PRO: 'https://pro.microlink.io'
 	};
 
+	const isObject = input => typeof input === 'object';
+
 	const pickBy = obj => {
 	  Object.keys(obj).forEach(key => obj[key] == null && delete obj[key]);
 	  return obj
+	};
+
+	const parseBody = (input, error, url) => {
+	  try {
+	    return JSON.parse(input)
+	  } catch (_) {
+	    const message = input || error.message;
+
+	    return {
+	      status: 'error',
+	      data: { url: message },
+	      more: 'https://microlink.io/efatal',
+	      code: 'EFATAL',
+	      message,
+	      url
+	    }
+	  }
 	};
 
 	const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) => {
@@ -922,18 +965,18 @@
 	    if (!isUrlHttp(url)) {
 	      const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`;
 	      throw new MicrolinkError({
-	        url,
-	        data: { url: message },
 	        status: 'fail',
+	        data: { url: message },
+	        more: 'https://microlink.io/docs/api/api-parameters/url',
 	        code: 'EINVALURLCLIENT',
 	        message,
-	        more: 'https://microlink.io/docs/api/api-parameters/url'
+	        url
 	      })
 	    }
 	  };
 
 	  const mapRules = rules => {
-	    if (typeof rules !== 'object') return
+	    if (!isObject(rules)) return
 	    const flatRules = flatten(rules);
 	    return Object.keys(flatRules).reduce(
 	      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key] }),
@@ -947,14 +990,9 @@
 	      const { body } = response;
 	      return { ...body, response }
 	    } catch (err) {
-	      const { message: rawMessage, response = {} } = err;
+	      const { response = {} } = err;
 	      const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response;
-
-	      const body = rawBody
-	        ? typeof rawBody === 'string' || Buffer.isBuffer(rawBody)
-	          ? JSON.parse(rawBody)
-	          : rawBody
-	        : { message: rawMessage, status: 'fail' };
+	      const body = isObject(rawBody) ? rawBody : parseBody(rawBody, err, uri);
 
 	      throw MicrolinkError({
 	        ...body,
@@ -1031,7 +1069,7 @@
 	          {}
 	        ),
 	        statusCode: response.status,
-	        body: await response.json()
+	        body: await response.text()
 	      };
 	    }
 	    throw err
@@ -1044,7 +1082,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.13'
+	  VERSION: '0.6.14'
 	});
 
 	return browser;
