@@ -3,9 +3,28 @@ const ENDPOINT = {
   PRO: 'https://pro.microlink.io'
 }
 
+const isObject = input => typeof input === 'object'
+
 const pickBy = obj => {
   Object.keys(obj).forEach(key => obj[key] == null && delete obj[key])
   return obj
+}
+
+const parseBody = (input, error, url) => {
+  try {
+    return JSON.parse(input)
+  } catch (_) {
+    const message = input || error.message
+
+    return {
+      status: 'error',
+      data: { url: message },
+      more: 'https://microlink.io/efatal',
+      code: 'EFATAL',
+      message,
+      url
+    }
+  }
 }
 
 const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) => {
@@ -13,18 +32,18 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     if (!isUrlHttp(url)) {
       const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
       throw new MicrolinkError({
-        url,
-        data: { url: message },
         status: 'fail',
+        data: { url: message },
+        more: 'https://microlink.io/docs/api/api-parameters/url',
         code: 'EINVALURLCLIENT',
         message,
-        more: 'https://microlink.io/docs/api/api-parameters/url'
+        url
       })
     }
   }
 
   const mapRules = rules => {
-    if (typeof rules !== 'object') return
+    if (!isObject(rules)) return
     const flatRules = flatten(rules)
     return Object.keys(flatRules).reduce(
       (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key] }),
@@ -38,14 +57,9 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
       const { body } = response
       return { ...body, response }
     } catch (err) {
-      const { message: rawMessage, response = {} } = err
+      const { response = {} } = err
       const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response
-
-      const body = rawBody
-        ? typeof rawBody === 'string' || Buffer.isBuffer(rawBody)
-          ? JSON.parse(rawBody)
-          : rawBody
-        : { message: rawMessage, status: 'fail' }
+      const body = isObject(rawBody) ? rawBody : parseBody(rawBody, err, uri)
 
       throw MicrolinkError({
         ...body,

@@ -65,7 +65,8 @@
     "rollup-plugin-visualizer": "latest",
     "standard": "latest",
     "standard-version": "latest",
-    "stream-to-promise": "latest"
+    "stream-to-promise": "latest",
+    "test-listen": "latest"
   },
   "engines": {
     "node": ">= 8"
