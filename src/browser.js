@@ -27,7 +27,7 @@ const got = async (url, opts) => {
           {}
         ),
         statusCode: response.status,
-        body: await response.json()
+        body: await response.text()
       }
     }
     throw err
