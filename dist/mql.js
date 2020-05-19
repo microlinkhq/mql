@@ -992,7 +992,9 @@
 	    } catch (err) {
 	      const { response = {} } = err;
 	      const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response;
-	      const body = isObject(rawBody) ? rawBody : parseBody(rawBody, err, uri);
+
+	      const body =
+	        isObject(rawBody) && !Buffer.isBuffer(rawBody) ? rawBody : parseBody(rawBody, err, uri);
 
 	      throw MicrolinkError({
 	        ...body,
@@ -1082,7 +1084,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.6.14'
+	  VERSION: '0.6.15'
 	});
 
 	return browser;
