@@ -59,7 +59,9 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     } catch (err) {
       const { response = {} } = err
       const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response
-      const body = isObject(rawBody) ? rawBody : parseBody(rawBody, err, uri)
+
+      const body =
+        isObject(rawBody) && !Buffer.isBuffer(rawBody) ? rawBody : parseBody(rawBody, err, uri)
 
       throw MicrolinkError({
         ...body,
