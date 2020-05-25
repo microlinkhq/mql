@@ -76,7 +76,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
   const getApiUrl = (
     url,
     { data, apiKey, endpoint, retry, cache, ...opts } = {},
-    { responseType = 'json', ...gotOpts } = {}
+    { responseType = 'json', headers: gotHeaders, ...gotOpts } = {}
   ) => {
     const isPro = !!apiKey
     const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
@@ -87,13 +87,13 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
       ...flatten(pickBy(opts))
     })}`
 
-    const headers = isPro ? { 'x-api-key': apiKey } : {}
+    const headers = isPro ? { ...gotHeaders, 'x-api-key': apiKey } : gotHeaders
     return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
   }
 
-  const createMql = gotOpts => async (url, opts = {}) => {
+  const createMql = defaultOpts => async (url, opts = {}, gotOpts) => {
     assertUrl(url)
-    const [apiUrl, fetchOpts] = getApiUrl(url, opts, gotOpts)
+    const [apiUrl, fetchOpts] = getApiUrl(url, opts, { ...defaultOpts, ...gotOpts })
     return fetchFromApi(apiUrl, fetchOpts)
   }
 
