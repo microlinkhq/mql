@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/microlinkhq/mql/compare/v0.6.15...v0.7.0) (2020-05-25)
+
+
+### Features
+
+* customize http client as third argument ([b9cf7c7](https://github.com/microlinkhq/mql/commit/b9cf7c71ebb05a3e667ebb1b421ea1e874b8f472))
+
 ### [0.6.15](https://github.com/microlinkhq/mql/compare/v0.6.14...v0.6.15) (2020-05-19)
 
 
