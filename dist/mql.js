@@ -1020,7 +1020,7 @@
       ...flatten(pickBy(opts))
     })}`;
 
-	    const headers = isPro ? { ...gotHeaders, 'x-api-key': apiKey } : gotHeaders;
+	    const headers = isPro ? { ...gotHeaders, 'x-api-key': apiKey } : { ...gotHeaders };
 	    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
 	  };
 
@@ -1084,7 +1084,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.7.0'
+	  VERSION: '0.7.1'
 	});
 
 	return browser;
