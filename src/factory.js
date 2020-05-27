@@ -87,7 +87,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
       ...flatten(pickBy(opts))
     })}`
 
-    const headers = isPro ? { ...gotHeaders, 'x-api-key': apiKey } : gotHeaders
+    const headers = isPro ? { ...gotHeaders, 'x-api-key': apiKey } : { ...gotHeaders }
     return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
   }
 
