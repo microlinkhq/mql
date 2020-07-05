@@ -32,7 +32,7 @@ const build = ({ format, exports, input } = {}) => {
         mainFields: ['browser', 'module', 'main']
       }),
       commonjs(),
-      compress && terser({ sourcemap: true }),
+      compress && terser(),
       filesize(),
       visualizer()
     ]
