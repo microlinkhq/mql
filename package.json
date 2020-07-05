@@ -26,10 +26,10 @@
   ],
   "dependencies": {
     "flat": "~5.0.0",
-    "got": "~11.3.0",
+    "got": "~11.4.0",
     "is-url-http": "~2.1.2",
     "ky": "~0.20.0",
-    "ky-universal": "~0.8.0",
+    "ky-universal": "~0.8.1",
     "qss": "~2.0.3",
     "whoops": "~4.1.0"
   },
