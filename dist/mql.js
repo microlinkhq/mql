@@ -1084,7 +1084,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.7.3'
+	  VERSION: '0.7.4'
 	});
 
 	return browser;
