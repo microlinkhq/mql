@@ -1,10 +1,12 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('url')) :
 	typeof define === 'function' && define.amd ? define(['url'], factory) :
-	(global = global || self, global.mql = factory(global.url));
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.mql = factory(global.url));
 }(this, (function (url) { 'use strict';
 
-	url = url && Object.prototype.hasOwnProperty.call(url, 'default') ? url['default'] : url;
+	function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+	var url__default = /*#__PURE__*/_interopDefaultLegacy(url);
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -71,9 +73,9 @@
 		const supportsFormData = typeof globals.FormData === 'function';
 
 		const mergeHeaders = (source1, source2) => {
-			const result = new globals.Headers(source1);
+			const result = new globals.Headers(source1 || {});
 			const isHeadersInstance = source2 instanceof globals.Headers;
-			const source = new globals.Headers(source2);
+			const source = new globals.Headers(source2 || {});
 
 			for (const [key, value] of source) {
 				if ((isHeadersInstance && value === 'undefined') || value === undefined) {
@@ -178,27 +180,28 @@
 		}
 
 		class TimeoutError extends Error {
-			constructor() {
+			constructor(request) {
 				super('Request timed out');
 				this.name = 'TimeoutError';
+				this.request = request;
 			}
 		}
 
 		const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 		// `Promise.race()` workaround (#91)
-		const timeout = (promise, ms, abortController) =>
+		const timeout = (request, ms, abortController) =>
 			new Promise((resolve, reject) => {
 				const timeoutID = setTimeout(() => {
 					if (abortController) {
 						abortController.abort();
 					}
 
-					reject(new TimeoutError());
+					reject(new TimeoutError(request));
 				}, ms);
 
 				/* eslint-disable promise/prefer-await-to-then */
-				promise
+				globals.fetch(request)
 					.then(resolve)
 					.catch(reject)
 					.then(() => {
@@ -293,8 +296,8 @@
 				this.request = new globals.Request(this._input, this._options);
 
 				if (this._options.searchParams) {
-					const url = new URL(this.request.url);
-					url.search = new URLSearchParams(this._options.searchParams);
+					const searchParams = '?' + new URLSearchParams(this._options.searchParams).toString();
+					const url = this.request.url.replace(/(?:\?.*?)?(?=#|$)/, searchParams);
 
 					// To provide correct form boundary, Content-Type header should be deleted each time when new Request instantiated from another one
 					if (((supportsFormData && this._options.body instanceof globals.FormData) || this._options.body instanceof URLSearchParams) && !(this._options.headers && this._options.headers['content-type'])) {
@@ -349,6 +352,12 @@
 						return this._stream(response.clone(), this._options.onDownloadProgress);
 					}
 
+					if (this._options.parseJson) {
+						response.json = async () => {
+							return this._options.parseJson(await response.text());
+						};
+					}
+
 					return response;
 				};
 
@@ -358,8 +367,20 @@
 				for (const [type, mimeType] of Object.entries(responseTypes)) {
 					result[type] = async () => {
 						this.request.headers.set('accept', this.request.headers.get('accept') || mimeType);
+
 						const response = (await result).clone();
-						return (type === 'json' && response.status === 204) ? '' : response[type]();
+
+						if (type === 'json') {
+							if (response.status === 204) {
+								return '';
+							}
+
+							if (options.parseJson) {
+								return options.parseJson(await response.text());
+							}
+						}
+
+						return response[type]();
 					};
 				}
 
@@ -455,7 +476,7 @@
 					return globals.fetch(this.request.clone());
 				}
 
-				return timeout(globals.fetch(this.request.clone()), this._options.timeout, this.abortController);
+				return timeout(this.request.clone(), this._options.timeout, this.abortController);
 			}
 
 			/* istanbul ignore next */
@@ -531,7 +552,7 @@
 
 	var kyUmd = umd;
 
-	const URL$1 = commonjsGlobal.window ? window.URL : url.URL;
+	const URL$1 = commonjsGlobal.window ? window.URL : url__default['default'].URL;
 	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
 
 	var lightweight = url => {
@@ -771,21 +792,16 @@
 	lib.reference = reference;
 	lib.uri = uri;
 
-	/*!
-	 * Determine if an object is a Buffer
-	 *
-	 * @author   Feross Aboukhadijeh <https://feross.org>
-	 * @license  MIT
-	 */
-
-	var isBuffer = function isBuffer (obj) {
-	  return obj != null && obj.constructor != null &&
-	    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-	};
-
 	var flat = flatten;
 	flatten.flatten = flatten;
 	flatten.unflatten = unflatten;
+
+	function isBuffer (obj) {
+	  return obj &&
+	    obj.constructor &&
+	    (typeof obj.constructor.isBuffer === 'function') &&
+	    obj.constructor.isBuffer(obj)
+	}
 
 	function keyIdentity (key) {
 	  return key
@@ -877,7 +893,7 @@
 	    }
 	  }
 
-	  target = Object.keys(target).reduce((result, key) => {
+	  target = Object.keys(target).reduce(function (result, key) {
 	    const type = Object.prototype.toString.call(target[key]);
 	    const isObject = (type === '[object Object]' || type === '[object Array]');
 	    if (!isObject || isEmpty(target[key])) {
@@ -899,6 +915,10 @@
 	    let recipient = result;
 
 	    while (key2 !== undefined) {
+	      if (key1 === '__proto__') {
+	        return
+	      }
+
 	      const type = Object.prototype.toString.call(recipient[key1]);
 	      const isobject = (
 	        type === '[object Object]' ||
@@ -1084,7 +1104,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.7.4'
+	  VERSION: '0.7.5'
 	});
 
 	return browser;
