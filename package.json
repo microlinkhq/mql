@@ -25,7 +25,7 @@
     "query"
   ],
   "dependencies": {
-    "flat": "~5.0.0",
+    "flat": "~5.0.2",
     "got": "~11.6.0",
     "is-url-http": "~2.1.2",
     "ky": "~0.23.0",
