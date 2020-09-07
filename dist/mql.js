@@ -190,7 +190,7 @@
 		const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 		// `Promise.race()` workaround (#91)
-		const timeout = (request, ms, abortController) =>
+		const timeout = (request, abortController, options) =>
 			new Promise((resolve, reject) => {
 				const timeoutID = setTimeout(() => {
 					if (abortController) {
@@ -198,10 +198,10 @@
 					}
 
 					reject(new TimeoutError(request));
-				}, ms);
+				}, options.timeout);
 
 				/* eslint-disable promise/prefer-await-to-then */
-				globals.fetch(request)
+				options.fetch(request)
 					.then(resolve)
 					.catch(reject)
 					.then(() => {
@@ -263,7 +263,8 @@
 					prefixUrl: String(options.prefixUrl || ''),
 					retry: normalizeRetryOptions(options.retry),
 					throwHttpErrors: options.throwHttpErrors !== false,
-					timeout: typeof options.timeout === 'undefined' ? 10000 : options.timeout
+					timeout: typeof options.timeout === 'undefined' ? 10000 : options.timeout,
+					fetch: options.fetch || globals.fetch
 				};
 
 				if (typeof this._input !== 'string' && !(this._input instanceof URL || this._input instanceof globals.Request)) {
@@ -473,10 +474,10 @@
 				}
 
 				if (this._options.timeout === false) {
-					return globals.fetch(this.request.clone());
+					return this._options.fetch(this.request.clone());
 				}
 
-				return timeout(this.request.clone(), this._options.timeout, this.abortController);
+				return timeout(this.request.clone(), this.abortController, this._options);
 			}
 
 			/* istanbul ignore next */
@@ -1104,7 +1105,7 @@
 	  stringify,
 	  got,
 	  flatten: flat,
-	  VERSION: '0.7.5'
+	  VERSION: '0.7.6'
 	});
 
 	return browser;
