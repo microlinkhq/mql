@@ -49,6 +49,7 @@ import mqlNode from '../../src/node'
     const error = await t.throwsAsync(
       mql('https://kikobeats.com', {
         timeout: 50,
+        force: true,
         screenshot: true,
         retry: 0
       }),
