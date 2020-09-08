@@ -3,8 +3,8 @@
 const ky = require('ky-universal').default || require('ky-universal')
 const isUrlHttp = require('is-url-http/lightweight')
 const { encode: stringify } = require('qss')
+const { flattie: flatten } = require('flattie')
 const whoops = require('whoops')
-const flatten = require('flat')
 
 const factory = require('./factory')
 
