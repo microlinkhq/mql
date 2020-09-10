@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.8](https://github.com/microlinkhq/mql/compare/v0.7.7...v0.7.8) (2020-09-10)
+
+
+### Bug Fixes
+
+* remove unused dependency ([7b87935](https://github.com/microlinkhq/mql/commit/7b879351587f85234a08e05cc199150219ebb3cf))
+
 ### [0.7.7](https://github.com/microlinkhq/mql/compare/v0.7.6...v0.7.7) (2020-09-08)
 
 ### [0.7.6](https://github.com/microlinkhq/mql/compare/v0.7.5...v0.7.6) (2020-09-07)
