@@ -614,25 +614,29 @@
 		decode: decode
 	});
 
-	function iter(output, sep, val, key) {
+	function iter(output, nullish, sep, val, key) {
 		var k, pfx = key ? (key + sep) : key;
 
-		if (val == null) ; else if (typeof val != 'object') {
+		if (val == null) {
+			if (nullish) output[key] = val;
+		} else if (typeof val != 'object') {
 			output[key] = val;
 		} else if (Array.isArray(val)) {
 			for (k=0; k < val.length; k++) {
-				iter(output, sep, val[k], pfx + k);
+				iter(output, nullish, sep, val[k], pfx + k);
 			}
 		} else {
 			for (k in val) {
-				iter(output, sep, val[k], pfx + k);
+				iter(output, nullish, sep, val[k], pfx + k);
 			}
 		}
 	}
 
-	function flattie(input, sep) {
+	function flattie(input, glue, toNull) {
 		var output = {};
-		if (typeof input == 'object') iter(output, sep || '.', input, '');
+		if (typeof input == 'object') {
+			iter(output, !!toNull, glue || '.', input, '');
+		}
 		return output;
 	}
 
@@ -975,7 +979,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.7.7'
+	  VERSION: '0.7.8'
 	});
 
 	return browser;
