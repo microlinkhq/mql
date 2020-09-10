@@ -25,8 +25,8 @@
     "query"
   ],
   "dependencies": {
-    "flattie": "~1.0.0",
-    "got": "~11.6.0",
+    "flattie": "~1.1.0",
+    "got": "~11.6.1",
     "is-url-http": "~2.1.2",
     "ky": "~0.23.0",
     "ky-universal": "~0.8.1",
