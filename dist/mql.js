@@ -327,13 +327,15 @@
 						const modifiedResponse = await hook(
 							this.request,
 							this._options,
-							response.clone()
+							this._decorateResponse(response.clone())
 						);
 
 						if (modifiedResponse instanceof globals.Response) {
 							response = modifiedResponse;
 						}
 					}
+
+					this._decorateResponse(response);
 
 					if (!response.ok && this._options.throwHttpErrors) {
 						throw new HTTPError(response);
@@ -351,12 +353,6 @@
 						}
 
 						return this._stream(response.clone(), this._options.onDownloadProgress);
-					}
-
-					if (this._options.parseJson) {
-						response.json = async () => {
-							return this._options.parseJson(await response.text());
-						};
 					}
 
 					return response;
@@ -425,6 +421,16 @@
 				return 0;
 			}
 
+			_decorateResponse(response) {
+				if (this._options.parseJson) {
+					response.json = async () => {
+						return this._options.parseJson(await response.text());
+					};
+				}
+
+				return response;
+			}
+
 			async _retry(fn) {
 				try {
 					return await fn();
@@ -439,7 +445,6 @@
 								request: this.request,
 								options: this._options,
 								error,
-								response: error.response.clone(),
 								retryCount: this._retryCount
 							});
 
@@ -979,7 +984,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.7.11'
+	  VERSION: '0.7.12'
 	});
 
 	return browser;
