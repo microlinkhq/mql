@@ -91,7 +91,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
   }
 
-  const createMql = defaultOpts => async (url, opts = {}, gotOpts) => {
+  const createMql = defaultOpts => async (url, opts, gotOpts) => {
     assertUrl(url)
     const [apiUrl, fetchOpts] = getApiUrl(url, opts, { ...defaultOpts, ...gotOpts })
     return fetchFromApi(apiUrl, fetchOpts)
