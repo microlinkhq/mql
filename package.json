@@ -26,8 +26,8 @@
   ],
   "dependencies": {
     "flattie": "~1.1.0",
-    "got": "~11.7.0",
-    "is-url-http": "~2.2.0",
+    "got": "~11.8.0",
+    "is-url-http": "~2.2.1",
     "ky": "~0.24.0",
     "ky-universal": "~0.8.2",
     "qss": "~2.0.3",
