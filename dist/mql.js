@@ -885,8 +885,9 @@
 	  const fetchFromApi = async (apiUrl, opts = {}) => {
 	    try {
 	      const response = await got(apiUrl, opts);
-	      const { body } = response;
-	      return { ...body, response }
+	      return opts.responseType === 'buffer'
+	        ? { body: response.body, response }
+	        : { ...response.body, response }
 	    } catch (err) {
 	      const { response = {} } = err;
 	      const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response;
@@ -924,7 +925,10 @@
 
 	  const createMql = defaultOpts => async (url, opts, gotOpts) => {
 	    assertUrl(url);
-	    const [apiUrl, fetchOpts] = getApiUrl(url, opts, { ...defaultOpts, ...gotOpts });
+	    const [apiUrl, fetchOpts] = getApiUrl(url, opts, {
+	      ...defaultOpts,
+	      ...gotOpts
+	    });
 	    return fetchFromApi(apiUrl, fetchOpts)
 	  };
 
@@ -984,7 +988,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.7.19'
+	  VERSION: '0.8.0'
 	});
 
 	return browser;
