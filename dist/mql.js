@@ -1,21 +1,33 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('url')) :
 	typeof define === 'function' && define.amd ? define(['url'], factory) :
-	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.mql = factory(global.url));
-}(this, (function (url) { 'use strict';
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.mql = factory(global.require$$0));
+}(this, (function (require$$0) { 'use strict';
 
 	function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-	var url__default = /*#__PURE__*/_interopDefaultLegacy(url);
+	var require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0);
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-	function createCommonjsModule(fn, module) {
-		return module = { exports: {} }, fn(module, module.exports), module.exports;
+	function getAugmentedNamespace(n) {
+		if (n.__esModule) return n;
+		var a = Object.defineProperty({}, '__esModule', {value: true});
+		Object.keys(n).forEach(function (k) {
+			var d = Object.getOwnPropertyDescriptor(n, k);
+			Object.defineProperty(a, k, d.get ? d : {
+				enumerable: true,
+				get: function () {
+					return n[k];
+				}
+			});
+		});
+		return a;
 	}
 
-	function getCjsExportFromNamespace (n) {
-		return n && n['default'] || n;
+	function createCommonjsModule(fn) {
+	  var module = { exports: {} };
+		return fn(module, module.exports), module.exports;
 	}
 
 	var umd = createCommonjsModule(function (module, exports) {
@@ -558,7 +570,7 @@
 
 	var kyUmd = umd;
 
-	const URL$1 = commonjsGlobal.window ? window.URL : url__default['default'].URL;
+	const URL$1 = commonjsGlobal.window ? window.URL : require$$0__default['default'].URL;
 	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
 
 	var lightweight = url => {
@@ -645,10 +657,11 @@
 		return output;
 	}
 
-	var dist = /*#__PURE__*/Object.freeze({
-		__proto__: null,
-		flattie: flattie
-	});
+	var flattie_1 = flattie;
+
+	var dist = {
+		flattie: flattie_1
+	};
 
 	var _rollupPluginShim1 = str => str;
 
@@ -757,7 +770,7 @@
 
 	var addErrorProps = interfaceObject;
 
-	var cleanStack = getCjsExportFromNamespace(_rollupPluginShim1$1);
+	var cleanStack = /*@__PURE__*/getAugmentedNamespace(_rollupPluginShim1$1);
 
 	const {isString} = helpers;
 
@@ -818,13 +831,13 @@
 	var lib = createErrorClass(Error);
 	var type = createErrorClass(TypeError);
 	var range = createErrorClass(RangeError);
-	var eval_1 = createErrorClass(EvalError);
+	var _eval = createErrorClass(EvalError);
 	var syntax = createErrorClass(SyntaxError);
 	var reference = createErrorClass(ReferenceError);
 	var uri = createErrorClass(URIError);
 	lib.type = type;
 	lib.range = range;
-	lib.eval = eval_1;
+	lib.eval = _eval;
 	lib.syntax = syntax;
 	lib.reference = reference;
 	lib.uri = uri;
@@ -946,12 +959,12 @@
 
 	var factory_1 = factory;
 
-	var require$$2 = getCjsExportFromNamespace(dist);
+	var require$$1 = /*@__PURE__*/getAugmentedNamespace(qss_m);
 
 	const ky = kyUmd.default || kyUmd;
 
-	const { encode: stringify } = qss_m;
-	const { flattie: flatten } = require$$2;
+	const { encode: stringify } = require$$1;
+	const { flattie: flatten } = dist;
 
 
 
@@ -988,7 +1001,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.8.0'
+	  VERSION: '0.8.1'
 	});
 
 	return browser;
