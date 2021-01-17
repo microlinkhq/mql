@@ -36,6 +36,8 @@
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
+    "@rollup/plugin-commonjs": "latest",
+    "@rollup/plugin-node-resolve": "latest",
     "ava": "latest",
     "beauty-error": "latest",
     "chalk": "latest",
@@ -56,9 +58,7 @@
     "prettier-standard": "latest",
     "rollup": "latest",
     "rollup-plugin-alias": "latest",
-    "rollup-plugin-commonjs": "latest",
     "rollup-plugin-filesize": "latest",
-    "rollup-plugin-node-resolve": "latest",
     "rollup-plugin-replace": "latest",
     "rollup-plugin-shim": "latest",
     "rollup-plugin-terser": "latest",

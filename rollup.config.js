@@ -1,6 +1,6 @@
-import nodeResolve from 'rollup-plugin-node-resolve'
+import nodeResolve from '@rollup/plugin-node-resolve'
 import visualizer from 'rollup-plugin-visualizer'
-import commonjs from 'rollup-plugin-commonjs'
+import commonjs from '@rollup/plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import filesize from 'rollup-plugin-filesize'
 import replace from 'rollup-plugin-replace'
