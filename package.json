@@ -2,7 +2,7 @@
   "name": "@microlink/mql",
   "description": "Microlink Query Language",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "browser": "src/browser.js",
   "main": "src/node.js",
   "author": {
@@ -26,10 +26,10 @@
   ],
   "dependencies": {
     "flattie": "~1.1.0",
-    "ky": "~0.25.0",
-    "ky-universal": "~0.8.2",
     "got": "~11.8.1",
     "is-url-http": "~2.2.3",
+    "ky": "~0.25.0",
+    "ky-universal": "~0.8.2",
     "qss": "~2.0.3",
     "whoops": "~4.1.0"
   },
