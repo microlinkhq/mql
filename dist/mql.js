@@ -32,7 +32,7 @@
 
 	var umd = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
-		 module.exports = factory() ;
+		module.exports = factory() ;
 	}(commonjsGlobal, (function () {
 		/*! MIT License © Sindre Sorhus */
 
@@ -113,7 +113,7 @@
 					returnValue = [...returnValue, ...source];
 				} else if (isObject(source)) {
 					for (let [key, value] of Object.entries(source)) {
-						if (isObject(value) && Reflect.has(returnValue, key)) {
+						if (isObject(value) && (key in returnValue)) {
 							value = deepMerge(returnValue[key], value);
 						}
 
@@ -1001,7 +1001,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.8.1'
+	  VERSION: '0.8.2'
 	});
 
 	return browser;
