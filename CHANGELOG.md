@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.2](https://github.com/microlinkhq/mql/compare/v0.9.1...v0.9.2) (2021-03-20)
+
+
+### Bug Fixes
+
+* browser dist file ([17aaecc](https://github.com/microlinkhq/mql/commit/17aaeccea629d3ca03f64139c8592fac32e9bd83))
+
 ### [0.9.1](https://github.com/microlinkhq/mql/compare/v0.9.0...v0.9.1) (2021-03-20)
 
 
