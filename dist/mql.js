@@ -30,6 +30,99 @@
 		return fn(module, module.exports), module.exports;
 	}
 
+	const URL$1 = commonjsGlobal.window ? window.URL : require$$0__default['default'].URL;
+	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
+
+	var lightweight = url => {
+	  try {
+	    return REGEX_HTTP_PROTOCOL.test(new URL$1(url).href)
+	  } catch (err) {
+	    return false
+	  }
+	};
+
+	function iter(output, nullish, sep, val, key) {
+		var k, pfx = key ? (key + sep) : key;
+
+		if (val == null) {
+			if (nullish) output[key] = val;
+		} else if (typeof val != 'object') {
+			output[key] = val;
+		} else if (Array.isArray(val)) {
+			for (k=0; k < val.length; k++) {
+				iter(output, nullish, sep, val[k], pfx + k);
+			}
+		} else {
+			for (k in val) {
+				iter(output, nullish, sep, val[k], pfx + k);
+			}
+		}
+	}
+
+	function flattie(input, glue, toNull) {
+		var output = {};
+		if (typeof input == 'object') {
+			iter(output, !!toNull, glue || '.', input, '');
+		}
+		return output;
+	}
+
+	var flattie_1 = flattie;
+
+	var dist = {
+		flattie: flattie_1
+	};
+
+	function encode(obj, pfx) {
+		var k, i, tmp, str='';
+
+		for (k in obj) {
+			if ((tmp = obj[k]) !== void 0) {
+				if (Array.isArray(tmp)) {
+					for (i=0; i < tmp.length; i++) {
+						str && (str += '&');
+						str += encodeURIComponent(k) + '=' + encodeURIComponent(tmp[i]);
+					}
+				} else {
+					str && (str += '&');
+					str += encodeURIComponent(k) + '=' + encodeURIComponent(tmp);
+				}
+			}
+		}
+
+		return (pfx || '') + str;
+	}
+
+	function toValue(mix) {
+		if (!mix) return '';
+		var str = decodeURIComponent(mix);
+		if (str === 'false') return false;
+		if (str === 'true') return true;
+		return (+str * 0 === 0) ? (+str) : str;
+	}
+
+	function decode(str) {
+		var tmp, k, out={}, arr=str.split('&');
+
+		while (tmp = arr.shift()) {
+			tmp = tmp.split('=');
+			k = tmp.shift();
+			if (out[k] !== void 0) {
+				out[k] = [].concat(out[k], toValue(tmp.shift()));
+			} else {
+				out[k] = toValue(tmp.shift());
+			}
+		}
+
+		return out;
+	}
+
+	var qss_m = /*#__PURE__*/Object.freeze({
+		__proto__: null,
+		encode: encode,
+		decode: decode
+	});
+
 	var umd = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
 		module.exports = factory() ;
@@ -570,99 +663,6 @@
 
 	var kyUmd = umd;
 
-	const URL$1 = commonjsGlobal.window ? window.URL : require$$0__default['default'].URL;
-	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
-
-	var lightweight = url => {
-	  try {
-	    return REGEX_HTTP_PROTOCOL.test(new URL$1(url).href)
-	  } catch (err) {
-	    return false
-	  }
-	};
-
-	function encode(obj, pfx) {
-		var k, i, tmp, str='';
-
-		for (k in obj) {
-			if ((tmp = obj[k]) !== void 0) {
-				if (Array.isArray(tmp)) {
-					for (i=0; i < tmp.length; i++) {
-						str && (str += '&');
-						str += encodeURIComponent(k) + '=' + encodeURIComponent(tmp[i]);
-					}
-				} else {
-					str && (str += '&');
-					str += encodeURIComponent(k) + '=' + encodeURIComponent(tmp);
-				}
-			}
-		}
-
-		return (pfx || '') + str;
-	}
-
-	function toValue(mix) {
-		if (!mix) return '';
-		var str = decodeURIComponent(mix);
-		if (str === 'false') return false;
-		if (str === 'true') return true;
-		return (+str * 0 === 0) ? (+str) : str;
-	}
-
-	function decode(str) {
-		var tmp, k, out={}, arr=str.split('&');
-
-		while (tmp = arr.shift()) {
-			tmp = tmp.split('=');
-			k = tmp.shift();
-			if (out[k] !== void 0) {
-				out[k] = [].concat(out[k], toValue(tmp.shift()));
-			} else {
-				out[k] = toValue(tmp.shift());
-			}
-		}
-
-		return out;
-	}
-
-	var qss_m = /*#__PURE__*/Object.freeze({
-		__proto__: null,
-		encode: encode,
-		decode: decode
-	});
-
-	function iter(output, nullish, sep, val, key) {
-		var k, pfx = key ? (key + sep) : key;
-
-		if (val == null) {
-			if (nullish) output[key] = val;
-		} else if (typeof val != 'object') {
-			output[key] = val;
-		} else if (Array.isArray(val)) {
-			for (k=0; k < val.length; k++) {
-				iter(output, nullish, sep, val[k], pfx + k);
-			}
-		} else {
-			for (k in val) {
-				iter(output, nullish, sep, val[k], pfx + k);
-			}
-		}
-	}
-
-	function flattie(input, glue, toNull) {
-		var output = {};
-		if (typeof input == 'object') {
-			iter(output, !!toNull, glue || '.', input, '');
-		}
-		return output;
-	}
-
-	var flattie_1 = flattie;
-
-	var dist = {
-		flattie: flattie_1
-	};
-
 	var _rollupPluginShim1 = str => str;
 
 	var _rollupPluginShim1$1 = /*#__PURE__*/Object.freeze({
@@ -961,10 +961,9 @@
 
 	var require$$1 = /*@__PURE__*/getAugmentedNamespace(qss_m);
 
-	const ky = kyUmd.default || kyUmd;
-
-	const { encode: stringify } = require$$1;
 	const { flattie: flatten } = dist;
+	const { encode: stringify } = require$$1;
+
 
 
 
@@ -974,7 +973,7 @@
 	const got = async (url, opts) => {
 	  try {
 	    if (opts.timeout === undefined) opts.timeout = false;
-	    const response = await ky(url, opts);
+	    const response = await kyUmd(url, opts);
 	    const body = await response.json();
 	    const { headers, status: statusCode, statusText: statusMessage } = response;
 	    return { url: response.url, body, headers, statusCode, statusMessage }
@@ -1001,7 +1000,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.8.3'
+	  VERSION: '0.8.4'
 	});
 
 	return browser;
