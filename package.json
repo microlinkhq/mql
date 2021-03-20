@@ -46,7 +46,6 @@
     "eachdir": "latest",
     "esm": "latest",
     "exists-file": "latest",
-    "finepack": "latest",
     "git-authors-cli": "latest",
     "git-dirty": "latest",
     "husky": "latest",
@@ -56,6 +55,7 @@
     "node-fetch": "latest",
     "npm-check-updates": "latest",
     "nyc": "latest",
+    "pinst": "latest",
     "prettier-standard": "latest",
     "rollup": "latest",
     "rollup-plugin-filesize": "latest",
@@ -85,10 +85,12 @@
     "dev": "npm run build -- -w",
     "lint": "standard",
     "postinstall": "husky install",
+    "postpublish": "pinst --enable",
     "postrelease": "npm run release:build && npm run release:tags && npm run release:github && (ci-publish || npm publish --access=public)",
-    "prerelease": "git-dirty && npm run update:check && npm test && npm run build:ky",
+    "prepublishOnly": "pinst --disable",
+    "prerelease": "git-dirty && npm run update:check && npm test",
     "pretest": "npm run lint && npm run build:ky",
-    "release": "git-authors-cli && finepack && git add package.json && standard-version -a",
+    "release": "git-authors-cli && git add package.json && standard-version -a",
     "release:build": "npm run build && git add dist/ && git commit -m \"build(no-release): generate bundle\"",
     "release:github": "conventional-github-releaser -p angular",
     "release:tags": "git push --follow-tags origin master",
@@ -99,9 +101,9 @@
   "license": "MIT",
   "ava": {
     "files": [
+      "test/**/*",
       "!test/browser-globals.js",
-      "!test/clients.js",
-      "test/**/*"
+      "!test/clients.js"
     ],
     "require": [
       "esm"
@@ -114,9 +116,6 @@
     ]
   },
   "lint-staged": {
-    "package.json": [
-      "finepack"
-    ],
     "*.js,!*.min.js,": [
       "prettier-standard"
     ]
