@@ -6,13 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Microlink Query Language</title>
+
+  <style>
+    body {
+      zoom: 120%;
+      margin: 1rem;
+      background-color: #0D0208;
+      color: #00FF41;
+    }
+
+    code {
+      font-size: 16px;
+      white-space: pre-wrap;
+    }
+
+    div {
+      margin-top: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #008F11;
+    }
+  </style>
 </head>
 
 <body>
-  <h1><code>Open Devtool Console</code></h1>
+  <pre><code id="devtools"></code></pre>
+  <script>
+    const log = console.log
+    const devTools = document.getElementById("devtools")
+    window.console = {
+      log: function(str) {
+        const node = document.createElement("output")
+        const line = document.createElement("div")
+        node.appendChild(document.createTextNode(str))
+        devTools.appendChild(node).appendChild(line)
+        log(str)
+      }
+    }
+  </script>
   <script src="./dist/mql.js"></script>
   <script>
-    console.log(`mql.version:`, mql.version)
+    console.log(`mql.version: ${mql.version}`)
     mql('https://example.com').then(({ response, ...payload }) => {
       console.log(JSON.stringify(payload, null, 2))
     })
