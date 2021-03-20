@@ -4,12 +4,9 @@ import listen from 'test-listen'
 import http from 'http'
 import test from 'ava'
 
-import mqlBrowser from '../../src/browser'
-import mqlNode from '../../src/node'
-;[
-  { constructor: mqlNode, target: 'node' },
-  { constructor: mqlBrowser, target: 'browser' }
-].forEach(({ constructor: mql, target }) => {
+import clients from '../clients'
+
+clients.forEach(({ constructor: mql, target }) => {
   test(`${target} » server side unexpected`, async t => {
     const server = http.createServer((req, res) => {
       res.statusCode = 503

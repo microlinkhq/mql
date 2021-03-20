@@ -4,7 +4,6 @@ import commonjs from '@rollup/plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import filesize from 'rollup-plugin-filesize'
 import replace from 'rollup-plugin-replace'
-import alias from 'rollup-plugin-alias'
 import shim from 'rollup-plugin-shim'
 
 const build = ({ format, exports, input } = {}) => {
@@ -21,9 +20,6 @@ const build = ({ format, exports, input } = {}) => {
       replace({
         'process.env.NODE_ENV': JSON.stringify('production'),
         __VERSION__: require('./package.json').version
-      }),
-      alias({
-        entries: [{ find: 'ky-universal', replacement: './ky-umd' }]
       }),
       shim({
         'clean-stack': 'export default str => str'

@@ -28,8 +28,6 @@
     "flattie": "~1.1.0",
     "got": "~11.8.2",
     "is-url-http": "~2.2.3",
-    "ky": "~0.25.0",
-    "ky-universal": "~0.8.2",
     "qss": "~2.0.3",
     "whoops": "~4.1.0"
   },
@@ -38,6 +36,7 @@
     "@commitlint/config-conventional": "latest",
     "@rollup/plugin-commonjs": "latest",
     "@rollup/plugin-node-resolve": "latest",
+    "abort-controller": "latest",
     "ava": "latest",
     "beauty-error": "latest",
     "chalk": "latest",
@@ -51,13 +50,14 @@
     "git-authors-cli": "latest",
     "git-dirty": "latest",
     "husky": "latest",
+    "ky": "latest",
     "lint-staged": "latest",
     "meow": "latest",
+    "node-fetch": "latest",
     "npm-check-updates": "latest",
     "nyc": "latest",
     "prettier-standard": "latest",
     "rollup": "latest",
-    "rollup-plugin-alias": "latest",
     "rollup-plugin-filesize": "latest",
     "rollup-plugin-replace": "latest",
     "rollup-plugin-shim": "latest",
@@ -66,7 +66,8 @@
     "standard": "latest",
     "standard-version": "latest",
     "stream-to-promise": "latest",
-    "test-listen": "latest"
+    "test-listen": "latest",
+    "web-streams-polyfill": "latest"
   },
   "engines": {
     "node": ">= 12"
@@ -78,14 +79,15 @@
   ],
   "scripts": {
     "build": "rollup -c rollup.config.js",
+    "build:ky": "[[ -f src/ky.js ]] || rollup node_modules/ky/index.js --format=umd --name=ky --file=src/ky.js",
     "clean": "rm -rf node_modules",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "dev": "npm run build -- -w",
     "lint": "standard",
     "postinstall": "husky install",
     "postrelease": "npm run release:build && npm run release:tags && npm run release:github && (ci-publish || npm publish --access=public)",
-    "prerelease": "git-dirty && npm run update:check && npm test",
-    "pretest": "npm run lint",
+    "prerelease": "git-dirty && npm run update:check && npm test && npm run build:ky",
+    "pretest": "npm run lint && npm run build:ky",
     "release": "git-authors-cli && finepack && git add package.json && standard-version -a",
     "release:build": "npm run build && git add dist/ && git commit -m \"build(no-release): generate bundle\"",
     "release:github": "conventional-github-releaser -p angular",
@@ -96,6 +98,11 @@
   },
   "license": "MIT",
   "ava": {
+    "files": [
+      "test/**/*",
+      "!test/browser-globals.js",
+      "!test/clients.js"
+    ],
     "require": [
       "esm"
     ],
@@ -110,13 +117,14 @@
     "package.json": [
       "finepack"
     ],
-    "*.js,!*.min.js": [
+    "*.js,!*.min.js,": [
       "prettier-standard"
     ]
   },
   "standard": {
     "ignore": [
-      "dist"
+      "dist",
+      "src/ky.js"
     ]
   },
   "umd:main": "dist/mql.js",
