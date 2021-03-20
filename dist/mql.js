@@ -123,64 +123,21 @@
 		decode: decode
 	});
 
-	var umd = createCommonjsModule(function (module, exports) {
+	var ky = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
 		module.exports = factory() ;
 	}(commonjsGlobal, (function () {
 		/*! MIT License © Sindre Sorhus */
 
-		const globals = {};
-
-		const getGlobal = property => {
-			/* istanbul ignore next */
-			if (typeof self !== 'undefined' && self && property in self) {
-				return self;
-			}
-
-			/* istanbul ignore next */
-			if (typeof window !== 'undefined' && window && property in window) {
-				return window;
-			}
-
-			if (typeof commonjsGlobal !== 'undefined' && commonjsGlobal && property in commonjsGlobal) {
-				return commonjsGlobal;
-			}
-
-			/* istanbul ignore next */
-			if (typeof globalThis !== 'undefined' && globalThis) {
-				return globalThis;
-			}
-		};
-
-		const globalProperties = [
-			'Headers',
-			'Request',
-			'Response',
-			'ReadableStream',
-			'fetch',
-			'AbortController',
-			'FormData'
-		];
-
-		for (const property of globalProperties) {
-			Object.defineProperty(globals, property, {
-				get() {
-					const globalObject = getGlobal(property);
-					const value = globalObject && globalObject[property];
-					return typeof value === 'function' ? value.bind(globalObject) : value;
-				}
-			});
-		}
-
 		const isObject = value => value !== null && typeof value === 'object';
-		const supportsAbortController = typeof globals.AbortController === 'function';
-		const supportsStreams = typeof globals.ReadableStream === 'function';
-		const supportsFormData = typeof globals.FormData === 'function';
+		const supportsAbortController = typeof globalThis.AbortController === 'function';
+		const supportsStreams = typeof globalThis.ReadableStream === 'function';
+		const supportsFormData = typeof globalThis.FormData === 'function';
 
 		const mergeHeaders = (source1, source2) => {
-			const result = new globals.Headers(source1 || {});
-			const isHeadersInstance = source2 instanceof globals.Headers;
-			const source = new globals.Headers(source2 || {});
+			const result = new globalThis.Headers(source1 || {});
+			const isHeadersInstance = source2 instanceof globalThis.Headers;
+			const source = new globalThis.Headers(source2 || {});
 
 			for (const [key, value] of source) {
 				if ((isHeadersInstance && value === 'undefined') || value === undefined) {
@@ -269,7 +226,7 @@
 		const stop = Symbol('stop');
 
 		class HTTPError extends Error {
-			constructor(response) {
+			constructor(response, request, options) {
 				// Set the message to the status text, such as Unauthorized,
 				// with some fallbacks. This message should never be undefined.
 				super(
@@ -281,6 +238,8 @@
 				);
 				this.name = 'HTTPError';
 				this.response = response;
+				this.request = request;
+				this.options = options;
 			}
 		}
 
@@ -369,10 +328,10 @@
 					retry: normalizeRetryOptions(options.retry),
 					throwHttpErrors: options.throwHttpErrors !== false,
 					timeout: typeof options.timeout === 'undefined' ? 10000 : options.timeout,
-					fetch: options.fetch || globals.fetch
+					fetch: options.fetch || globalThis.fetch.bind(globalThis)
 				};
 
-				if (typeof this._input !== 'string' && !(this._input instanceof URL || this._input instanceof globals.Request)) {
+				if (typeof this._input !== 'string' && !(this._input instanceof URL || this._input instanceof globalThis.Request)) {
 					throw new TypeError('`input` must be a string, URL, or Request');
 				}
 
@@ -389,7 +348,7 @@
 				}
 
 				if (supportsAbortController) {
-					this.abortController = new globals.AbortController();
+					this.abortController = new globalThis.AbortController();
 					if (this._options.signal) {
 						this._options.signal.addEventListener('abort', () => {
 							this.abortController.abort();
@@ -399,24 +358,27 @@
 					this._options.signal = this.abortController.signal;
 				}
 
-				this.request = new globals.Request(this._input, this._options);
+				this.request = new globalThis.Request(this._input, this._options);
 
 				if (this._options.searchParams) {
-					const searchParams = '?' + new URLSearchParams(this._options.searchParams).toString();
+					const textSearchParams = typeof this._options.searchParams === 'string' ?
+						this._options.searchParams.replace(/^\?/, '') :
+						new URLSearchParams(this._options.searchParams).toString();
+					const searchParams = '?' + textSearchParams;
 					const url = this.request.url.replace(/(?:\?.*?)?(?=#|$)/, searchParams);
 
 					// To provide correct form boundary, Content-Type header should be deleted each time when new Request instantiated from another one
-					if (((supportsFormData && this._options.body instanceof globals.FormData) || this._options.body instanceof URLSearchParams) && !(this._options.headers && this._options.headers['content-type'])) {
+					if (((supportsFormData && this._options.body instanceof globalThis.FormData) || this._options.body instanceof URLSearchParams) && !(this._options.headers && this._options.headers['content-type'])) {
 						this.request.headers.delete('content-type');
 					}
 
-					this.request = new globals.Request(new globals.Request(url, this.request), this._options);
+					this.request = new globalThis.Request(new globalThis.Request(url, this.request), this._options);
 				}
 
 				if (this._options.json !== undefined) {
 					this._options.body = JSON.stringify(this._options.json);
 					this.request.headers.set('content-type', 'application/json');
-					this.request = new globals.Request(this.request, {body: this._options.body});
+					this.request = new globalThis.Request(this.request, {body: this._options.body});
 				}
 
 				const fn = async () => {
@@ -435,7 +397,7 @@
 							this._decorateResponse(response.clone())
 						);
 
-						if (modifiedResponse instanceof globals.Response) {
+						if (modifiedResponse instanceof globalThis.Response) {
 							response = modifiedResponse;
 						}
 					}
@@ -443,7 +405,7 @@
 					this._decorateResponse(response);
 
 					if (!response.ok && this._options.throwHttpErrors) {
-						throw new HTTPError(response);
+						throw new HTTPError(response, this.request, this._options);
 					}
 
 					// If `onDownloadProgress` is passed, it uses the stream API internally
@@ -595,9 +557,9 @@
 				const totalBytes = Number(response.headers.get('content-length')) || 0;
 				let transferredBytes = 0;
 
-				return new globals.Response(
-					new globals.ReadableStream({
-						start(controller) {
+				return new globalThis.Response(
+					new globalThis.ReadableStream({
+						async start(controller) {
 							const reader = response.body.getReader();
 
 							if (onDownloadProgress) {
@@ -618,10 +580,10 @@
 								}
 
 								controller.enqueue(value);
-								read();
+								await read();
 							}
 
-							read();
+							await read();
 						}
 					})
 				);
@@ -654,14 +616,12 @@
 			return ky;
 		};
 
-		var index = createInstance();
+		const ky = createInstance();
 
-		return index;
+		return ky;
 
 	})));
 	});
-
-	var kyUmd = umd;
 
 	var _rollupPluginShim1 = str => str;
 
@@ -973,7 +933,7 @@
 	const got = async (url, opts) => {
 	  try {
 	    if (opts.timeout === undefined) opts.timeout = false;
-	    const response = await kyUmd(url, opts);
+	    const response = await ky(url, opts);
 	    const body = await response.json();
 	    const { headers, status: statusCode, statusText: statusMessage } = response;
 	    return { url: response.url, body, headers, statusCode, statusMessage }
@@ -1000,7 +960,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.8.4'
+	  VERSION: '0.9.0'
 	});
 
 	return browser;
