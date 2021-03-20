@@ -82,7 +82,10 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "dev": "npm run build -- -w",
     "lint": "standard",
+    "postinstall": "husky install",
+    "postpublish": "pinst --enable",
     "postrelease": "npm run release:build && npm run release:tags && npm run release:github && ci-publish",
+    "prepublishOnly": "pinst --disable",
     "prerelease": "git-dirty && npm run update:check && npm test",
     "pretest": "npm run lint",
     "release": "git-authors-cli && finepack && git add package.json && standard-version -a",
@@ -104,12 +107,6 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "package.json": [
