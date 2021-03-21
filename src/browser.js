@@ -40,5 +40,5 @@ module.exports = factory({
   stringify,
   got,
   flatten,
-  VERSION: '__VERSION__'
+  VERSION: '__MQL_VERSION__'
 })
