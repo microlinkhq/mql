@@ -47,14 +47,12 @@
     "exists-file": "latest",
     "git-authors-cli": "latest",
     "git-dirty": "latest",
-    "husky": "latest",
     "ky": "latest",
     "lint-staged": "latest",
     "meow": "latest",
     "node-fetch": "latest",
     "npm-check-updates": "latest",
     "nyc": "latest",
-    "pinst": "latest",
     "prettier-standard": "latest",
     "rollup": "latest",
     "rollup-plugin-filesize": "latest",
@@ -62,6 +60,7 @@
     "rollup-plugin-shim": "latest",
     "rollup-plugin-terser": "latest",
     "rollup-plugin-visualizer": "latest",
+    "simple-git-hooks": "latest",
     "standard": "latest",
     "standard-version": "latest",
     "stream-to-promise": "latest",
@@ -82,10 +81,7 @@
     "clean": "rm -rf node_modules",
     "dev": "npm run build -- -w",
     "lint": "standard",
-    "postinstall": "husky install",
-    "postpublish": "pinst --enable",
     "postrelease": "npm run release:build && npm run release:tags && npm run release:github && (ci-publish || npm publish --access=public)",
-    "prepublishOnly": "pinst --disable",
     "prerelease": "git-dirty && npm run update:check && npm test",
     "pretest": "npm run lint && npm run build:ky",
     "release": "git-authors-cli && git add package.json && standard-version -a",
@@ -99,9 +95,9 @@
   "license": "MIT",
   "ava": {
     "files": [
-      "test/**/*",
       "!test/browser-globals.js",
-      "!test/clients.js"
+      "!test/clients.js",
+      "test/**/*"
     ],
     "require": [
       "esm"
@@ -114,9 +110,19 @@
     ]
   },
   "lint-staged": {
+    "package.json": [
+      "finepack --sort-ignore-object-at ava"
+    ],
     "*.js,!*.min.js,": [
       "prettier-standard"
+    ],
+    "*.md": [
+      "standard-markdown"
     ]
+  },
+  "simple-git-hooks": {
+    "commit-msg": "npx commitlint --edit",
+    "pre-commit": "npx lint-staged"
   },
   "standard": {
     "ignore": [
