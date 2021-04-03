@@ -3,10 +3,10 @@
 const isUrlHttp = require('is-url-http/lightweight')
 const { flattie: flatten } = require('flattie')
 const { encode: stringify } = require('qss')
-const ky = require('./ky')
 const whoops = require('whoops')
 
 const factory = require('./factory')
+const ky = require('./ky')
 
 const MicrolinkError = whoops('MicrolinkError')
 
