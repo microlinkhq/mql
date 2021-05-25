@@ -1,12 +1,12 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('url')) :
 	typeof define === 'function' && define.amd ? define(['url'], factory) :
-	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.mql = factory(global.require$$0));
-}(this, (function (require$$0) { 'use strict';
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.mql = factory(global.require$$0$1));
+}(this, (function (require$$0$1) { 'use strict';
 
 	function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-	var require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0);
+	var require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0$1);
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -25,11 +25,6 @@
 		return a;
 	}
 
-	function createCommonjsModule(fn) {
-	  var module = { exports: {} };
-		return fn(module, module.exports), module.exports;
-	}
-
 	const URL$1 = commonjsGlobal.window ? window.URL : require$$0__default['default'].URL;
 	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
 
@@ -40,6 +35,8 @@
 	    return false
 	  }
 	};
+
+	var dist = {};
 
 	function iter(output, nullish, sep, val, key) {
 		var k, pfx = key ? (key + sep) : key;
@@ -67,11 +64,7 @@
 		return output;
 	}
 
-	var flattie_1 = flattie;
-
-	var dist = {
-		flattie: flattie_1
-	};
+	dist.flattie = flattie;
 
 	function encode(obj, pfx) {
 		var k, i, tmp, str='';
@@ -123,7 +116,310 @@
 		decode: decode
 	});
 
-	var ky = createCommonjsModule(function (module, exports) {
+	var require$$2 = /*@__PURE__*/getAugmentedNamespace(qss_m);
+
+	var lib = {exports: {}};
+
+	var _rollupPluginShim1 = str => str;
+
+	var _rollupPluginShim1$1 = /*#__PURE__*/Object.freeze({
+		__proto__: null,
+		'default': _rollupPluginShim1
+	});
+
+	var require$$0 = /*@__PURE__*/getAugmentedNamespace(_rollupPluginShim1$1);
+
+	const copyProperty = (to, from, property, ignoreNonConfigurable) => {
+		// `Function#length` should reflect the parameters of `to` not `from` since we keep its body.
+		// `Function#prototype` is non-writable and non-configurable so can never be modified.
+		if (property === 'length' || property === 'prototype') {
+			return;
+		}
+
+		const toDescriptor = Object.getOwnPropertyDescriptor(to, property);
+		const fromDescriptor = Object.getOwnPropertyDescriptor(from, property);
+
+		if (!canCopyProperty(toDescriptor, fromDescriptor) && ignoreNonConfigurable) {
+			return;
+		}
+
+		Object.defineProperty(to, property, fromDescriptor);
+	};
+
+	// `Object.defineProperty()` throws if the property exists, is not configurable and either:
+	//  - one its descriptors is changed
+	//  - it is non-writable and its value is changed
+	const canCopyProperty = function (toDescriptor, fromDescriptor) {
+		return toDescriptor === undefined || toDescriptor.configurable || (
+			toDescriptor.writable === fromDescriptor.writable &&
+			toDescriptor.enumerable === fromDescriptor.enumerable &&
+			toDescriptor.configurable === fromDescriptor.configurable &&
+			(toDescriptor.writable || toDescriptor.value === fromDescriptor.value)
+		);
+	};
+
+	const changePrototype = (to, from) => {
+		const fromPrototype = Object.getPrototypeOf(from);
+		if (fromPrototype === Object.getPrototypeOf(to)) {
+			return;
+		}
+
+		Object.setPrototypeOf(to, fromPrototype);
+	};
+
+	const wrappedToString = (withName, fromBody) => `/* Wrapped ${withName}*/\n${fromBody}`;
+
+	const toStringDescriptor = Object.getOwnPropertyDescriptor(Function.prototype, 'toString');
+	const toStringName = Object.getOwnPropertyDescriptor(Function.prototype.toString, 'name');
+
+	// We call `from.toString()` early (not lazily) to ensure `from` can be garbage collected.
+	// We use `bind()` instead of a closure for the same reason.
+	// Calling `from.toString()` early also allows caching it in case `to.toString()` is called several times.
+	const changeToString = (to, from, name) => {
+		const withName = name === '' ? '' : `with ${name.trim()}() `;
+		const newToString = wrappedToString.bind(null, withName, from.toString());
+		// Ensure `to.toString.toString` is non-enumerable and has the same `same`
+		Object.defineProperty(newToString, 'name', toStringName);
+		Object.defineProperty(to, 'toString', {...toStringDescriptor, value: newToString});
+	};
+
+	const mimicFn$2 = (to, from, {ignoreNonConfigurable = false} = {}) => {
+		const {name} = to;
+
+		for (const property of Reflect.ownKeys(from)) {
+			copyProperty(to, from, property, ignoreNonConfigurable);
+		}
+
+		changePrototype(to, from);
+		changeToString(to, from, name);
+
+		return to;
+	};
+
+	var mimicFn_1 = mimicFn$2;
+
+	var helpers = {
+	  isFunction: obj => typeof obj === 'function',
+	  isString: obj => typeof obj === 'string',
+	  composeErrorMessage: (code, description) => `${code}, ${description}`,
+	  inherits: (ctor, superCtor) => {
+	    ctor.super_ = superCtor;
+	    ctor.prototype = Object.create(superCtor.prototype, {
+	      constructor: {
+	        value: ctor,
+	        enumerable: false,
+	        writable: true,
+	        configurable: true
+	      }
+	    });
+	  }
+	};
+
+	const {isFunction, composeErrorMessage} = helpers;
+
+	function interfaceObject (error, ...props) {
+	  Object.assign(error, ...props);
+
+	  error.description = isFunction(error.message) ? error.message(error) : error.message;
+
+	  error.message = error.code
+	   ? composeErrorMessage(error.code, error.description)
+	   : error.description;
+	}
+
+	var addErrorProps$1 = interfaceObject;
+
+	const cleanStack = require$$0;
+	const mimicFn$1 = mimicFn_1;
+
+	const addErrorProps = addErrorProps$1;
+	const {isString} = helpers;
+
+	function createExtendError$1 (ErrorClass, classProps) {
+	  function ExtendError (props) {
+	    const error = new ErrorClass();
+	    const errorProps = isString(props) ? {message: props} : props;
+	    addErrorProps(error, classProps, errorProps);
+
+	    error.stack = cleanStack(error.stack);
+	    return error
+	  }
+
+	  ExtendError.prototype = ErrorClass.prototype;
+	  mimicFn$1(ExtendError, ErrorClass);
+
+	  return ExtendError
+	}
+
+	var createExtendError_1 = createExtendError$1;
+
+	const {inherits} = helpers;
+	const mimicFn = mimicFn_1;
+
+	const REGEX_CLASS_NAME = /[^0-9a-zA-Z_$]/;
+
+	function createError$1 (className) {
+	  if (typeof className !== 'string') {
+	    throw new TypeError('Expected className to be a string')
+	  }
+
+	  if (REGEX_CLASS_NAME.test(className)) {
+	    throw new Error('className contains invalid characters')
+	  }
+
+	  function ErrorClass () {
+	    Object.defineProperty(this, 'name', {
+	      configurable: true,
+	      value: className,
+	      writable: true
+	    });
+
+	    Error.captureStackTrace(this, this.constructor);
+	  }
+
+	  inherits(ErrorClass, Error);
+	  mimicFn(ErrorClass, Error);
+	  return ErrorClass
+	}
+
+	var createError_1 = createError$1;
+
+	const createExtendError = createExtendError_1;
+	const createError = createError_1;
+
+	const createErrorClass = ErrorClass => (className, props) => {
+	  const errorClass = createError(className || ErrorClass.name);
+	  return createExtendError(errorClass, props)
+	};
+
+	lib.exports = createErrorClass(Error);
+	lib.exports.type = createErrorClass(TypeError);
+	lib.exports.range = createErrorClass(RangeError);
+	lib.exports.eval = createErrorClass(EvalError);
+	lib.exports.syntax = createErrorClass(SyntaxError);
+	lib.exports.reference = createErrorClass(ReferenceError);
+	lib.exports.uri = createErrorClass(URIError);
+
+	const ENDPOINT = {
+	  FREE: 'https://api.microlink.io',
+	  PRO: 'https://pro.microlink.io'
+	};
+
+	const isObject = input => typeof input === 'object';
+
+	const pickBy = obj => {
+	  Object.keys(obj).forEach(key => obj[key] == null && delete obj[key]);
+	  return obj
+	};
+
+	const parseBody = (input, error, url) => {
+	  try {
+	    return JSON.parse(input)
+	  } catch (_) {
+	    const message = input || error.message;
+
+	    return {
+	      status: 'error',
+	      data: { url: message },
+	      more: 'https://microlink.io/efatal',
+	      code: 'EFATAL',
+	      message,
+	      url
+	    }
+	  }
+	};
+
+	const factory$1 = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) => {
+	  const assertUrl = (url = '') => {
+	    if (!isUrlHttp(url)) {
+	      const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`;
+	      throw new MicrolinkError({
+	        status: 'fail',
+	        data: { url: message },
+	        more: 'https://microlink.io/docs/api/api-parameters/url',
+	        code: 'EINVALURLCLIENT',
+	        message,
+	        url
+	      })
+	    }
+	  };
+
+	  const mapRules = rules => {
+	    if (!isObject(rules)) return
+	    const flatRules = flatten(rules);
+	    return Object.keys(flatRules).reduce(
+	      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key] }),
+	      {}
+	    )
+	  };
+
+	  const fetchFromApi = async (apiUrl, opts = {}) => {
+	    try {
+	      const response = await got(apiUrl, opts);
+	      return opts.responseType === 'buffer'
+	        ? { body: response.body, response }
+	        : { ...response.body, response }
+	    } catch (err) {
+	      const { response = {} } = err;
+	      const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response;
+
+	      const body =
+	        isObject(rawBody) && !Buffer.isBuffer(rawBody) ? rawBody : parseBody(rawBody, err, uri);
+
+	      throw MicrolinkError({
+	        ...body,
+	        message: body.message,
+	        url: uri,
+	        statusCode,
+	        headers
+	      })
+	    }
+	  };
+
+	  const getApiUrl = (
+	    url,
+	    { data, apiKey, endpoint, retry, cache, ...opts } = {},
+	    { responseType = 'json', headers: gotHeaders, ...gotOpts } = {}
+	  ) => {
+	    const isPro = !!apiKey;
+	    const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE'];
+
+	    const apiUrl = `${apiEndpoint}?${stringify({
+      url,
+      ...mapRules(data),
+      ...flatten(pickBy(opts))
+    })}`;
+
+	    const headers = isPro ? { ...gotHeaders, 'x-api-key': apiKey } : { ...gotHeaders };
+	    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
+	  };
+
+	  const createMql = defaultOpts => async (url, opts, gotOpts) => {
+	    assertUrl(url);
+	    const [apiUrl, fetchOpts] = getApiUrl(url, opts, {
+	      ...defaultOpts,
+	      ...gotOpts
+	    });
+	    return fetchFromApi(apiUrl, fetchOpts)
+	  };
+
+	  const mql = createMql();
+	  mql.MicrolinkError = MicrolinkError;
+	  mql.getApiUrl = getApiUrl;
+	  mql.fetchFromApi = fetchFromApi;
+	  mql.mapRules = mapRules;
+	  mql.version = VERSION;
+	  mql.stream = got.stream;
+	  mql.buffer = createMql({ responseType: 'buffer' });
+
+	  return mql
+	};
+
+	var factory_1 = factory$1;
+
+	var ky$1 = {exports: {}};
+
+	(function (module, exports) {
 	(function (global, factory) {
 		module.exports = factory() ;
 	}(commonjsGlobal, (function () {
@@ -621,314 +917,17 @@
 		return ky;
 
 	})));
-	});
+	}(ky$1));
 
-	var _rollupPluginShim1 = str => str;
-
-	var _rollupPluginShim1$1 = /*#__PURE__*/Object.freeze({
-		__proto__: null,
-		'default': _rollupPluginShim1
-	});
-
-	const copyProperty = (to, from, property, ignoreNonConfigurable) => {
-		// `Function#length` should reflect the parameters of `to` not `from` since we keep its body.
-		// `Function#prototype` is non-writable and non-configurable so can never be modified.
-		if (property === 'length' || property === 'prototype') {
-			return;
-		}
-
-		const toDescriptor = Object.getOwnPropertyDescriptor(to, property);
-		const fromDescriptor = Object.getOwnPropertyDescriptor(from, property);
-
-		if (!canCopyProperty(toDescriptor, fromDescriptor) && ignoreNonConfigurable) {
-			return;
-		}
-
-		Object.defineProperty(to, property, fromDescriptor);
-	};
-
-	// `Object.defineProperty()` throws if the property exists, is not configurable and either:
-	//  - one its descriptors is changed
-	//  - it is non-writable and its value is changed
-	const canCopyProperty = function (toDescriptor, fromDescriptor) {
-		return toDescriptor === undefined || toDescriptor.configurable || (
-			toDescriptor.writable === fromDescriptor.writable &&
-			toDescriptor.enumerable === fromDescriptor.enumerable &&
-			toDescriptor.configurable === fromDescriptor.configurable &&
-			(toDescriptor.writable || toDescriptor.value === fromDescriptor.value)
-		);
-	};
-
-	const changePrototype = (to, from) => {
-		const fromPrototype = Object.getPrototypeOf(from);
-		if (fromPrototype === Object.getPrototypeOf(to)) {
-			return;
-		}
-
-		Object.setPrototypeOf(to, fromPrototype);
-	};
-
-	const wrappedToString = (withName, fromBody) => `/* Wrapped ${withName}*/\n${fromBody}`;
-
-	const toStringDescriptor = Object.getOwnPropertyDescriptor(Function.prototype, 'toString');
-	const toStringName = Object.getOwnPropertyDescriptor(Function.prototype.toString, 'name');
-
-	// We call `from.toString()` early (not lazily) to ensure `from` can be garbage collected.
-	// We use `bind()` instead of a closure for the same reason.
-	// Calling `from.toString()` early also allows caching it in case `to.toString()` is called several times.
-	const changeToString = (to, from, name) => {
-		const withName = name === '' ? '' : `with ${name.trim()}() `;
-		const newToString = wrappedToString.bind(null, withName, from.toString());
-		// Ensure `to.toString.toString` is non-enumerable and has the same `same`
-		Object.defineProperty(newToString, 'name', toStringName);
-		Object.defineProperty(to, 'toString', {...toStringDescriptor, value: newToString});
-	};
-
-	const mimicFn = (to, from, {ignoreNonConfigurable = false} = {}) => {
-		const {name} = to;
-
-		for (const property of Reflect.ownKeys(from)) {
-			copyProperty(to, from, property, ignoreNonConfigurable);
-		}
-
-		changePrototype(to, from);
-		changeToString(to, from, name);
-
-		return to;
-	};
-
-	var mimicFn_1 = mimicFn;
-
-	var helpers = {
-	  isFunction: obj => typeof obj === 'function',
-	  isString: obj => typeof obj === 'string',
-	  composeErrorMessage: (code, description) => `${code}, ${description}`,
-	  inherits: (ctor, superCtor) => {
-	    ctor.super_ = superCtor;
-	    ctor.prototype = Object.create(superCtor.prototype, {
-	      constructor: {
-	        value: ctor,
-	        enumerable: false,
-	        writable: true,
-	        configurable: true
-	      }
-	    });
-	  }
-	};
-
-	const {isFunction, composeErrorMessage} = helpers;
-
-	function interfaceObject (error, ...props) {
-	  Object.assign(error, ...props);
-
-	  error.description = isFunction(error.message) ? error.message(error) : error.message;
-
-	  error.message = error.code
-	   ? composeErrorMessage(error.code, error.description)
-	   : error.description;
-	}
-
-	var addErrorProps = interfaceObject;
-
-	var cleanStack = /*@__PURE__*/getAugmentedNamespace(_rollupPluginShim1$1);
-
-	const {isString} = helpers;
-
-	function createExtendError (ErrorClass, classProps) {
-	  function ExtendError (props) {
-	    const error = new ErrorClass();
-	    const errorProps = isString(props) ? {message: props} : props;
-	    addErrorProps(error, classProps, errorProps);
-
-	    error.stack = cleanStack(error.stack);
-	    return error
-	  }
-
-	  ExtendError.prototype = ErrorClass.prototype;
-	  mimicFn_1(ExtendError, ErrorClass);
-
-	  return ExtendError
-	}
-
-	var createExtendError_1 = createExtendError;
-
-	const {inherits} = helpers;
-
-
-	const REGEX_CLASS_NAME = /[^0-9a-zA-Z_$]/;
-
-	function createError (className) {
-	  if (typeof className !== 'string') {
-	    throw new TypeError('Expected className to be a string')
-	  }
-
-	  if (REGEX_CLASS_NAME.test(className)) {
-	    throw new Error('className contains invalid characters')
-	  }
-
-	  function ErrorClass () {
-	    Object.defineProperty(this, 'name', {
-	      configurable: true,
-	      value: className,
-	      writable: true
-	    });
-
-	    Error.captureStackTrace(this, this.constructor);
-	  }
-
-	  inherits(ErrorClass, Error);
-	  mimicFn_1(ErrorClass, Error);
-	  return ErrorClass
-	}
-
-	var createError_1 = createError;
-
-	const createErrorClass = ErrorClass => (className, props) => {
-	  const errorClass = createError_1(className || ErrorClass.name);
-	  return createExtendError_1(errorClass, props)
-	};
-
-	var lib = createErrorClass(Error);
-	var type = createErrorClass(TypeError);
-	var range = createErrorClass(RangeError);
-	var _eval = createErrorClass(EvalError);
-	var syntax = createErrorClass(SyntaxError);
-	var reference = createErrorClass(ReferenceError);
-	var uri = createErrorClass(URIError);
-	lib.type = type;
-	lib.range = range;
-	lib.eval = _eval;
-	lib.syntax = syntax;
-	lib.reference = reference;
-	lib.uri = uri;
-
-	const ENDPOINT = {
-	  FREE: 'https://api.microlink.io',
-	  PRO: 'https://pro.microlink.io'
-	};
-
-	const isObject = input => typeof input === 'object';
-
-	const pickBy = obj => {
-	  Object.keys(obj).forEach(key => obj[key] == null && delete obj[key]);
-	  return obj
-	};
-
-	const parseBody = (input, error, url) => {
-	  try {
-	    return JSON.parse(input)
-	  } catch (_) {
-	    const message = input || error.message;
-
-	    return {
-	      status: 'error',
-	      data: { url: message },
-	      more: 'https://microlink.io/efatal',
-	      code: 'EFATAL',
-	      message,
-	      url
-	    }
-	  }
-	};
-
-	const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) => {
-	  const assertUrl = (url = '') => {
-	    if (!isUrlHttp(url)) {
-	      const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`;
-	      throw new MicrolinkError({
-	        status: 'fail',
-	        data: { url: message },
-	        more: 'https://microlink.io/docs/api/api-parameters/url',
-	        code: 'EINVALURLCLIENT',
-	        message,
-	        url
-	      })
-	    }
-	  };
-
-	  const mapRules = rules => {
-	    if (!isObject(rules)) return
-	    const flatRules = flatten(rules);
-	    return Object.keys(flatRules).reduce(
-	      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key] }),
-	      {}
-	    )
-	  };
-
-	  const fetchFromApi = async (apiUrl, opts = {}) => {
-	    try {
-	      const response = await got(apiUrl, opts);
-	      return opts.responseType === 'buffer'
-	        ? { body: response.body, response }
-	        : { ...response.body, response }
-	    } catch (err) {
-	      const { response = {} } = err;
-	      const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response;
-
-	      const body =
-	        isObject(rawBody) && !Buffer.isBuffer(rawBody) ? rawBody : parseBody(rawBody, err, uri);
-
-	      throw MicrolinkError({
-	        ...body,
-	        message: body.message,
-	        url: uri,
-	        statusCode,
-	        headers
-	      })
-	    }
-	  };
-
-	  const getApiUrl = (
-	    url,
-	    { data, apiKey, endpoint, retry, cache, ...opts } = {},
-	    { responseType = 'json', headers: gotHeaders, ...gotOpts } = {}
-	  ) => {
-	    const isPro = !!apiKey;
-	    const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE'];
-
-	    const apiUrl = `${apiEndpoint}?${stringify({
-      url,
-      ...mapRules(data),
-      ...flatten(pickBy(opts))
-    })}`;
-
-	    const headers = isPro ? { ...gotHeaders, 'x-api-key': apiKey } : { ...gotHeaders };
-	    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
-	  };
-
-	  const createMql = defaultOpts => async (url, opts, gotOpts) => {
-	    assertUrl(url);
-	    const [apiUrl, fetchOpts] = getApiUrl(url, opts, {
-	      ...defaultOpts,
-	      ...gotOpts
-	    });
-	    return fetchFromApi(apiUrl, fetchOpts)
-	  };
-
-	  const mql = createMql();
-	  mql.MicrolinkError = MicrolinkError;
-	  mql.getApiUrl = getApiUrl;
-	  mql.fetchFromApi = fetchFromApi;
-	  mql.mapRules = mapRules;
-	  mql.version = VERSION;
-	  mql.stream = got.stream;
-	  mql.buffer = createMql({ responseType: 'buffer' });
-
-	  return mql
-	};
-
-	var factory_1 = factory;
-
-	var require$$1 = /*@__PURE__*/getAugmentedNamespace(qss_m);
-
+	const isUrlHttp = lightweight;
 	const { flattie: flatten } = dist;
-	const { encode: stringify } = require$$1;
+	const { encode: stringify } = require$$2;
+	const whoops = lib.exports;
 
+	const factory = factory_1;
+	const ky = ky$1.exports;
 
-
-
-
-	const MicrolinkError = lib('MicrolinkError');
+	const MicrolinkError = whoops('MicrolinkError');
 
 	const got = async (url, opts) => {
 	  try {
@@ -954,13 +953,13 @@
 	  }
 	};
 
-	var browser = factory_1({
+	var browser = factory({
 	  MicrolinkError,
-	  isUrlHttp: lightweight,
+	  isUrlHttp,
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.9.3'
+	  VERSION: '0.9.4'
 	});
 
 	return browser;
