@@ -6,3 +6,8 @@ module.exports = require('./factory')({
   flatten: require('flattie').flattie,
   VERSION: require('../package.json').version
 })
+
+module.exports.render = (input, { width = '650px' }) => {
+  if (input.url && input.type) return `<img width="${width}" src="${input.url}" />`
+  return input
+}
