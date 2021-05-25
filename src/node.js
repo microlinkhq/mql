@@ -7,7 +7,7 @@ module.exports = require('./factory')({
   VERSION: require('../package.json').version
 })
 
-module.exports.render = (input, { width = '650px' }) => {
+module.exports.render = (input, { width = '650px' } = {}) => {
   if (input.url && input.type) return `<img width="${width}" src="${input.url}" />`
   return input
 }
