@@ -2,15 +2,20 @@
   "name": "@microlink/mql",
   "description": "Microlink Query Language. The official HTTP client to interact with Microlink API for Node.js, browsers & Deno.",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "browser": "src/browser.js",
   "main": "src/node.js",
-  "types": "index.d.ts",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
     "name": "Kiko Beats",
     "url": "https://github.com/Kikobeats"
   },
+  "contributors": [
+    {
+      "name": "ndom91",
+      "email": "yo@ndo.dev"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/microlinkhq/mql.git"
@@ -63,6 +68,7 @@
     "rollup-plugin-visualizer": "latest",
     "simple-git-hooks": "latest",
     "standard": "latest",
+    "standard-markdown": "latest",
     "standard-version": "latest",
     "stream-to-promise": "latest",
     "test-listen": "latest",
@@ -131,6 +137,7 @@
       "src/ky.js"
     ]
   },
+  "types": "index.d.ts",
   "umd:main": "dist/mql.js",
   "unpkg": "dist/mql.js"
 }
