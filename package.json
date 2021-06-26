@@ -5,6 +5,7 @@
   "version": "0.9.5",
   "browser": "src/browser.js",
   "main": "src/node.js",
+  "types": "index.d.ts",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
     "name": "Kiko Beats",
