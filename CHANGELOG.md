@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.7](https://github.com/microlinkhq/mql/compare/v0.9.5...v0.9.7) (2021-06-26)
+
+
+### Features
+
+* add api param types ([00ff9b7](https://github.com/microlinkhq/mql/commit/00ff9b705928697543282b47894a0110ba1ed3cf))
+* add types ([41cc61a](https://github.com/microlinkhq/mql/commit/41cc61ace94824d7b3814f93be34f8e1ccdb9c40))
+
+
+### Bug Fixes
+
+* **build:** add missing dependency ([89b16a3](https://github.com/microlinkhq/mql/commit/89b16a31e2896bea752726ca7caae2a0f5f14f07))
+
 ### [0.9.5](https://github.com/microlinkhq/mql/compare/v0.9.4...v0.9.5) (2021-05-25)
 
 
