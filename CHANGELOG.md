@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.8](https://github.com/microlinkhq/mql/compare/v0.9.7...v0.9.8) (2021-06-28)
+
+
+### Bug Fixes
+
+* ensure input exist before render ([7af11e1](https://github.com/microlinkhq/mql/commit/7af11e1eed5f73980b449c39f4a1f8cae8db09ec))
+
 ### [0.9.7](https://github.com/microlinkhq/mql/compare/v0.9.5...v0.9.7) (2021-06-26)
 
 
