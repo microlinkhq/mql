@@ -8,6 +8,6 @@ module.exports = require('./factory')({
 })
 
 module.exports.render = (input, { width = '650px' } = {}) => {
-  if (input.url && input.type) return `<img width="${width}" src="${input.url}" />`
+  if (input && input.url && input.type) return `<img width="${width}" src="${input.url}" />`
   return input
 }
