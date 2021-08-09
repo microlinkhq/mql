@@ -3,12 +3,7 @@ const ENDPOINT = {
   PRO: 'https://pro.microlink.io'
 }
 
-const isObject = input => typeof input === 'object'
-
-const pickBy = obj => {
-  Object.keys(obj).forEach(key => obj[key] == null && delete obj[key])
-  return obj
-}
+const isObject = input => input !== null && typeof input === 'object'
 
 const parseBody = (input, error, url) => {
   try {
@@ -85,7 +80,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     const apiUrl = `${apiEndpoint}?${stringify({
       url,
       ...mapRules(data),
-      ...flatten(pickBy(opts))
+      ...flatten(opts)
     })}`
 
     const headers = isPro ? { ...gotHeaders, 'x-api-key': apiKey } : { ...gotHeaders }
