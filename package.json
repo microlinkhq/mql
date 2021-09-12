@@ -80,6 +80,7 @@
   "files": [
     "dist",
     "lightweight.js",
+    "index.d.ts",
     "src"
   ],
   "scripts": {
