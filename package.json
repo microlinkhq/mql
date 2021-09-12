@@ -56,7 +56,7 @@
     "ky": "latest",
     "lint-staged": "latest",
     "meow": "latest",
-    "node-fetch": "latest",
+    "node-fetch": "2",
     "npm-check-updates": "latest",
     "nyc": "latest",
     "prettier-standard": "latest",
