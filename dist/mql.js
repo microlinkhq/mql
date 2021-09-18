@@ -343,7 +343,7 @@
 	    if (!isObject(rules)) return
 	    const flatRules = flatten(rules);
 	    return Object.keys(flatRules).reduce(
-	      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key] }),
+	      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key].toString() }),
 	      {}
 	    )
 	  };
@@ -954,7 +954,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.9.11'
+	  VERSION: '0.9.12'
 	});
 
 	return browser;
