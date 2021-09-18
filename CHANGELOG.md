@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.12](https://github.com/microlinkhq/mql/compare/v0.9.11...v0.9.12) (2021-09-18)
+
+
+### Bug Fixes
+
+* serialize values properly ([74e2dbb](https://github.com/microlinkhq/mql/commit/74e2dbb9f376cf4dbe5ef49afe0a27714d7765ce))
+
 ### [0.9.11](https://github.com/microlinkhq/mql/compare/v0.9.10...v0.9.11) (2021-09-12)
 
 ### [0.9.10](https://github.com/microlinkhq/mql/compare/v0.9.9...v0.9.10) (2021-09-12)
