@@ -33,7 +33,7 @@
   "dependencies": {
     "flattie": "~1.1.0",
     "got": "~11.8.2",
-    "is-url-http": "~2.2.3",
+    "is-url-http": "~2.2.4",
     "qss": "~2.0.3",
     "whoops": "~4.1.0"
   },
