@@ -41,7 +41,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     if (!isObject(rules)) return
     const flatRules = flatten(rules)
     return Object.keys(flatRules).reduce(
-      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key] }),
+      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key].toString() }),
       {}
     )
   }
