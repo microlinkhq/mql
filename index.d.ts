@@ -1,7 +1,11 @@
 /// <reference types="node" />
 
 declare module "@microlink/mql" {
-  export type WaitUntilEvent = "load" | "domcontentloaded" | "networkidle0" | "networkidle2";
+  export type WaitUntilEvent =
+    | "load"
+    | "domcontentloaded"
+    | "networkidle0"
+    | "networkidle2";
 
   export type ScreenshotOptions = Partial<{
     background: string;
@@ -24,14 +28,24 @@ declare module "@microlink/mql" {
   }>;
 
   export type MqlQueryResponseType =
+    | "audio"
     | "author"
+    | "auto"
+    | "boolean"
     | "date"
     | "description"
     | "image"
+    | "ip"
+    | "lang"
+    | "logo"
+    | "number"
+    | "object"
+    | "publisher"
+    | "regexp"
+    | "string"
     | "title"
     | "url"
-    | "lang"
-    | "publisher";
+    | "video";
 
   export type MqlQueryOptions = Partial<{
     attr: string | string[];
@@ -41,7 +55,7 @@ declare module "@microlink/mql" {
   }>;
 
   export interface MqlQuery {
-    [field: string]: MqlQueryOptions;
+    [field: string]: MqlQueryOptions | MqlQueryOptions[];
   }
 
   export type MicrolinkApiOptions = Partial<{
@@ -128,7 +142,10 @@ declare module "@microlink/mql" {
     response: Response;
   }
 
-  declare function mql(url: string, opts?: MqlOptions & MicrolinkApiOptions): Promise<MqlResponse>;
+  declare function mql(
+    url: string,
+    opts?: MqlOptions & MicrolinkApiOptions
+  ): Promise<MqlResponse>;
 
   declare namespace mql {
     export class MicrolinkError extends Error {}
