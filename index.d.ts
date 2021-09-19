@@ -55,7 +55,7 @@ declare module "@microlink/mql" {
   }>;
 
   export interface MqlQuery {
-    [field: string]: MqlQueryOptions;
+    [field: string]: MqlQueryOptions | MqlQueryOptions[];
   }
 
   export type MicrolinkApiOptions = Partial<{
