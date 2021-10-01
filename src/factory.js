@@ -14,8 +14,8 @@ const parseBody = (input, error, url) => {
     return {
       status: 'error',
       data: { url: message },
-      more: 'https://microlink.io/efatal',
-      code: 'EFATAL',
+      more: 'https://microlink.io/efatalclient',
+      code: 'EFATALCLIENT',
       message,
       url
     }
@@ -46,7 +46,7 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
     )
   }
 
-  const fetchFromApi = async (apiUrl, opts = {}) => {
+  const fetchFromApi = async (apiUrl, opts = {}, retryCount = 0) => {
     try {
       const response = await got(apiUrl, opts)
       return opts.responseType === 'buffer'
@@ -58,6 +58,8 @@ const factory = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }
 
       const body =
         isObject(rawBody) && !Buffer.isBuffer(rawBody) ? rawBody : parseBody(rawBody, err, uri)
+
+      if (body.code === 'EFATALCLIENT' && retryCount++ < 2) return fetchFromApi(apiUrl, opts, retryCount)
 
       throw MicrolinkError({
         ...body,
