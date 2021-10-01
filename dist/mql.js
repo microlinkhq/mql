@@ -2,7 +2,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('url')) :
 	typeof define === 'function' && define.amd ? define(['url'], factory) :
 	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.mql = factory(global.require$$0$1));
-}(this, (function (require$$0$1) { 'use strict';
+})(this, (function (require$$0$1) { 'use strict';
 
 	function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -25,7 +25,7 @@
 		return a;
 	}
 
-	const URL$1 = commonjsGlobal.window ? window.URL : require$$0__default['default'].URL;
+	const URL$1 = commonjsGlobal.window ? window.URL : require$$0__default["default"].URL;
 	const REGEX_HTTP_PROTOCOL = /^https?:\/\//i;
 
 	var lightweight = url => {
@@ -316,8 +316,8 @@
 	    return {
 	      status: 'error',
 	      data: { url: message },
-	      more: 'https://microlink.io/efatal',
-	      code: 'EFATAL',
+	      more: 'https://microlink.io/efatalclient',
+	      code: 'EFATALCLIENT',
 	      message,
 	      url
 	    }
@@ -348,7 +348,7 @@
 	    )
 	  };
 
-	  const fetchFromApi = async (apiUrl, opts = {}) => {
+	  const fetchFromApi = async (apiUrl, opts = {}, retryCount = 0) => {
 	    try {
 	      const response = await got(apiUrl, opts);
 	      return opts.responseType === 'buffer'
@@ -360,6 +360,8 @@
 
 	      const body =
 	        isObject(rawBody) && !Buffer.isBuffer(rawBody) ? rawBody : parseBody(rawBody, err, uri);
+
+	      if (body.code === 'EFATALCLIENT' && retryCount++ < 2) return fetchFromApi(apiUrl, opts, retryCount)
 
 	      throw MicrolinkError({
 	        ...body,
@@ -954,10 +956,10 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.9.13'
+	  VERSION: '0.10.0'
 	});
 
 	return browser;
 
-})));
+}));
 //# sourceMappingURL=mql.js.map
