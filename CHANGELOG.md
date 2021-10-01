@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.14](https://github.com/microlinkhq/mql/compare/v0.9.13...v0.9.14) (2021-10-01)
+
+
+### Features
+
+* add EFATALCLIENT error code ([cf4e924](https://github.com/microlinkhq/mql/commit/cf4e92478282155d76a1476a7340834512508b03))
+
 ### [0.9.13](https://github.com/microlinkhq/mql/compare/v0.9.12...v0.9.13) (2021-09-19)
 
 ### [0.9.12](https://github.com/microlinkhq/mql/compare/v0.9.11...v0.9.12) (2021-09-18)
