@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.1](https://github.com/microlinkhq/mql/compare/v0.10.0...v0.10.1) (2021-10-12)
+
+
+### Bug Fixes
+
+* remove duplicate type ([da98fce](https://github.com/microlinkhq/mql/commit/da98fce145ec96c944857b87a05d17d159530431))
+
 ## [0.10.0](https://github.com/microlinkhq/mql/compare/v0.9.13...v0.10.0) (2021-10-01)
 
 
