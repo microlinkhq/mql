@@ -122,7 +122,6 @@ declare module "@microlink/mql" {
     author: string;
     date: string;
     description: string;
-    video: string;
     lang: string;
     publisher: string;
     title: string;
