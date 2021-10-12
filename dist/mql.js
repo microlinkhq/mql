@@ -956,7 +956,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.10.0'
+	  VERSION: '0.10.1'
 	});
 
 	return browser;
