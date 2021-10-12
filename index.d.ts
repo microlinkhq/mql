@@ -34,6 +34,7 @@ declare module "@microlink/mql" {
     | "boolean"
     | "date"
     | "description"
+    | "email"
     | "image"
     | "ip"
     | "lang"
