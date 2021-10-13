@@ -99,6 +99,7 @@ declare module "@microlink/mql" {
   }>;
 
   export type MqlOptions = Partial<{
+    endpoint: string;
     apiKey: string;
     retry: number;
     cache: Map<string, any>;
@@ -144,7 +145,10 @@ declare module "@microlink/mql" {
 
   declare function mql(
     url: string,
-    opts?: MqlOptions & MicrolinkApiOptions
+    opts?: MqlOptions & MicrolinkApiOptions,
+    // it could be https://github.com/sindresorhus/got/tree/v11.8.2#got for server
+    // or https://github.com/sindresorhus/ky/blob/main/source/types/options.ts for browser
+    gotOpts?: object
   ): Promise<MqlResponse>;
 
   declare namespace mql {
