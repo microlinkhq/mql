@@ -140,14 +140,26 @@ declare module "@microlink/mql" {
   export interface MqlResponse {
     status: MqlStatus;
     data: MqlResponseData;
-    response: Response;
+    // TODO: The response object depends on the context
+    // - Under Node.js context
+    //   import { ServerResponse} from 'http';
+    // - Under browser, It will be global `Response`
+    response: {
+      headers: { [key: string]: string }
+    };
   }
 
   declare function mql(
     url: string,
     opts?: MqlOptions & MicrolinkApiOptions,
-    // it could be https://github.com/sindresorhus/got/tree/v11.8.2#got for server
-    // or https://github.com/sindresorhus/ky/blob/main/source/types/options.ts for browser
+    // TODO: gotOpts could be different depends the environment where the library is being used
+    // - Under Node.js context, types are from `got`
+    //   https://github.com/microlinkhq/mql/blob/fbb55f4758495fa42d35822867763f95ac5ae960/src/node.js#L5
+    //   https://github.com/DefinitelyTyped/DefinitelyTyped/blob/90a4ec8f0a9c76f33fdeeef0118f26c5d3df5cfa/types/got/index.d.ts#L212
+    //
+    // - Under brower context, types are from  `ky`
+    //   https://github.com/microlinkhq/mql/blob/fbb55f4758495fa42d35822867763f95ac5ae960/src/browser.js#L9
+    //   https://github.com/sindresorhus/ky/blob/main/source/types/options.ts#L30
     gotOpts?: object
   ): Promise<MqlResponse>;
 
