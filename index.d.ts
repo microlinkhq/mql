@@ -51,6 +51,7 @@ declare module "@microlink/mql" {
   export type MqlQueryOptions = Partial<{
     attr: string | string[];
     selector: string | string[];
+    evaluate: string | function;
     selectorAll: string | string[];
     type: MqlQueryResponseType;
   }>;
