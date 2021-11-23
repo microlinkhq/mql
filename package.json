@@ -2,7 +2,7 @@
   "name": "@microlink/mql",
   "description": "Microlink Query Language. The official HTTP client to interact with Microlink API for Node.js, browsers & Deno.",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "browser": "src/browser.js",
   "main": "src/node.js",
   "author": {
@@ -18,6 +18,10 @@
     {
       "name": "ndom91",
       "email": "yo@ndo.dev"
+    },
+    {
+      "name": "Gabe O'Leary",
+      "email": "oleary.gabe@gmail.com"
     }
   ],
   "repository": {
