@@ -1,11 +1,7 @@
 /// <reference types="node" />
 
 declare module "@microlink/mql" {
-  export type WaitUntilEvent =
-    | "load"
-    | "domcontentloaded"
-    | "networkidle0"
-    | "networkidle2";
+  export type WaitUntilEvent = "load" | "domcontentloaded" | "networkidle0" | "networkidle2";
 
   export type ScreenshotOptions = Partial<{
     background: string;
@@ -38,9 +34,11 @@ declare module "@microlink/mql" {
     | "image"
     | "ip"
     | "lang"
+    | "lang"
     | "logo"
     | "number"
     | "object"
+    | "publisher"
     | "publisher"
     | "regexp"
     | "string"
@@ -57,30 +55,30 @@ declare module "@microlink/mql" {
   }>;
 
   export interface MqlQuery {
-    [field: string]: MqlQueryOptions | MqlQueryOptions[];
+    [field: string]: MqlQueryOptions;
   }
 
   export type MicrolinkApiOptions = Partial<{
     animations: boolean;
     audio: boolean;
     click: string | string[];
-    colorScheme: "dark" | "light";
     codeScheme: string;
+    colorScheme: "dark" | "light";
     data: MqlQuery;
     device: string;
     embed: string;
     filter: string;
     force: boolean;
-    headers: object;
-    hide: string | string[];
-    iframe: boolean | object;
+    function: string;
+    headers: Record<string, unknown>;
+    iframe: boolean | Record<"maxwidth" | "maxheight", number>;
     insights: boolean | object;
     javascript: boolean;
     mediatype: string;
     meta: boolean;
     modules: string | string[];
     palette: boolean;
-    ping: boolean | object;
+    ping: boolean | Partial<{ audio: boolean }>;
     prerender: boolean | "auto";
     proxy: string;
     remove: string | string[];
@@ -107,33 +105,83 @@ declare module "@microlink/mql" {
     timeout: number;
   }>;
 
-  export interface ImageInfo {
-    width: number;
-    height: number;
-    type: string;
+  export interface BaseMediaInfo {
     url: string;
+    // file type extension.
+    type: string;
+    // file size in bytes.
     size: number;
+    // file size in a human readable format.
     size_pretty: string;
   }
 
-  export interface PlayableMediaInfo extends ImageInfo {
+  export interface PlayableMediaInfo {
+    // source duration in seconds.
     duration: number;
+    // source duration in a human readable format.
     duration_pretty: string;
   }
 
+  export interface VisualMediaInfo {
+    // file width in pixels.
+    width: number;
+    // file height in pixels.
+    height: number;
+  }
+
+  export interface AudioInfo extends BaseMediaInfo, PlayableMediaInfo {
+    // TODO make this a complete type
+    type: "mp3" | string;
+  }
+
+  export interface ImageInfo extends BaseMediaInfo, VisualMediaInfo {
+    // TODO make this a complete type
+    type: "png" | "jpg" | string;
+    palette: string[];
+    background_color: string;
+    color: string;
+    alternative_color: string;
+  }
+
+  export interface VideoInfo extends BaseMediaInfo, PlayableMediaInfo, VisualMediaInfo {
+    // TODO make this a complete type
+    type: "mp4" | string;
+  }
+
+  export interface IframeInfo {
+    html: string;
+    scripts: Record<string, unknown>;
+  }
+
+  export type MqlFunctionResult = {
+    isFulfilled: boolean;
+    isRejected: boolean;
+    value: any;
+  };
+
   export type MqlResponseData = Partial<{
+    // A human-readable representation of the author's name.
     author: string;
+    // An ISO 8601 representation of the date the article was published.
     date: string;
+    // The publisher's chosen description of the article.
     description: string;
+    // An ISO 639-1 representation of the url content language.
     lang: string;
-    publisher: string;
-    title: string;
-    url: string;
-    image: ImageInfo;
-    screenshot: ImageInfo;
+    // An image URL that best represents the publisher brand.
     logo: ImageInfo;
-    video: PlayableMediaInfo;
-    audio: PlayableMediaInfo;
+    // A human-readable representation of the publisher's name.
+    publisher: string;
+    // The publisher's chosen title of the article.
+    title: string;
+    // The URL of the article.
+
+    url: string;
+    image: ImageInfo | null;
+    video: VideoInfo | null;
+    audio: AudioInfo | null;
+    iframe: IframeInfo | null;
+    function: MqlFunctionResult;
   }>;
 
   export type MqlStatus = "success" | "fail";
@@ -146,7 +194,10 @@ declare module "@microlink/mql" {
     //   import { ServerResponse} from 'http';
     // - Under browser, It will be global `Response`
     response: {
-      headers: { [key: string]: string }
+      headers: { [key: string]: string };
+      body?: {
+        statusCode?: number;
+      };
     };
   }
 
