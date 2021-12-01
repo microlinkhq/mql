@@ -3,23 +3,37 @@
 declare module "@microlink/mql" {
   export type WaitUntilEvent = "load" | "domcontentloaded" | "networkidle0" | "networkidle2";
 
-  export type ScreenshotOptions = Partial<{
+  export type AssetOptions = Partial<{
+    click: string | string[];
+    disableAnimations: boolean;
+    filename: string;
+    hide: string | string[];
+    scrollTo: string;
+    viewport: object;
+    waitFor: number | string;
+    waitForSelector: string;
+    waitForTimeout: number;
+    waitUntil: WaitUntilEvent | WaitUntilEvent[];
+  }>;
+
+  export type ScreenshotOptions = AssetOptions & Partial<{
     background: string;
     browser: "light" | "dark";
-    click: string | string[];
-    deviceScaleFactor: number;
-    disableAnimations: boolean;
-    emulation: string;
+    element: string;
     fullPage: boolean;
-    hasTouch: boolean;
+    omitBackground: object;
+    overlay: object;
+    type: "jpeg" | "png";
+  }>;
+
+  export type PdfOptions = AssetOptions & Partial<{
+    format: string;
     height: number;
     hide: string | string[];
-    isLandscape: boolean;
-    isMobile: boolean;
-    scrollTo: string;
-    type: "jpeg" | "png";
-    waitFor: number | string;
-    waitUntil: WaitUntilEvent | WaitUntilEvent[];
+    landscape: string;
+    margin: string | object;
+    pageRanges: string;
+    scale: number;
     width: number;
   }>;
 
@@ -48,8 +62,8 @@ declare module "@microlink/mql" {
 
   export type MqlQueryOptions = Partial<{
     attr: string | string[];
+    evaluate: string | (() => string)
     selector: string | string[];
-    evaluate: string | function;
     selectorAll: string | string[];
     type: MqlQueryResponseType;
   }>;
@@ -59,6 +73,7 @@ declare module "@microlink/mql" {
   }
 
   export type MicrolinkApiOptions = Partial<{
+    adblock: boolean;
     animations: boolean;
     audio: boolean;
     click: string | string[];
@@ -72,13 +87,14 @@ declare module "@microlink/mql" {
     function: string;
     headers: Record<string, unknown>;
     iframe: boolean | Record<"maxwidth" | "maxheight", number>;
-    insights: boolean | object;
+    insights: boolean | Partial<{ lighthouse: boolean | object, technologies: boolean }>;
     javascript: boolean;
-    mediatype: string;
+    mediaType: string;
     meta: boolean;
     modules: string | string[];
     palette: boolean;
-    ping: boolean | Partial<{ audio: boolean }>;
+    pdf: boolean | PdfOptions;
+    ping: boolean | object;
     prerender: boolean | "auto";
     proxy: string;
     remove: string | string[];
@@ -86,15 +102,12 @@ declare module "@microlink/mql" {
     screenshot: boolean | ScreenshotOptions;
     scripts: string | string[];
     scroll: string;
+    staleTtl: string | number;
     styles: string | string[];
     timeout: number;
     ttl: string | number;
     url: string;
     video: boolean;
-    viewport: object;
-    waitForSelector: string;
-    waitForTimeout: number;
-    waitUntil: string | string[];
   }>;
 
   export type MqlOptions = Partial<{
@@ -161,23 +174,23 @@ declare module "@microlink/mql" {
 
   export type MqlResponseData = Partial<{
     // A human-readable representation of the author's name.
-    author: string;
+    author: string | null;
     // An ISO 8601 representation of the date the article was published.
-    date: string;
+    date: string | null;
     // The publisher's chosen description of the article.
-    description: string;
+    description: string | null;
     // An ISO 639-1 representation of the url content language.
-    lang: string;
+    lang: string | null;
     // An image URL that best represents the publisher brand.
-    logo: ImageInfo;
+    logo: ImageInfo | null;
     // A human-readable representation of the publisher's name.
-    publisher: string;
+    publisher: string | null;
     // The publisher's chosen title of the article.
-    title: string;
+    title: string | null;
     // The URL of the article.
-
     url: string;
     image: ImageInfo | null;
+    screenshot: ImageInfo | null;
     video: VideoInfo | null;
     audio: AudioInfo | null;
     iframe: IframeInfo | null;
