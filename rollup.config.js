@@ -3,7 +3,7 @@ import visualizer from 'rollup-plugin-visualizer'
 import commonjs from '@rollup/plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import filesize from 'rollup-plugin-filesize'
-import replace from 'rollup-plugin-replace'
+import replace from '@rollup/plugin-replace'
 import shim from 'rollup-plugin-shim'
 
 const build = ({ format, exports, input } = {}) => {
