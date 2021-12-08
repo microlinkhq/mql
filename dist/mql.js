@@ -324,7 +324,14 @@
 	  }
 	};
 
-	const factory$1 = ({ VERSION, MicrolinkError, isUrlHttp, stringify, got, flatten }) => {
+	const factory$1 = ({
+	  VERSION,
+	  MicrolinkError,
+	  isUrlHttp,
+	  stringify,
+	  got,
+	  flatten
+	}) => {
 	  const assertUrl = (url = '') => {
 	    if (!isUrlHttp(url)) {
 	      const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`;
@@ -357,11 +364,16 @@
 	    } catch (err) {
 	      const { response = {} } = err;
 	      const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response;
+	      const isBuffer = Buffer.isBuffer(rawBody);
 
 	      const body =
-	        isObject(rawBody) && !Buffer.isBuffer(rawBody) ? rawBody : parseBody(rawBody, err, uri);
+	        isObject(rawBody) && !isBuffer
+	          ? rawBody
+	          : parseBody(isBuffer ? rawBody.toString() : rawBody, err, uri);
 
-	      if (body.code === 'EFATALCLIENT' && retryCount++ < 2) return fetchFromApi(apiUrl, opts, retryCount)
+	      if (body.code === 'EFATALCLIENT' && retryCount++ < 2) {
+	        return fetchFromApi(apiUrl, opts, retryCount)
+	      }
 
 	      throw MicrolinkError({
 	        ...body,
@@ -387,7 +399,9 @@
       ...flatten(opts)
     })}`;
 
-	    const headers = isPro ? { ...gotHeaders, 'x-api-key': apiKey } : { ...gotHeaders };
+	    const headers = isPro
+	      ? { ...gotHeaders, 'x-api-key': apiKey }
+	      : { ...gotHeaders };
 	    return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
 	  };
 
@@ -956,7 +970,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.10.6'
+	  VERSION: '0.10.10'
 	});
 
 	return browser;
