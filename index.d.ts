@@ -116,7 +116,7 @@ declare module "@microlink/mql" {
     retry: number;
     cache: Map<string, any>;
     timeout: number;
-  }>;
+  } & AssetOptions>;
 
   export interface BaseMediaInfo {
     url: string;
