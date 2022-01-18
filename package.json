@@ -52,7 +52,7 @@
     "@rollup/plugin-node-resolve": "latest",
     "@rollup/plugin-replace": "latest",
     "abort-controller": "latest",
-    "ava": "latest",
+    "ava": "3",
     "beauty-error": "latest",
     "chalk": "latest",
     "ci-publish": "latest",
