@@ -61,7 +61,7 @@ declare module "@microlink/mql" {
     | "video";
 
   export type MqlQueryOptions = Partial<{
-    attr: string | string[];
+    attr: string | string[] | MqlQuery;
     evaluate: string | (() => string)
     selector: string | string[];
     selectorAll: string | string[];
