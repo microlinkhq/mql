@@ -69,7 +69,7 @@
     "ky": "latest",
     "meow": "latest",
     "nano-staged": "latest",
-    "node-fetch": "2",
+    "node-fetch": "3",
     "npm-check-updates": "latest",
     "nyc": "latest",
     "prettier-standard": "latest",
