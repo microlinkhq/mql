@@ -97,7 +97,7 @@
   ],
   "scripts": {
     "build": "rollup -c rollup.config.js",
-    "build:ky": "[ -f src/ky.js ] || rollup node_modules/ky/index.js --format=umd --name=ky --file=src/ky.js",
+    "build:ky": "[ -f src/ky.js ] || rollup node_modules/ky/distribution/index.js --format=umd --name=ky --file=src/ky.js",
     "clean": "rm -rf node_modules",
     "dev": "npm run build -- -w",
     "lint": "standard",

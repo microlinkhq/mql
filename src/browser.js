@@ -6,7 +6,7 @@ const { encode: stringify } = require('qss')
 const whoops = require('whoops')
 
 const factory = require('./factory')
-const ky = require('./ky')
+const { default: ky } = require('./ky')
 
 const MicrolinkError = whoops('MicrolinkError')
 
