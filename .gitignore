@@ -36,3 +36,4 @@ coverage
 .envrc
 stats.html
 examples
+src/ky.js
