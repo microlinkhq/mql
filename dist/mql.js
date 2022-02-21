@@ -349,10 +349,10 @@
 	  const mapRules = rules => {
 	    if (!isObject(rules)) return
 	    const flatRules = flatten(rules);
-	    return Object.keys(flatRules).reduce(
-	      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key].toString() }),
-	      {}
-	    )
+	    return Object.keys(flatRules).reduce((acc, key) => {
+	      acc[`data.${key}`] = flatRules[key].toString();
+	      return acc
+	    }, {})
 	  };
 
 	  const fetchFromApi = async (apiUrl, opts = {}, retryCount = 0) => {
@@ -854,8 +854,11 @@
 	      const { response } = err;
 	      err.response = {
 	        ...response,
-	        headers: [...response.headers.entries()].reduce(
-	          (acc, [key, value]) => ({ ...acc, [key]: value }),
+	        headers: Array.from(response.headers.entries()).reduce(
+	          (acc, [key, value]) => {
+	            acc[key] = value;
+	            return acc
+	          },
 	          {}
 	        ),
 	        statusCode: response.status,
@@ -872,7 +875,7 @@
 	  stringify,
 	  got,
 	  flatten,
-	  VERSION: '0.10.14'
+	  VERSION: '0.10.15'
 	});
 
 	return browser;
