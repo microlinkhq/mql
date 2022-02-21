@@ -22,8 +22,11 @@ const got = async (url, opts) => {
       const { response } = err
       err.response = {
         ...response,
-        headers: [...response.headers.entries()].reduce(
-          (acc, [key, value]) => ({ ...acc, [key]: value }),
+        headers: Array.from(response.headers.entries()).reduce(
+          (acc, [key, value]) => {
+            acc[key] = value
+            return acc
+          },
           {}
         ),
         statusCode: response.status,

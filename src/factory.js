@@ -47,10 +47,10 @@ const factory = ({
   const mapRules = rules => {
     if (!isObject(rules)) return
     const flatRules = flatten(rules)
-    return Object.keys(flatRules).reduce(
-      (acc, key) => ({ ...acc, [`data.${key}`]: flatRules[key].toString() }),
-      {}
-    )
+    return Object.keys(flatRules).reduce((acc, key) => {
+      acc[`data.${key}`] = flatRules[key].toString()
+      return acc
+    }, {})
   }
 
   const fetchFromApi = async (apiUrl, opts = {}, retryCount = 0) => {
