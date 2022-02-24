@@ -37,3 +37,4 @@ coverage
 stats.html
 examples
 src/ky.js
+dist
