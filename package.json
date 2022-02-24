@@ -101,12 +101,10 @@
     "contributors": "(git-authors-cli && finepack && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
     "dev": "npm run build -- -w",
     "lint": "standard",
-    "postbump": "npm run build",
     "postrelease": "npm run release:tags && npm run release:github && (ci-publish || npm publish --access=public)",
-    "prebump": "echo 'running'",
     "prerelease": "npm run update:check && npm run contributors",
     "pretest": "npm run lint && npm run build:ky",
-    "release": "standard-version -a --dry-run",
+    "release": "standard-version -a",
     "release:github": "conventional-github-releaser -p angular",
     "release:tags": "git push --follow-tags origin HEAD:master",
     "test": "c8 ava --verbose",
@@ -150,6 +148,11 @@
       "dist",
       "src/ky.js"
     ]
+  },
+  "standard-version": {
+    "scripts": {
+      "postbump": "npm run build"
+    }
   },
   "types": "index.d.ts",
   "umd:main": "dist/mql.js",
