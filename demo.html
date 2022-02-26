@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/@microlink/mql@latest/dist/mql.min.js"></script>
+<script>
+  mql('https://kikobeats.com', {
+    data: {
+      avatar: {
+        selector: '#avatar',
+        type: 'image',
+        attr: 'src',
+      }
+    }
+  }).then(({data}) => {
+    console.log(data)
+    // console.log(`The avatar URL is '${data.avatar.url}' (${data.avatar.size_pretty})`)
+  })
+</script>
+
+</body>
+</html>
