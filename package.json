@@ -96,7 +96,7 @@
   ],
   "scripts": {
     "build": "rollup -c rollup.config.js",
-    "build:ky": "[ -f src/ky.js ] || rollup node_modules/ky/distribution/index.js --format=umd --name=ky --file=src/ky.js",
+    "build:ky": "[ -f src/ky.js ] || rollup node_modules/ky/distribution/index.js --format=umd --name=ky --exports=named --file=src/ky.js",
     "clean": "rm -rf node_modules",
     "contributors": "(git-authors-cli && finepack && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
     "dev": "npm run build -- -w",
