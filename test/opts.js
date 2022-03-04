@@ -6,11 +6,15 @@ import clients from './clients'
 
 clients.forEach(({ constructor: mql, target }) => {
   test(`${target} » url`, async t => {
-    const { status, data, response } = await mql('https://kikobeats.com?ref=mql')
+    const { status, data, response } = await mql(
+      'https://kikobeats.com?ref=mql'
+    )
     const { date, ...restData } = data
+
     t.snapshot(status)
     t.snapshot(restData)
     t.snapshot(response.url)
+    t.snapshot(response.statusCode)
   })
 
   if (target === 'node') {

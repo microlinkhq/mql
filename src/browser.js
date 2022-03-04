@@ -15,8 +15,8 @@ const got = async (url, opts) => {
     if (opts.timeout === undefined) opts.timeout = false
     const response = await ky(url, opts)
     const body = await response.json()
-    const { headers, status: statusCode, statusText: statusMessage } = response
-    return { url: response.url, body, headers, statusCode, statusMessage }
+    const { headers, status: statusCode } = response
+    return { url: response.url, body, headers, statusCode }
   } catch (err) {
     if (err.response) {
       const { response } = err
