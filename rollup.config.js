@@ -19,6 +19,8 @@ const build = ({ format, exports, input } = {}) => {
     plugins: [
       replace({
         values: {
+          "const URL = global.window ? window.URL : require('url').URL":
+            'const URL = window.URL',
           __MQL_VERSION__: require('./package.json').version
         }
       }),
