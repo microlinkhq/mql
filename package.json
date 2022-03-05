@@ -114,9 +114,9 @@
   "license": "MIT",
   "ava": {
     "files": [
-      "test/**/*",
       "!test/browser-globals.js",
-      "!test/clients.js"
+      "!test/clients.js",
+      "test/**/*"
     ],
     "require": [
       "esm"
