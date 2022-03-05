@@ -18,8 +18,9 @@ const build = ({ format, exports, input } = {}) => {
     },
     plugins: [
       replace({
-        'process.env.NODE_ENV': JSON.stringify('production'),
-        __MQL_VERSION__: require('./package.json').version
+        values: {
+          __MQL_VERSION__: require('./package.json').version
+        }
       }),
       shim({
         'clean-stack': 'export default str => str'
