@@ -1,6 +1,6 @@
 'use strict'
 
-const isUrlHttp = require('is-url-http/lightweight')
+const urlHttp = require('url-http/lightweight')
 const { flattie: flatten } = require('flattie')
 const { encode: stringify } = require('qss')
 const whoops = require('whoops')
@@ -39,7 +39,7 @@ const got = async (url, opts) => {
 
 module.exports = factory({
   MicrolinkError,
-  isUrlHttp,
+  urlHttp,
   stringify,
   got,
   flatten,
