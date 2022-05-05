@@ -98,7 +98,7 @@
     "build": "rollup -c rollup.config.js",
     "build:ky": "[ -f src/ky.js ] || rollup node_modules/ky/distribution/index.js --format=umd --name=ky --exports=named --file=src/ky.js",
     "clean": "rm -rf node_modules",
-    "contributors": "(git-authors-cli && finepack && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
+    "contributors": "(git-authors-cli && finepack --sort-ignore-object-at ava && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
     "dev": "npm run build -- -w",
     "lint": "standard",
     "postrelease": "npm run release:tags && npm run release:github && (ci-publish || npm publish --access=public)",
@@ -114,9 +114,9 @@
   "license": "MIT",
   "ava": {
     "files": [
+      "test/**/*",
       "!test/browser-globals.js",
-      "!test/clients.js",
-      "test/**/*"
+      "!test/clients.js"
     ],
     "require": [
       "esm"
