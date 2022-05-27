@@ -20,12 +20,12 @@
       "email": "yo@ndo.dev"
     },
     {
-      "name": "Gabe O'Leary",
-      "email": "oleary.gabe@gmail.com"
-    },
-    {
       "name": "Askar Yusupov",
       "email": "devex.soft@gmail.com"
+    },
+    {
+      "name": "Gabe O'Leary",
+      "email": "oleary.gabe@gmail.com"
     }
   ],
   "repository": {
