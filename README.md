@@ -2,7 +2,7 @@
   <img src="https://cdn.microlink.io/banner/mql.png" alt="microlink logo">
 </div>
 
-###### [Documentation](https://microlink.io/mql) | [CLI](https://github.com/microlinkhq/cli) | [Chat](https://microlink.io/chat)
+###### [Documentation](https://microlink.io/mql) | [CLI](https://github.com/microlinkhq/cli) | [Playground](https://mql.microlink.io) | [Chat](https://microlink.io/chat)
 
 ## License
 
