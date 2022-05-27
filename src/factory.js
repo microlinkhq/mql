@@ -5,6 +5,12 @@ const ENDPOINT = {
 
 const isObject = input => input !== null && typeof input === 'object'
 
+const isBuffer = input =>
+  input != null &&
+  input.constructor != null &&
+  typeof input.constructor.isBuffer === 'function' &&
+  input.constructor.isBuffer(input)
+
 const parseBody = (input, error, url) => {
   try {
     return JSON.parse(input)
@@ -62,12 +68,12 @@ const factory = ({
     } catch (err) {
       const { response = {} } = err
       const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response
-      const isBuffer = Buffer.isBuffer(rawBody)
+      const isBodyBuffer = isBuffer(rawBody)
 
       const body =
-        isObject(rawBody) && !isBuffer
+        isObject(rawBody) && !isBodyBuffer
           ? rawBody
-          : parseBody(isBuffer ? rawBody.toString() : rawBody, err, uri)
+          : parseBody(isBodyBuffer ? rawBody.toString() : rawBody, err, uri)
 
       if (body.code === 'EFATALCLIENT' && retryCount++ < 2) {
         return fetchFromApi(apiUrl, opts, retryCount)

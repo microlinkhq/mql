@@ -15,9 +15,12 @@ clients.forEach(({ constructor: mql, target }) => {
 
     const endpoint = await listen(server)
 
-    const error = await t.throwsAsync(mql('https://microlink.io', { endpoint, retry: 0 }), {
-      instanceOf: mql.MicrolinkError
-    })
+    const error = await t.throwsAsync(
+      mql('https://microlink.io', { endpoint, retry: 0 }),
+      {
+        instanceOf: mql.MicrolinkError
+      }
+    )
 
     t.true(!!error.url)
     t.true(!!error.code)
@@ -28,10 +31,14 @@ clients.forEach(({ constructor: mql, target }) => {
     t.true(!!error.message)
     t.true(!!error.description)
   })
+
   test(`${target} » server side generic error`, async t => {
-    const error = await t.throwsAsync(mql('https://microlink.io', { ttl: 100, retry: 0 }), {
-      instanceOf: mql.MicrolinkError
-    })
+    const error = await t.throwsAsync(
+      mql('https://microlink.io', { ttl: 100, retry: 0 }),
+      {
+        instanceOf: mql.MicrolinkError
+      }
+    )
 
     t.true(!!error.url)
     t.true(!!error.code)
@@ -42,6 +49,7 @@ clients.forEach(({ constructor: mql, target }) => {
     t.true(!!error.message)
     t.true(!!error.description)
   })
+
   test(`${target} » server side timeout`, async t => {
     const error = await t.throwsAsync(
       mql('https://kikobeats.com', {
@@ -52,6 +60,21 @@ clients.forEach(({ constructor: mql, target }) => {
       }),
       { instanceOf: mql.MicrolinkError }
     )
+
+    t.true(!!error.url)
+    t.true(!!error.code)
+    t.true(!!error.status)
+    t.true(!!error.more)
+    t.true(!!error.statusCode)
+    t.true(!!error.data)
+    t.true(!!error.message)
+    t.true(!!error.description)
+  })
+
+  test(`${target} » EINVALURL`, async t => {
+    const error = await t.throwsAsync(mql('https://invalid-link', {}), {
+      instanceOf: mql.MicrolinkError
+    })
 
     t.true(!!error.url)
     t.true(!!error.code)
