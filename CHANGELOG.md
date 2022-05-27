@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.21](https://github.com/microlinkhq/mql/compare/v0.10.20...v0.10.21) (2022-05-27)
+
+
+### Bug Fixes
+
+* typecheck Buffer without using Buffer ([69ee222](https://github.com/microlinkhq/mql/commit/69ee2222c4f23cfb9f703369cac7e69bc6b79bef))
+
 ### [0.10.20](https://github.com/microlinkhq/mql/compare/v0.10.19...v0.10.20) (2022-04-28)
 
 ### [0.10.19](https://github.com/microlinkhq/mql/compare/v0.10.18...v0.10.19) (2022-03-05)
