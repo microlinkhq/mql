@@ -67,7 +67,12 @@ const factory = ({
         : { ...response.body, response }
     } catch (err) {
       const { response = {} } = err
-      const { statusCode, body: rawBody, headers, url: uri = apiUrl } = response
+      const {
+        statusCode,
+        body: rawBody,
+        headers = {},
+        url: uri = apiUrl
+      } = response
       const isBodyBuffer = isBuffer(rawBody)
 
       const body =
