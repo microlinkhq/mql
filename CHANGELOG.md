@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.26](https://github.com/microlinkhq/mql/compare/v0.10.25...v0.10.26) (2022-06-27)
+
+
+### Bug Fixes
+
+* ensure headers is an object ([31fa807](https://github.com/microlinkhq/mql/commit/31fa8079015c4544a153e262a6a712587a3dfc26))
+
 ### [0.10.25](https://github.com/microlinkhq/mql/compare/v0.10.24...v0.10.25) (2022-06-14)
 
 ### [0.10.24](https://github.com/microlinkhq/mql/compare/v0.10.23...v0.10.24) (2022-06-14)
