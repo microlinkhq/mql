@@ -91,7 +91,7 @@
   "files": [
     "dist",
     "index.d.ts",
-    "lightweight.js",
+    "lightweight",
     "src"
   ],
   "scripts": {
