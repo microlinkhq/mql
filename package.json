@@ -74,7 +74,6 @@
     "prettier-standard": "latest",
     "rollup": "latest",
     "rollup-plugin-filesize": "latest",
-    "rollup-plugin-shim": "latest",
     "rollup-plugin-terser": "latest",
     "rollup-plugin-visualizer": "latest",
     "simple-git-hooks": "latest",

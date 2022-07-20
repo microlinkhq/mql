@@ -4,7 +4,6 @@ import commonjs from '@rollup/plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import filesize from 'rollup-plugin-filesize'
 import replace from '@rollup/plugin-replace'
-import shim from 'rollup-plugin-shim'
 
 const build = ({ format, exports, input } = {}) => {
   const base = ({ file, compress = false }) => ({
@@ -23,9 +22,6 @@ const build = ({ format, exports, input } = {}) => {
             'const URL = globalThis.URL',
           __MQL_VERSION__: require('./package.json').version
         }
-      }),
-      shim({
-        'clean-stack': 'export default str => str'
       }),
       nodeResolve({
         mainFields: ['browser', 'module', 'main']
