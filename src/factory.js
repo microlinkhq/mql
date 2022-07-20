@@ -84,7 +84,7 @@ const factory = ({
         return fetchFromApi(apiUrl, opts, retryCount)
       }
 
-      throw MicrolinkError({
+      throw new MicrolinkError({
         ...body,
         message: body.message,
         url: uri,
