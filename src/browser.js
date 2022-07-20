@@ -3,12 +3,21 @@
 const urlHttp = require('url-http/lightweight')
 const { flattie: flatten } = require('flattie')
 const { encode: stringify } = require('qss')
-const whoops = require('whoops')
 
 const factory = require('./factory')
 const { default: ky } = require('./ky')
 
-const MicrolinkError = whoops('MicrolinkError')
+class MicrolinkError extends Error {
+  name = 'MicrolinkError'
+  constructor (props) {
+    super()
+    Object.assign(this, props)
+    this.description = this.message
+    this.message = this.code
+      ? `${this.code}, ${this.description}`
+      : this.description
+  }
+}
 
 const got = async (url, opts) => {
   try {
