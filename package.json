@@ -56,7 +56,7 @@
     "@rollup/plugin-node-resolve": "latest",
     "@rollup/plugin-replace": "latest",
     "abort-controller": "latest",
-    "ava": "3",
+    "ava": "5",
     "beauty-error": "latest",
     "c8": "latest",
     "chalk": "latest",
