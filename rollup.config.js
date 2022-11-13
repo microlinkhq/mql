@@ -1,15 +1,16 @@
 import nodeResolve from '@rollup/plugin-node-resolve'
-import visualizer from 'rollup-plugin-visualizer'
+import { visualizer } from 'rollup-plugin-visualizer'
 import commonjs from '@rollup/plugin-commonjs'
-import { terser } from 'rollup-plugin-terser'
 import filesize from 'rollup-plugin-filesize'
 import replace from '@rollup/plugin-replace'
+import terser from '@rollup/plugin-terser'
 
-const build = ({ format, exports, input } = {}) => {
-  const base = ({ file, compress = false }) => ({
-    input,
+const build = ({ format, file }) => {
+  const compress = file.includes('.min.')
+
+  return {
+    input: './src/browser.js',
     output: {
-      exports,
       name: 'mql',
       format,
       file,
@@ -31,15 +32,14 @@ const build = ({ format, exports, input } = {}) => {
       filesize(),
       visualizer()
     ]
-  })
-
-  return [
-    base({ file: 'dist/mql.js', compress: false }),
-    base({ file: 'dist/mql.min.js', compress: true })
-  ]
+  }
 }
 
-export default build({
-  format: 'umd',
-  input: './src/browser.js'
-})
+const builds = [
+  build({ format: 'umd', file: 'dist/mql.js' }),
+  build({ format: 'umd', file: 'dist/mql.min.js' }),
+  build({ format: 'es', file: 'dist/mql.mjs' }),
+  build({ format: 'es', file: 'dist/mql.min.mjs' })
+]
+
+export default builds

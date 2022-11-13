@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Microlink Query Language</title>
+  <link rel="shortcut icon" href="https://cdn.microlink.io/logo/favicon.ico" type="image/x-icon" />
 
   <style>
     body {
@@ -65,8 +66,9 @@
     }
 
   </script>
-  <script src="./dist/mql.js"></script>
-  <script>
+  <script type="module">
+    import mql from './dist/mql.min.mjs'
+
     function getBrowser() {
       var ua = navigator.userAgent,
         tem, M = ua.match(
