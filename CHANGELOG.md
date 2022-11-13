@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.30](https://github.com/microlinkhq/mql/compare/v0.10.29...v0.10.30) (2022-11-13)
+
+
+### Bug Fixes
+
+* avoid class field declaration ([070ef61](https://github.com/microlinkhq/mql/commit/070ef61cd6e40a41cf7b567fb36943984bc4a3a5))
+
 ### [0.10.29](https://github.com/microlinkhq/mql/compare/v0.10.28...v0.10.29) (2022-11-13)
 
 
