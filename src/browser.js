@@ -8,9 +8,9 @@ const factory = require('./factory')
 const { default: ky } = require('./ky')
 
 class MicrolinkError extends Error {
-  name = 'MicrolinkError'
   constructor (props) {
     super()
+    this.name = 'MicrolinkError'
     Object.assign(this, props)
     this.description = this.message
     this.message = this.code
