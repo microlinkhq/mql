@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.29](https://github.com/microlinkhq/mql/compare/v0.10.28...v0.10.29) (2022-11-13)
+
+
+### Features
+
+* add ES bundle ([8f0935c](https://github.com/microlinkhq/mql/commit/8f0935cabcc447e5cce33a3a4d22743f00cd5156))
+
 ### [0.10.28](https://github.com/microlinkhq/mql/compare/v0.10.27...v0.10.28) (2022-07-20)
 
 ### [0.10.27](https://github.com/microlinkhq/mql/compare/v0.10.26...v0.10.27) (2022-07-14)
