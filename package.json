@@ -5,7 +5,6 @@
   "version": "0.10.30",
   "browser": "src/browser.js",
   "main": "src/node.js",
-  "module": "dist/mql.mjs",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
     "name": "Kiko Beats",
