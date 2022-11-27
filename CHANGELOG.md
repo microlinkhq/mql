@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.31](https://github.com/microlinkhq/mql/compare/v0.10.30...v0.10.31) (2022-11-27)
+
+
+### Bug Fixes
+
+* remove module field ([00efd9c](https://github.com/microlinkhq/mql/commit/00efd9cf64c882b5cc8849f967ad9336ff7ea754))
+
 ### [0.10.30](https://github.com/microlinkhq/mql/compare/v0.10.29...v0.10.30) (2022-11-13)
 
 
