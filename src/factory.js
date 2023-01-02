@@ -1,6 +1,6 @@
 const ENDPOINT = {
-  FREE: 'https://api.microlink.io',
-  PRO: 'https://pro.microlink.io'
+  FREE: 'https://api.microlink.io/',
+  PRO: 'https://pro.microlink.io/'
 }
 
 const isObject = input => input !== null && typeof input === 'object'
@@ -102,11 +102,11 @@ const factory = ({
     const isPro = !!apiKey
     const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
 
-    const apiUrl = `${apiEndpoint}?${stringify({
+    const apiUrl = `${apiEndpoint}?${new URLSearchParams({
       url,
       ...mapRules(data),
       ...flatten(opts)
-    })}`
+    }).toString()}`
 
     const headers = isPro
       ? { ...gotHeaders, 'x-api-key': apiKey }

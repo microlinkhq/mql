@@ -2,7 +2,6 @@
 
 const urlHttp = require('url-http/lightweight')
 const { flattie: flatten } = require('flattie')
-const { encode: stringify } = require('qss')
 
 const factory = require('./factory')
 const { default: ky } = require('./ky')
@@ -49,7 +48,6 @@ const got = async (url, opts) => {
 module.exports = factory({
   MicrolinkError,
   urlHttp,
-  stringify,
   got,
   flatten,
   VERSION: '__MQL_VERSION__'
