@@ -28,14 +28,7 @@ const parseBody = (input, error, url) => {
   }
 }
 
-const factory = ({
-  VERSION,
-  MicrolinkError,
-  urlHttp,
-  stringify,
-  got,
-  flatten
-}) => {
+const factory = ({ VERSION, MicrolinkError, urlHttp, got, flatten }) => {
   const assertUrl = (url = '') => {
     if (!urlHttp(url)) {
       const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
