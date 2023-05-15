@@ -56,6 +56,7 @@
     "@rollup/plugin-replace": "latest",
     "@rollup/plugin-terser": "latest",
     "abort-controller": "latest",
+    "async-listen": "latest",
     "ava": "3",
     "beauty-error": "latest",
     "c8": "latest",
@@ -80,7 +81,6 @@
     "standard-markdown": "latest",
     "standard-version": "latest",
     "stream-to-promise": "latest",
-    "test-listen": "latest",
     "web-streams-polyfill": "latest"
   },
   "engines": {

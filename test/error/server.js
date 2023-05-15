@@ -1,6 +1,6 @@
 'use strict'
 
-import listen from 'test-listen'
+import { listen } from 'async-listen'
 import http from 'http'
 import test from 'ava'
 
