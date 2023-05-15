@@ -93,7 +93,7 @@
     "src"
   ],
   "scripts": {
-    "build": "rollup -c rollup.config.js --bundleConfigAsCjs",
+    "build": "node -v && rollup -c rollup.config.js --bundleConfigAsCjs",
     "build:kys": "[ -f src/ky.js ] || rollup node_modules/ky/distribution/index.js --format=umd --name=ky --exports=named --file=src/ky.js",
     "clean": "rm -rf node_modules",
     "clean:build": "rm -rf dist",
