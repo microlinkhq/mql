@@ -73,7 +73,7 @@
     "node-fetch": "2",
     "npm-check-updates": "latest",
     "prettier-standard": "latest",
-    "rollup": "3.23.0",
+    "rollup": "latest",
     "rollup-plugin-filesize": "latest",
     "rollup-plugin-visualizer": "latest",
     "simple-git-hooks": "latest",
