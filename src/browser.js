@@ -20,6 +20,7 @@ class MicrolinkError extends Error {
 
 const got = async (url, opts) => {
   try {
+    if (opts.retry > 0) opts.retry = opts.retry + 1
     if (opts.timeout === undefined) opts.timeout = false
     const response = await ky(url, opts)
     const body = await response.json()
