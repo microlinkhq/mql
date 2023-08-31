@@ -52,7 +52,7 @@ const factory = ({ VERSION, MicrolinkError, urlHttp, got, flatten }) => {
     }, {})
   }
 
-  const fetchFromApi = async (apiUrl, opts = {}, retryCount = 0) => {
+  const fetchFromApi = async (apiUrl, opts = {}) => {
     try {
       const response = await got(apiUrl, opts)
       return opts.responseType === 'buffer'
@@ -72,10 +72,6 @@ const factory = ({ VERSION, MicrolinkError, urlHttp, got, flatten }) => {
         isObject(rawBody) && !isBodyBuffer
           ? rawBody
           : parseBody(isBodyBuffer ? rawBody.toString() : rawBody, err, uri)
-
-      if (body.code === 'EFATALCLIENT' && retryCount++ < 2) {
-        return fetchFromApi(apiUrl, opts, retryCount)
-      }
 
       throw new MicrolinkError({
         ...body,
