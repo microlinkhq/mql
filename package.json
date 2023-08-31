@@ -51,6 +51,7 @@
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
+    "@ksmithut/prettier-standard": "latest",
     "@rollup/plugin-commonjs": "latest",
     "@rollup/plugin-node-resolve": "latest",
     "@rollup/plugin-replace": "latest",
@@ -130,7 +131,8 @@
   },
   "nano-staged": {
     "*.js,!*.min.js,": [
-      "prettier-standard"
+      "prettier-standard",
+      "standard --fix"
     ],
     "*.md": [
       "standard-markdown"
