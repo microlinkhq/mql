@@ -82,6 +82,7 @@
     "standard-markdown": "latest",
     "standard-version": "latest",
     "stream-to-promise": "latest",
+    "tsd": "latest",
     "web-streams-polyfill": "latest"
   },
   "engines": {
@@ -100,7 +101,7 @@
     "clean:build": "rm -rf dist",
     "contributors": "(npx git-authors-cli && npx finepack --sort-ignore-object-at ava && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
     "dev": "npm run build -- -w",
-    "lint": "standard",
+    "lint": "standard && tsd",
     "postrelease": "npm run release:tags && npm run release:github && (ci-publish || npm publish --access=public)",
     "prebuild": "npm run clean:build && npm run build:kys",
     "prerelease": "npm run update:check",
@@ -155,6 +156,9 @@
     "scripts": {
       "postbump": "npm run build"
     }
+  },
+  "tsd": {
+    "directory": "test"
   },
   "types": "index.d.ts",
   "umd:main": "dist/mql.js",
