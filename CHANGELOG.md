@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.34](https://github.com/microlinkhq/mql/compare/v0.10.33...v0.10.34) (2023-09-01)
+
+
+### Bug Fixes
+
+* unify retry interface ([#130](https://github.com/microlinkhq/mql/issues/130)) ([64e4aff](https://github.com/microlinkhq/mql/commit/64e4aff438ece5f7c1ce3015fdc094950601f7b6))
+
 ### [0.10.33](https://github.com/microlinkhq/mql/compare/v0.10.32...v0.10.33) (2023-04-06)
 
 ### [0.10.32](https://github.com/microlinkhq/mql/compare/v0.10.31...v0.10.32) (2023-01-02)
