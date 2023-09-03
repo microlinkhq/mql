@@ -1,4 +1,4 @@
-import { MqlPayload, MqlOptions, MicrolinkApiOptions  } from './lightweight/index.js'
+import { MqlPayload, MqlOptions, MicrolinkApiOptions } from './lightweight'
 
 type MqlResponse = MqlPayload & {
   response: {
