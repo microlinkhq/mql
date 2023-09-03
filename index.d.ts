@@ -1,6 +1,8 @@
 import { MqlPayload, MqlOptions, MicrolinkApiOptions } from './lightweight'
 
-type MqlResponse = MqlPayload & {
+export { MqlPayload } from './lightweight'
+
+export type MqlResponse = MqlPayload & {
   response: {
     url: string;
     isFromCache?: boolean;

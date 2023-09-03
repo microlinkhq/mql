@@ -154,7 +154,7 @@ export type MqlPayload = {
   url?: string
 }
 
-type MqlResponse = MqlPayload & {
+export type MqlResponse = MqlPayload & {
   response: {
     url: string;
     statusCode: number;
