@@ -1,4 +1,4 @@
 {
-  "main": "../src/browser.js",
-  "types": "../index.d.ts"
+  "main": "../src/lightweight.js",
+  "types": "index.d.ts"
 }

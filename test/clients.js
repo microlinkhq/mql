@@ -1,9 +1,9 @@
 import './browser-globals'
 
-import mqlBrowser from '../src/browser'
+import mqlLightweight from '../src/lightweight'
 import mqlNode from '../src/node'
 
 export default [
   { constructor: mqlNode, target: 'node' },
-  { constructor: mqlBrowser, target: 'browser' }
+  { constructor: mqlLightweight, target: 'lightweight' }
 ]

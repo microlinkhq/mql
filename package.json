@@ -3,7 +3,7 @@
   "description": "Microlink Query Language. The official HTTP client to interact with Microlink API for Node.js, browsers & Deno.",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
   "version": "0.10.34",
-  "browser": "src/browser.js",
+  "browser": "src/lightweight.js",
   "main": "src/node.js",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",

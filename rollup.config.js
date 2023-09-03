@@ -9,7 +9,7 @@ const build = ({ format, file }) => {
   const compress = file.includes('.min.')
 
   return {
-    input: './src/browser.js',
+    input: './src/lightweight.js',
     output: {
       name: 'mql',
       format,

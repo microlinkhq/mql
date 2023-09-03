@@ -1,6 +1,4 @@
-// import { expectType } from 'tsd'
-
-import mql from '../index'
+import mql from '../lightweight'
 
 /** mql */
 mql('https://example.com', {
@@ -92,3 +90,18 @@ mql('https://example.com', {
   audio: true,
   video: true
 })
+
+/** response */
+
+const result = await mql('https://example.com', { meta: true })
+console.log(result.status)
+console.log(result.data)
+console.log(result.statusCode)
+console.log(result.headers)
+console.log(result.more)
+console.log(result.code)
+console.log(result.url)
+
+/** stream */
+
+// mql.stream('https://example.com', { meta: true })
