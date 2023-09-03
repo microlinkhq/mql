@@ -100,6 +100,7 @@ type IframeInfo = {
 }
 
 type MediaInfo = {
+  url: string;
   type?: string;
   palette?: string[];
   background_color?: string;
@@ -107,8 +108,8 @@ type MediaInfo = {
   alternative_color?: string;
   width?: number;
   height?: number;
-   duration?: number;
-   duration_pretty?: string;
+  duration?: number;
+  duration_pretty?: string;
 }
 
 type MqlResponseData = {
