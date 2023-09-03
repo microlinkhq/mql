@@ -1,5 +1,3 @@
-import './browser-globals'
-
 import mqlLightweight from '../src/lightweight'
 import mqlNode from '../src/node'
 
