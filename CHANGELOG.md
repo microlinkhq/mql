@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.38](https://github.com/microlinkhq/mql/compare/v0.10.37...v0.10.38) (2023-09-03)
+
+
+### Bug Fixes
+
+* add url type for media ([fb898dc](https://github.com/microlinkhq/mql/commit/fb898dcbb4df578657ec05266f8576e328f9e92c))
+
 ### [0.10.37](https://github.com/microlinkhq/mql/compare/v0.10.36...v0.10.37) (2023-09-03)
 
 ### [0.10.36](https://github.com/microlinkhq/mql/compare/v0.10.35...v0.10.36) (2023-09-03)
