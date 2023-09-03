@@ -3,7 +3,7 @@
   "description": "Microlink Query Language. The official HTTP client to interact with Microlink API for Node.js, browsers & Deno.",
   "homepage": "https://nicedoc.io/microlinkhq/mql",
   "version": "0.10.34",
-  "browser": "src/browser.js",
+  "browser": "src/lightweight.js",
   "main": "src/node.js",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
@@ -56,22 +56,15 @@
     "@rollup/plugin-node-resolve": "latest",
     "@rollup/plugin-replace": "latest",
     "@rollup/plugin-terser": "latest",
-    "abort-controller": "latest",
     "async-listen": "latest",
     "ava": "3",
-    "beauty-error": "latest",
     "c8": "latest",
-    "chalk": "latest",
     "ci-publish": "latest",
     "conventional-github-releaser": "latest",
-    "eachdir": "latest",
     "esm": "latest",
-    "exists-file": "latest",
     "git-authors-cli": "latest",
     "ky": "latest",
-    "meow": "latest",
     "nano-staged": "latest",
-    "node-fetch": "2",
     "npm-check-updates": "latest",
     "prettier-standard": "latest",
     "rollup": "latest",
@@ -82,8 +75,7 @@
     "standard-markdown": "latest",
     "standard-version": "latest",
     "stream-to-promise": "latest",
-    "tsd": "latest",
-    "web-streams-polyfill": "latest"
+    "tsd": "latest"
   },
   "engines": {
     "node": ">= 12"
