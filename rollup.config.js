@@ -19,8 +19,6 @@ const build = ({ format, file }) => {
     plugins: [
       replace({
         values: {
-          "const URL = globalThis ? globalThis.URL : require('url').URL":
-            'const URL = globalThis.URL',
           __MQL_VERSION__: require('./package.json').version
         }
       }),
