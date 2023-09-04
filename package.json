@@ -4,10 +4,19 @@
   "homepage": "https://microlink.io/mql",
   "version": "0.10.38",
   "types": "index.d.ts",
-  "main": "src/node.js",
   "browser": "src/lightweight.js",
   "umd:main": "dist/mql.js",
   "unpkg": "dist/mql.js",
+  "exports": {
+    ".": {
+      "import": "./dist/mql.js",
+      "require": "./src/node.js"
+    },
+    "./lightweight": {
+      "import": "./dist/mql.js",
+      "require": "./src/lightweight.js"
+    }
+  },
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
     "name": "Kiko Beats",
