@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.39](https://github.com/microlinkhq/mql/compare/v0.10.38...v0.10.39) (2023-09-04)
+
+
+### Bug Fixes
+
+* prefer exports over main ([bab451c](https://github.com/microlinkhq/mql/commit/bab451cb1715117b0905984d2b43cd92ec242ac1))
+
 ### [0.10.38](https://github.com/microlinkhq/mql/compare/v0.10.37...v0.10.38) (2023-09-03)
 
 
