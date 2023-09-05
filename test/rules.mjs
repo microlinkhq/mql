@@ -2,7 +2,7 @@
 
 import test from 'ava'
 
-import clients from './clients'
+import clients from './clients.mjs'
 
 clients.forEach(({ constructor: mql, target }) => {
   test(`${target} » no rules`, t => {

@@ -4,7 +4,7 @@ import { listen } from 'async-listen'
 import http from 'http'
 import test from 'ava'
 
-import clients from '../clients'
+import clients from '../clients.mjs'
 
 clients.forEach(({ constructor: mql, target }) => {
   test(`${target} » server side unexpected`, async t => {
