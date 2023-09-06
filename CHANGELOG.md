@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.11.1](https://github.com/microlinkhq/mql/compare/v0.11.0...v0.11.1) (2023-09-06)
+
+
+### Bug Fixes
+
+* **esm:** ensure indvidual methods are exported ([#135](https://github.com/microlinkhq/mql/issues/135)) ([9212276](https://github.com/microlinkhq/mql/commit/9212276bae897dfed7279f7be6bb96a0572f6f8d))
+
 ## [0.11.0](https://github.com/microlinkhq/mql/compare/v0.10.39...v0.11.0) (2023-09-06)
 
 ### [0.10.39](https://github.com/microlinkhq/mql/compare/v0.10.38...v0.10.39) (2023-09-04)
