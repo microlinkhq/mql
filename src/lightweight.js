@@ -46,10 +46,16 @@ const got = async (url, opts) => {
   }
 }
 
-module.exports = factory({
+const mql = factory({
   MicrolinkError,
   urlHttp,
   got,
   flatten,
   VERSION: '__MQL_VERSION__'
 })
+
+module.exports = mql
+module.exports.MicrolinkError = mql.MicrolinkError
+module.exports.getApiUrl = mql.getApiUrl
+module.exports.mapRules = mql.mapRules
+module.exports.version = mql.version
