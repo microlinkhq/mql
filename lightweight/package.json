@@ -1,4 +1,5 @@
 {
-  "main": "../src/lightweight.js",
+  "main": "index.js",
+  "type": "module",
   "types": "index.d.ts"
 }

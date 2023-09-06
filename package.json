@@ -3,18 +3,14 @@
   "description": "Microlink Query Language. The official HTTP client to interact with Microlink API for Node.js, browsers & Deno.",
   "homepage": "https://microlink.io/mql",
   "version": "0.10.39",
-  "types": "index.d.ts",
+  "types": "lightweight/index.d.ts",
   "browser": "src/lightweight.js",
   "umd:main": "dist/mql.js",
   "unpkg": "dist/mql.js",
   "exports": {
     ".": {
-      "import": "./dist/mql.js",
+      "import": "./lightweight/index.js",
       "require": "./src/node.js"
-    },
-    "./lightweight": {
-      "import": "./dist/mql.js",
-      "require": "./src/lightweight.js"
     }
   },
   "author": {
@@ -69,11 +65,12 @@
     "@rollup/plugin-replace": "latest",
     "@rollup/plugin-terser": "latest",
     "async-listen": "latest",
-    "ava": "3",
+    "ava": "latest",
     "c8": "latest",
     "ci-publish": "latest",
     "conventional-github-releaser": "latest",
     "esm": "latest",
+    "execa": "~8.0.1",
     "git-authors-cli": "latest",
     "ky": "latest",
     "nano-staged": "latest",
@@ -81,6 +78,8 @@
     "prettier-standard": "latest",
     "rollup": "latest",
     "rollup-plugin-filesize": "latest",
+    "rollup-plugin-magic-string": "~1.0.4",
+    "rollup-plugin-rewrite": "~0.0.4",
     "rollup-plugin-visualizer": "latest",
     "simple-git-hooks": "latest",
     "standard": "latest",
@@ -93,16 +92,17 @@
     "node": ">= 12"
   },
   "files": [
-    "dist",
-    "index.d.ts",
     "lightweight",
-    "src"
+    "src/factory.js",
+    "src/index.d.ts",
+    "src/ky.js",
+    "src/node.js"
   ],
   "scripts": {
     "build": "rollup -c rollup.config.js --bundleConfigAsCjs",
     "build:kys": "[ -f src/ky.js ] || rollup node_modules/ky/distribution/index.js --format=umd --name=ky --exports=named --file=src/ky.js",
     "clean": "rm -rf node_modules",
-    "clean:build": "rm -rf dist",
+    "clean:build": "rm -rf dist lightweight/index.js",
     "contributors": "(npx git-authors-cli && npx finepack --sort-ignore-object-at ava && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
     "dev": "npm run build -- -w",
     "lint": "standard && tsd",
@@ -121,11 +121,7 @@
   "ava": {
     "files": [
       "test/**/*",
-      "!test/browser-globals.js",
-      "!test/clients.js"
-    ],
-    "require": [
-      "esm"
+      "!test/clients.mjs"
     ],
     "timeout": "1m"
   },
@@ -153,6 +149,7 @@
   "standard": {
     "ignore": [
       "dist",
+      "lightweight/index.js",
       "src/ky.js"
     ]
   },

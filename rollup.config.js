@@ -3,29 +3,31 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import commonjs from '@rollup/plugin-commonjs'
 import filesize from 'rollup-plugin-filesize'
 import replace from '@rollup/plugin-replace'
+import rewrite from 'rollup-plugin-rewrite'
 import terser from '@rollup/plugin-terser'
+import MagicString from 'magic-string'
 
-const build = ({ format, file }) => {
-  const compress = file.includes('.min.')
+const rewriteFlattie = () =>
+  rewrite({
+    find: /.* from 'flattie'/gm,
+    replace: (match) => new MagicString(match[0])
+      .replace('import', 'import * as')
+      .toString()
+  })
 
+const build = ({ input, output, plugins = [], compress }) => {
   return {
-    input: './src/lightweight.js',
-    output: {
-      name: 'mql',
-      format,
-      file,
-      sourcemap: true
-    },
+    input,
+    output,
     plugins: [
       replace({
         values: {
+          "require('../package.json').version": "'__MQL_VERSION__'",
           __MQL_VERSION__: require('./package.json').version
         }
       }),
-      nodeResolve({
-        mainFields: ['browser', 'module', 'main']
-      }),
       commonjs(),
+      ...plugins,
       compress && terser(),
       filesize(),
       visualizer()
@@ -34,10 +36,22 @@ const build = ({ format, file }) => {
 }
 
 const builds = [
-  build({ format: 'umd', file: 'dist/mql.js' }),
-  build({ format: 'umd', file: 'dist/mql.min.js' }),
-  build({ format: 'es', file: 'dist/mql.mjs' }),
-  build({ format: 'es', file: 'dist/mql.min.mjs' })
+  build({
+    input: './src/node.js',
+    output: { file: 'dist/node.mjs', format: 'es' },
+    plugins: [rewriteFlattie()]
+  }),
+  build({
+    compress: true,
+    input: 'src/lightweight.js',
+    output: { file: 'lightweight/index.js', format: 'es' },
+    plugins: [
+      rewriteFlattie(),
+      nodeResolve({
+        mainFields: ['browser', 'module', 'main']
+      })
+    ]
+  })
 ]
 
 export default builds

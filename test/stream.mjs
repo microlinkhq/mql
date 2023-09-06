@@ -3,7 +3,7 @@
 import test from 'ava'
 import toPromise from 'stream-to-promise'
 
-import clients from './clients'
+import clients from './clients.mjs'
 
 clients
   .filter(({ target }) => target === 'node')
