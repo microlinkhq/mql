@@ -4,6 +4,7 @@
   "homepage": "https://microlink.io/mql",
   "version": "0.11.1",
   "types": "lightweight/index.d.ts",
+  "main": "src/node.js",
   "browser": "src/lightweight.js",
   "umd:main": "dist/mql.js",
   "unpkg": "dist/mql.js",
