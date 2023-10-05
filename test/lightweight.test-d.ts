@@ -1,4 +1,5 @@
 import mql from '../lightweight'
+import type { MqlError } from '../lightweight'
 
 /** mql */
 mql('https://example.com', {
@@ -99,6 +100,49 @@ console.log(result.data)
 console.log(result.statusCode)
 console.log(result.headers)
 
-/** stream */
+/** error */
 
-// mql.stream('https://example.com', { meta: true })
+;({
+  status: 'error',
+  data: { url: 'fetch failed' },
+  more: 'https://microlink.io/efatalclient',
+  code: 'EFATALCLIENT',
+  url: 'https://localhost.microlink.io?url=https%3A%2F%2Fexample.com%23t%3D1696503516588',
+  statusCode: undefined,
+  headers: {},
+  name: 'MicrolinkError',
+  message: 'EFATALCLIENT, fetch failed',
+  description: 'fetch failed'
+}) as MqlError
+
+;({
+  status: 'fail',
+  code: 'EAUTH',
+  more: 'https://microlink.io/eauth',
+  url: 'https://pro.microlink.io?url=https%3A%2F%2Fexample.com%23t%3D1696503754740',
+  statusCode: 403,
+  headers: {
+    'alt-svc': 'h3=":443"; ma=86400',
+    'cf-cache-status': 'BYPASS',
+    'cf-ray': '81152c548f405e54-MAD',
+    connection: 'keep-alive',
+    'content-encoding': 'br',
+    'content-type': 'application/json',
+    date: 'Thu, 05 Oct 2023 11:02:35 GMT',
+    nel: '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}',
+    'report-to': '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=6tEv%2Fk7XkC0so782muCCxAfbFeaMusFvyv839c8Xv74aKQFy1jD%2Fd8hRrldtfntrhuzCi5HG8W%2FlBxk1a9qKqxHObl79FhxBnK6pAOF6gGXc9Vi0wHnXb1hayCkTxolfpR7yoH89el9W34r1T8E%3D"}],"group":"cf-nel","max_age":604800}',
+    server: 'cloudflare',
+    'transfer-encoding': 'chunked',
+    vary: 'Accept-Encoding',
+    via: '1.1 2d741086cf4a760a29245ab77d5fa70a.cloudfront.net (CloudFront)',
+    'x-amz-apigw-id': 'MUynzHpvIAMEtpA=',
+    'x-amz-cf-id': 'YPxW5fWYSiPgHuOiocQyYkCFoxWDsuV4MtRBh1Yiym3m1b361Q2fgQ==',
+    'x-amz-cf-pop': 'MAD56-P2',
+    'x-amzn-errortype': 'ForbiddenException',
+    'x-amzn-requestid': '7990f38f-d004-49cc-a406-f7cd0cb7df07',
+    'x-cache': 'Error from cloudfront'
+  },
+  name: 'MicrolinkError',
+  message: 'EAUTH, Invalid API key. Make sure you are attaching your API key as `x-api-key` header.',
+  description: 'Invalid API key. Make sure you are attaching your API key as `x-api-key` header.'
+}) as MqlError

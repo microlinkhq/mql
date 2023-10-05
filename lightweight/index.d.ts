@@ -163,8 +163,11 @@ export type MqlResponse = MqlPayload & {
 
 export type MqlError = {
   headers: { [key: string]: string };
+  data?: MqlResponseData;
+  statusCode?: number;
   name: string;
   message: string;
+  description: string;
   status: MqlStatus;
   code: string;
   more: string;
