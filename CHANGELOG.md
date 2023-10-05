@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.11.4](https://github.com/microlinkhq/mql/compare/v0.11.3...v0.11.4) (2023-10-05)
+
+
+### Bug Fixes
+
+* **error:** add missing fields to type ([3066841](https://github.com/microlinkhq/mql/commit/306684144dc11f86360cfc08f8278a5032eb7d19))
+
 ### [0.11.3](https://github.com/microlinkhq/mql/compare/v0.11.2...v0.11.3) (2023-10-05)
 
 
