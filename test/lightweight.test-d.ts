@@ -98,9 +98,6 @@ console.log(result.status)
 console.log(result.data)
 console.log(result.statusCode)
 console.log(result.headers)
-console.log(result.more)
-console.log(result.code)
-console.log(result.url)
 
 /** stream */
 

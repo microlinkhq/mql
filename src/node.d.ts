@@ -1,6 +1,6 @@
 import { MqlPayload, MqlOptions, MicrolinkApiOptions } from '../lightweight'
 
-export { MqlPayload } from '../lightweight'
+export { MqlError, MqlPayload } from '../lightweight'
 
 export type MqlResponse = MqlPayload & {
   response: {

@@ -150,9 +150,6 @@ export type MqlPayload = {
   data: MqlResponseData;
   statusCode: number;
   headers: { [key: string]: string };
-  more?: string,
-  code?: string,
-  url?: string
 }
 
 export type MqlResponse = MqlPayload & {
@@ -162,6 +159,16 @@ export type MqlResponse = MqlPayload & {
     headers: Headers;
     body: MqlPayload
   };
+}
+
+export type MqlError = {
+  headers: { [key: string]: string };
+  name: string;
+  message: string;
+  status: MqlStatus;
+  code: string;
+  more: string;
+  url: string;
 }
 
 declare function mql(
