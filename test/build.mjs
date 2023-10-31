@@ -1,5 +1,3 @@
-'use strict'
-
 import { createRequire } from 'module'
 import { $ } from 'execa'
 import test from 'ava'
