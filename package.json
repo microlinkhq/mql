@@ -71,7 +71,7 @@
     "ci-publish": "latest",
     "conventional-github-releaser": "latest",
     "esm": "latest",
-    "execa": "~8.0.1",
+    "execa": "latest",
     "git-authors-cli": "latest",
     "ky": "latest",
     "nano-staged": "latest",
@@ -79,8 +79,8 @@
     "prettier-standard": "latest",
     "rollup": "latest",
     "rollup-plugin-filesize": "latest",
-    "rollup-plugin-magic-string": "~1.0.4",
-    "rollup-plugin-rewrite": "~0.0.4",
+    "rollup-plugin-magic-string": "latest",
+    "rollup-plugin-rewrite": "latest",
     "rollup-plugin-visualizer": "latest",
     "simple-git-hooks": "latest",
     "standard": "latest",
@@ -90,7 +90,7 @@
     "tsd": "latest"
   },
   "engines": {
-    "node": ">= 12"
+    "node": ">= 18"
   },
   "files": [
     "lightweight",

@@ -10,9 +10,8 @@ import MagicString from 'magic-string'
 const rewriteFlattie = () =>
   rewrite({
     find: /.* from 'flattie'/gm,
-    replace: (match) => new MagicString(match[0])
-      .replace('import', 'import * as')
-      .toString()
+    replace: match =>
+      new MagicString(match[0]).replace('import', 'import * as').toString()
   })
 
 const build = ({ input, output, plugins = [], compress }) => {
@@ -36,6 +35,7 @@ const build = ({ input, output, plugins = [], compress }) => {
 }
 
 const builds = [
+  /* This build is just for testing using ESM interface */
   build({
     input: './src/node.js',
     output: { file: 'dist/node.mjs', format: 'es' },
