@@ -23,7 +23,6 @@ const build = ({ input, output, plugins = [], compress }) => {
           __MQL_VERSION__: require('./package.json').version
         }
       }),
-      commonjs(),
       ...plugins,
       compress &&
         terser({
@@ -42,7 +41,7 @@ const builds = [
   build({
     input: './src/node.js',
     output: { file: 'dist/node.mjs', format: 'es' },
-    plugins: [rewriteFlattie()]
+    plugins: [commonjs(), rewriteFlattie()]
   }),
   build({
     compress: true,
@@ -51,7 +50,8 @@ const builds = [
     plugins: [
       nodeResolve({
         mainFields: ['browser', 'module', 'main']
-      })
+      }),
+      commonjs()
     ]
   })
 ]
