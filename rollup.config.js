@@ -25,7 +25,12 @@ const build = ({ input, output, plugins = [], compress }) => {
       }),
       commonjs(),
       ...plugins,
-      compress && terser(),
+      compress &&
+        terser({
+          format: {
+            comments: false
+          }
+        }),
       filesize(),
       visualizer()
     ]
