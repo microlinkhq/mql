@@ -5,13 +5,11 @@ import filesize from 'rollup-plugin-filesize'
 import replace from '@rollup/plugin-replace'
 import rewrite from 'rollup-plugin-rewrite'
 import terser from '@rollup/plugin-terser'
-import MagicString from 'magic-string'
 
 const rewriteFlattie = () =>
   rewrite({
     find: /.* from 'flattie'/gm,
-    replace: match =>
-      new MagicString(match[0]).replace('import', 'import * as').toString()
+    replace: match => match[0].replace('import', 'import * as')
   })
 
 const build = ({ input, output, plugins = [], compress }) => {
@@ -27,7 +25,12 @@ const build = ({ input, output, plugins = [], compress }) => {
       }),
       commonjs(),
       ...plugins,
-      compress && terser(),
+      compress &&
+        terser({
+          format: {
+            comments: false
+          }
+        }),
       filesize(),
       visualizer()
     ]
@@ -46,7 +49,6 @@ const builds = [
     input: 'src/lightweight.js',
     output: { file: 'lightweight/index.js', format: 'es' },
     plugins: [
-      rewriteFlattie(),
       nodeResolve({
         mainFields: ['browser', 'module', 'main']
       })
