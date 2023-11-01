@@ -2,9 +2,8 @@
 
 const urlHttp = require('url-http/lightweight')
 const { flattie: flatten } = require('flattie')
-
 const factory = require('./factory')
-const { default: ky } = require('./ky')
+const { default: ky } = require('ky')
 
 class MicrolinkError extends Error {
   constructor (props) {
