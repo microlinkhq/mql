@@ -2,8 +2,7 @@ import { createRequire } from 'module'
 import { $ } from 'execa'
 import test from 'ava'
 
-const require = createRequire(import.meta.url)
-const pkg = require('../package.json')
+const pkg = createRequire(import.meta.url)('../package.json')
 
 const evalScript = (code) => $`node --eval ${code}`
 evalScript.esm = (code) => $`node --input-type module -e ${code}`
