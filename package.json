@@ -6,8 +6,6 @@
   "types": "lightweight/index.d.ts",
   "main": "src/node.js",
   "browser": "src/lightweight.js",
-  "umd:main": "dist/mql.js",
-  "unpkg": "dist/mql.js",
   "exports": {
     ".": {
       "import": "./lightweight/index.js",
@@ -147,8 +145,7 @@
   "standard": {
     "ignore": [
       "dist",
-      "lightweight/index.js",
-      "src/ky.js"
+      "lightweight/index.js"
     ]
   },
   "standard-version": {
