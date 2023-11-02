@@ -40,7 +40,7 @@ const builds = [
   /* This build is just for testing using ESM interface */
   build({
     input: './src/node.js',
-    output: { file: 'dist/node.mjs', format: 'es' },
+    output: { file: 'src/node.mjs', format: 'es' },
     plugins: [commonjs(), rewriteFlattie()]
   }),
   build({

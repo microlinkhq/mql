@@ -1,5 +1,5 @@
 import mqlLightweight from '../lightweight/index.js'
-import mqlNode from '../dist/node.mjs'
+import mqlNode from '../src/node.mjs'
 
 export default [
   { constructor: mqlNode, target: 'node' },
