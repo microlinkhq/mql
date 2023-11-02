@@ -5,8 +5,8 @@
   "version": "0.11.7-0",
   "types": "lightweight/index.d.ts",
   "exports": {
-    "default": "./lightweight/index.js",
-    "require": "./src/node.js"
+    "require": "./src/node.js",
+    "default": "./lightweight/index.js"
   },
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
@@ -93,7 +93,7 @@
     "build": "rollup -c rollup.config.js --bundleConfigAsCjs",
     "clean": "rm -rf node_modules",
     "clean:build": "rm -rf lightweight/index.js",
-    "contributors": "(npx git-authors-cli && npx finepack --sort-ignore-object-at ava && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
+    "contributors": "(npx git-authors-cli && npx finepack && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
     "dev": "npm run build -- -w",
     "lint": "standard && tsd",
     "postrelease": "npm run release:tags && npm run release:github && (ci-publish || npm publish --access=public)",
@@ -130,7 +130,7 @@
       "standard-markdown"
     ],
     "package.json": [
-      "finepack --sort-ignore-object-at ava"
+      "finepack"
     ]
   },
   "simple-git-hooks": {
