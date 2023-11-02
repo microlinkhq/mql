@@ -5,8 +5,8 @@
   "version": "0.11.6-2",
   "types": "lightweight/index.d.ts",
   "exports": {
-    "require": "./src/node.js",
-    "default": "./lightweight/index.js"
+    "default": "./lightweight/index.js",
+    "require": "./src/node.js"
   },
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
