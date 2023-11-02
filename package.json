@@ -2,15 +2,11 @@
   "name": "@microlink/mql",
   "description": "Microlink Query Language. The official HTTP client to interact with Microlink API for Node.js, browsers & Deno.",
   "homepage": "https://microlink.io/mql",
-  "version": "0.11.5",
+  "version": "0.11.6-2",
   "types": "lightweight/index.d.ts",
-  "main": "src/node.js",
-  "browser": "src/lightweight.js",
   "exports": {
-    ".": {
-      "import": "./lightweight/index.js",
-      "require": "./src/node.js"
-    }
+    "require": "./src/node.js",
+    "default": "./lightweight/index.js"
   },
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
@@ -91,14 +87,12 @@
   "files": [
     "lightweight",
     "src/factory.js",
-    "src/index.d.ts",
-    "src/ky.js",
     "src/node.js"
   ],
   "scripts": {
     "build": "rollup -c rollup.config.js --bundleConfigAsCjs",
     "clean": "rm -rf node_modules",
-    "clean:build": "rm -rf dist lightweight/index.js",
+    "clean:build": "rm -rf lightweight/index.js",
     "contributors": "(npx git-authors-cli && npx finepack --sort-ignore-object-at ava && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
     "dev": "npm run build -- -w",
     "lint": "standard && tsd",
@@ -144,8 +138,8 @@
   },
   "standard": {
     "ignore": [
-      "dist",
-      "lightweight/index.js"
+      "lightweight/index.js",
+      "src/node.mjs"
     ]
   },
   "standard-version": {

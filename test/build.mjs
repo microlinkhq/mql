@@ -16,8 +16,7 @@ test('cjs', async t => {
 
 test('esm', async t => {
   // eslint-disable-next-line no-template-curly-in-string
-  const code =
-    "import {version} from '@microlink/mql'; console.log(`mql v${version}`)"
+  const code = "import {version} from '@microlink/mql'; console.log(`mql v${version}`)"
   const { stdout } = await evalScript.esm(code)
   t.is(stdout, `mql v${pkg.version}`)
 })
