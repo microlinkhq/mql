@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.11.7](https://github.com/microlinkhq/mql/compare/v0.11.7-0...v0.11.7) (2023-11-03)
+
+
+### Bug Fixes
+
+* sort fields using finepack ([061f3a8](https://github.com/microlinkhq/mql/commit/061f3a8c921e3c7c1aebdefda36619dccf34a2b9))
+
 ### [0.11.7-0](https://github.com/microlinkhq/mql/compare/v0.11.5...v0.11.7-0) (2023-11-02)
 
 ### [0.11.6](https://github.com/microlinkhq/mql/compare/v0.11.5...v0.11.6) (2023-11-02)
