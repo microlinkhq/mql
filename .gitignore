@@ -37,4 +37,4 @@ coverage
 stats.html
 examples
 src/node.mjs
-lightweight
+lightweight/index.js

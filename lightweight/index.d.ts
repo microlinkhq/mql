@@ -35,7 +35,7 @@ type ScreenshotOptions = {
   overlay?: ScreenshotOverlay
 }
 
-export type MqlOptions = {
+type MqlClientOptions = {
   endpoint?: string;
   apiKey?: string;
   retry?: number;
@@ -54,7 +54,7 @@ type MqlQueryOptions = {
   type?: "audio" | "author" | "auto" | "boolean" | "date" | "description" | "email" | "image" | "ip" | "lang" | "logo" | "number" | "object" | "publisher" | "regexp" | "string" | "title" | "url" | "video";
 }
 
-export type MicrolinkApiOptions = {
+type MicrolinkApiOptions = {
   adblock?: boolean;
   animations?: boolean;
   audio?: boolean;
@@ -152,7 +152,7 @@ export type MqlPayload = {
   headers: { [key: string]: string };
 }
 
-export type MqlResponse = MqlPayload & {
+type MqlResponse = MqlPayload & {
   response: {
     url: string;
     statusCode: number;
@@ -174,9 +174,11 @@ export type MqlError = {
   url: string;
 }
 
+export type MqlOptions = MqlClientOptions & MicrolinkApiOptions;
+
 declare function mql(
   url: string,
-  opts?: MqlOptions & MicrolinkApiOptions,
+  opts?: MqlOptions,
   gotOpts?: object
 ): Promise<MqlResponse>;
 
