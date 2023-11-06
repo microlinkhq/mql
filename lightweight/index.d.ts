@@ -152,7 +152,7 @@ export type MqlPayload = {
   headers: { [key: string]: string };
 }
 
-type MqlResponse = MqlPayload & {
+export type MqlResponse = MqlPayload & {
   response: {
     url: string;
     statusCode: number;
