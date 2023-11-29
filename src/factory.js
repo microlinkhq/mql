@@ -113,13 +113,13 @@ const factory = ({ VERSION, MicrolinkError, urlHttp, got, flatten }) => {
   }
 
   const mql = createMql()
+  mql.extend = createMql
   mql.MicrolinkError = MicrolinkError
   mql.getApiUrl = getApiUrl
   mql.fetchFromApi = fetchFromApi
   mql.mapRules = mapRules
   mql.version = VERSION
   mql.stream = got.stream
-  mql.buffer = createMql({ responseType: 'buffer' })
 
   return mql
 }

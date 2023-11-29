@@ -17,6 +17,7 @@ test('cjs', async t => {
   t.deepEqual(methods,
     [
       'buffer',
+      'extend',
       'fetchFromApi',
       'getApiUrl',
       'mapRules',
@@ -35,14 +36,14 @@ test('esm', async t => {
 
   t.deepEqual(methods,
     [
+      'arrayBuffer',
       'default',
+      'extend',
       'fetchFromApi',
       'getApiUrl',
       'mapRules',
       'MicrolinkError',
       'version'
-      // render
-      // sstream
     ]
   )
 })
