@@ -54,7 +54,8 @@ const mql = factory({
 })
 
 module.exports = mql
-module.exports.MicrolinkError = mql.MicrolinkError
+module.exports.fetchFromApi = mql.fetchFromApi
 module.exports.getApiUrl = mql.getApiUrl
 module.exports.mapRules = mql.mapRules
+module.exports.MicrolinkError = mql.MicrolinkError
 module.exports.version = mql.version
