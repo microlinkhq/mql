@@ -2,6 +2,7 @@ import mql from '../lightweight'
 import type { MqlError } from '../lightweight'
 
 /** mql */
+
 mql('https://example.com', {
   endpoint: 'https://pro.microlink.io',
   apiKey: '123',
@@ -9,9 +10,8 @@ mql('https://example.com', {
   cache: new Map()
 })
 
-/**
- * data
- */
+/** data */
+
 mql('https://example.com', {
   data: {
     version: {
@@ -44,16 +44,14 @@ mql('https://github.com/microlinkhq', {
   }
 })
 
-/**
- * meta
- */
+/** meta */
+
 mql('https://example.com')
 mql('https://example.com', { meta: true })
 mql('https://example.com', { meta: { logo: { square: true } } })
 
-/**
- * pdf
- */
+/** pdf */
+
 mql('https://example.com', { pdf: true })
 mql('https://example.com', {
   pdf: {
@@ -68,9 +66,8 @@ mql('https://example.com', {
   }
 })
 
-/**
- * screenshot
- */
+/** screenshot */
+
 mql('https://example.com', { screenshot: true })
 mql('https://example.com', {
   screenshot: {
@@ -84,6 +81,7 @@ mql('https://example.com', {
 })
 
 /** others */
+
 mql('https://example.com', { click: ['div'] })
 mql('https://example.com', {
   adblock: true,
@@ -146,3 +144,18 @@ console.log(result.headers)
   message: 'EAUTH, Invalid API key. Make sure you are attaching your API key as `x-api-key` header.',
   description: 'Invalid API key. Make sure you are attaching your API key as `x-api-key` header.'
 }) as MqlError
+
+/* extend */
+
+mql.extend({ responseType: 'text' })
+
+/* stream */
+
+mql.stream('https://example.com', { headers: { 'user-agent': 'foo' }})
+
+/* arrraBuffer */
+
+{
+  const response = await mql.arrayBuffer('https://example.com', { meta: false })
+  console.log(response.body)
+}

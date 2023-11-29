@@ -152,14 +152,17 @@ export type MqlPayload = {
   headers: { [key: string]: string };
 }
 
-export type MqlResponse = MqlPayload & {
-  response: {
-    url: string;
-    statusCode: number;
-    headers: Headers;
-    body: MqlPayload
-  };
+type HTTPResponse = {
+  url: string;
+  statusCode: number;
+  headers: Headers;
 }
+
+type HTTPResponseWithBody = HTTPResponse & { body: MqlPayload };
+
+type HTTPResponseRaw = HTTPResponse & { body: ArrayBuffer };
+
+export type MqlResponse = MqlPayload & { response: HTTPResponseWithBody };
 
 export type MqlError = {
   headers: { [key: string]: string };
@@ -176,10 +179,13 @@ export type MqlError = {
 
 export type MqlOptions = MqlClientOptions & MicrolinkApiOptions;
 
-declare function mql(
-  url: string,
-  opts?: MqlOptions,
-  gotOpts?: object
-): Promise<MqlResponse>;
+interface mql {
+  (url: string, opts?: MqlOptions, gotOpts?: object): Promise<MqlResponse>;
+  extend: (gotOpts?: object) => mql
+  stream: typeof fetch
+  arrayBuffer: (url: string, opts?: MqlOptions, gotOpts?: object) => Promise<HTTPResponseRaw>;
+}
+
+declare const mql: mql;
 
 export default mql;
