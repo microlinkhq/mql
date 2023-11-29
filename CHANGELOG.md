@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.11.10](https://github.com/microlinkhq/mql/compare/v0.11.9...v0.11.10) (2023-11-29)
+
+
+### Bug Fixes
+
+* **esm:** expose fetchFromApi method ([#141](https://github.com/microlinkhq/mql/issues/141)) ([0ada023](https://github.com/microlinkhq/mql/commit/0ada0231b7e007b22d05c4d92cab53426d57463b))
+
 ### [0.11.9](https://github.com/microlinkhq/mql/compare/v0.11.8...v0.11.9) (2023-11-06)
 
 
