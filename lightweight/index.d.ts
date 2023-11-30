@@ -181,8 +181,8 @@ export type MqlOptions = MqlClientOptions & MicrolinkApiOptions;
 
 interface mql {
   (url: string, opts?: MqlOptions, gotOpts?: object): Promise<MqlResponse>;
-  extend: (gotOpts?: object) => mql
-  stream: typeof fetch
+  extend: (gotOpts?: object) => mql;
+  stream: (input: RequestInfo, init?: RequestInit) => ReadableStream;
   arrayBuffer: (url: string, opts?: MqlOptions, gotOpts?: object) => Promise<HTTPResponseRaw>;
 }
 
