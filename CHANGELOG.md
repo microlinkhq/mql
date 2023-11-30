@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0](https://github.com/microlinkhq/mql/compare/v0.11.10...v0.12.0) (2023-11-30)
+
+
+### Features
+
+* add .extend and buffer/arrayBuffer methods ([#143](https://github.com/microlinkhq/mql/issues/143)) ([3e49bf2](https://github.com/microlinkhq/mql/commit/3e49bf2051775508e9a99c3f79e27b0308e379f3))
+
 ### [0.11.10](https://github.com/microlinkhq/mql/compare/v0.11.9...v0.11.10) (2023-11-29)
 
 
