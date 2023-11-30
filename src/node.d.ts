@@ -1,29 +1,27 @@
-import { MqlPayload, MqlOptions } from '../lightweight'
+import { MqlPayload, MqlOptions } from '../lightweight';
 
 export { MqlError, MqlPayload } from '../lightweight'
 
-export type MqlResponse = MqlPayload & {
-  response: {
-    url: string;
-    isFromCache?: boolean;
-    statusCode: number;
-    headers: { [key: string]: string };
-    body: MqlPayload
-  };
+type HTTPResponse = {
+  url: string;
+  isFromCache?: boolean;
+  statusCode: number;
+  headers: { [key: string]: string };
+};
+
+type HTTPResponseWithBody = HTTPResponse & { body: MqlPayload };
+
+type HTTPResponseRaw = HTTPResponse & { body: Buffer };
+
+type MqlResponse = MqlPayload & { response: HTTPResponseWithBody };
+
+interface Mql {
+  (url: string, opts?: MqlOptions, gotOpts?: object): Promise<MqlResponse>;
+  extend: (gotOpts?: object) => Mql;
+  stream: (url: string, gotOpts?: object) => NodeJS.ReadableStream;
+  buffer: (url: string, opts?: MqlOptions, gotOpts?: object) => Promise<HTTPResponseRaw>;
 }
 
-declare function mql(
-  url: string,
-  opts?: MqlOptions,
-  gotOpts?: object
-): Promise<MqlResponse>;
-
-declare namespace mql {
-  function stream(
-    url: string,
-    opts?: MqlOptions,
-    gotOpts?: object
-  ): NodeJS.ReadableStream;
-}
+declare const mql: Mql;
 
 export default mql;

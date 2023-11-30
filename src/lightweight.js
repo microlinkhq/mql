@@ -17,12 +17,12 @@ class MicrolinkError extends Error {
   }
 }
 
-const got = async (url, opts) => {
+const got = async (url, { responseType, ...opts }) => {
   try {
     if (opts.retry > 0) opts.retry = opts.retry + 1
     if (opts.timeout === undefined) opts.timeout = false
     const response = await ky(url, opts)
-    const body = await response.json()
+    const body = await response[responseType]()
     const { headers, status: statusCode } = response
     return { url: response.url, body, headers, statusCode }
   } catch (err) {
@@ -45,6 +45,8 @@ const got = async (url, opts) => {
   }
 }
 
+got.stream = ky
+
 const mql = factory({
   MicrolinkError,
   urlHttp,
@@ -54,6 +56,8 @@ const mql = factory({
 })
 
 module.exports = mql
+module.exports.arrayBuffer = mql.extend({ responseType: 'arrayBuffer' })
+module.exports.extend = mql.extend
 module.exports.fetchFromApi = mql.fetchFromApi
 module.exports.getApiUrl = mql.getApiUrl
 module.exports.mapRules = mql.mapRules
