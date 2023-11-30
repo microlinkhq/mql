@@ -45,7 +45,7 @@ const got = async (url, { responseType, ...opts }) => {
   }
 }
 
-got.stream = ky
+got.stream = (...args) => ky(...args).then(res => res.body)
 
 const mql = factory({
   MicrolinkError,
