@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.12.1](https://github.com/microlinkhq/mql/compare/v0.12.0...v0.12.1) (2023-11-30)
+
+
+### Bug Fixes
+
+* **lightweight:** stream interface ([#144](https://github.com/microlinkhq/mql/issues/144)) ([9dcb280](https://github.com/microlinkhq/mql/commit/9dcb280a1bdac1fe7c3bee2fa1b735cd194abc28))
+
 ## [0.12.0](https://github.com/microlinkhq/mql/compare/v0.11.10...v0.12.0) (2023-11-30)
 
 
