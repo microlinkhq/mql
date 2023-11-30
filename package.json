@@ -47,7 +47,7 @@
   ],
   "dependencies": {
     "flattie": "~1.1.0",
-    "got": "~11.8.6",
+    "got": "~14.0.0",
     "url-http": "~1.1.0",
     "whoops": "~4.1.1"
   },
