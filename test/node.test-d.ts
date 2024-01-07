@@ -1,5 +1,3 @@
-// import { expectType } from 'tsd'
-
 import mql from '../src/node'
 
 /** response */
