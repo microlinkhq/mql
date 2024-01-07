@@ -1,11 +1,11 @@
 import { createRequire } from 'module'
-import { $ } from 'execa'
+import $ from 'tinyspawn'
 import test from 'ava'
 
 const pkg = createRequire(import.meta.url)('../package.json')
 
-const evalScript = code => $`node --eval ${code}`.then(({ stdout }) => stdout)
-evalScript.esm = code => $`node --input-type module --eval ${code}`.then(({ stdout }) => stdout)
+const evalScript = (code, flags = []) => $('node', ['--eval', code, ...flags]).then(({ stdout }) => stdout)
+evalScript.esm = code => evalScript(code, ['--input-type', 'module'])
 
 const sort = array => array.sort((a, b) => a.localeCompare(b))
 
