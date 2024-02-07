@@ -31,4 +31,14 @@ clients.forEach(({ constructor: mql, target }) => {
     t.snapshot(mql.getApiUrl('https://kikobeats.com', { timeout: 15000 }))
     t.snapshot(mql.getApiUrl('https://kikobeats.com', { timeout: 28000 }))
   })
+
+  test(`${target} » waitUntil`, t => {
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { waitUntil: 'load' }))
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { waitUntil: ['load', 'networkidle0'] }))
+  })
+
+  test(`${target} » undefined`, t => {
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { waitUntil: undefined }))
+    t.snapshot(mql.getApiUrl('https://kikobeats.com', { screenshot: { element: '#screenshot', type: undefined } }))
+  })
 })
