@@ -3,7 +3,7 @@
   <img src="https://github.com/microlinkhq/cdn/raw/master/dist/banner/mql-dark.png#gh-dark-mode-only" alt="microlink logo">
 </div>
 
-###### [Documentation](https://microlink.io/mql) | [CLI](https://github.com/microlinkhq/cli) | [Playground](https://mql.microlink.io) | [Chat](https://microlink.io/chat)
+###### [Documentation](https://microlink.io/mql) | [CLI](https://github.com/microlinkhq/cli) | [Playground](https://mql.microlink.io)
 
 ## License
 
