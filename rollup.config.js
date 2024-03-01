@@ -53,6 +53,17 @@ const builds = [
       }),
       commonjs()
     ]
+  }),
+  build({
+    compress: true,
+    input: 'src/lightweight.js',
+    output: { name: 'mql', file: 'lightweight/index.umd.js', format: 'umd' },
+    plugins: [
+      nodeResolve({
+        mainFields: ['browser', 'module', 'main']
+      }),
+      commonjs()
+    ]
   })
 ]
 
