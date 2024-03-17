@@ -2,8 +2,9 @@
 
 const urlHttp = require('url-http/lightweight')
 const { flattie: flatten } = require('flattie')
-const factory = require('./factory')
 const { default: ky } = require('ky')
+
+const factory = require('./factory')('arrayBuffer')
 
 class MicrolinkError extends Error {
   constructor (props) {
@@ -24,10 +25,10 @@ const got = async (url, { responseType, ...opts }) => {
     const body = await response[responseType]()
     const { headers, status: statusCode } = response
     return { url: response.url, body, headers, statusCode }
-  } catch (err) {
-    if (err.response) {
-      const { response } = err
-      err.response = {
+  } catch (error) {
+    if (error.response) {
+      const { response } = error
+      error.response = {
         ...response,
         headers: Array.from(response.headers.entries()).reduce(
           (acc, [key, value]) => {
@@ -40,7 +41,7 @@ const got = async (url, { responseType, ...opts }) => {
         body: await response.text()
       }
     }
-    throw err
+    throw error
   }
 }
 

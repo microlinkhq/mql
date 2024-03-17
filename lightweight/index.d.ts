@@ -10,10 +10,10 @@ type ScreenshotOverlay = {
 }
 
 type PdfMargin = {
+  bottom?: string | number;
+  left?: string | number;
+  right?: string | number;
   top?: string | number;
-   bottom?: string | number;
-   left?: string | number;
-   right?: string | number;
 }
 
 type PdfOptions = {
@@ -28,18 +28,19 @@ type PdfOptions = {
 
 type ScreenshotOptions = {
   codeScheme?: string;
-  omitBackground?: boolean;
-  type?: "jpeg" | "png";
   element?: string;
   fullPage?: boolean;
-  overlay?: ScreenshotOverlay
+  omitBackground?: boolean;
+  optimizeForSpeed?: boolean;
+  overlay?: ScreenshotOverlay,
+  type?: "jpeg" | "png";
 }
 
 type MqlClientOptions = {
-  endpoint?: string;
   apiKey?: string;
-  retry?: number;
   cache?: Map<string, any>;
+  endpoint?: string;
+  retry?: number;
 }
 
 type MqlQuery = {
@@ -83,8 +84,9 @@ type MicrolinkApiOptions = {
   screenshot?: boolean | ScreenshotOptions;
   scripts?: string | string[];
   scroll?: string;
-  styles?: string | string[];
   staleTtl?: string | number;
+  stream?: boolean;
+  styles?: string | string[];
   timeout?: number;
   ttl?: string | number;
   video?: boolean;
@@ -100,41 +102,33 @@ type IframeInfo = {
 }
 
 type MediaInfo = {
-  url: string;
-  type?: string;
-  palette?: string[];
+  alternative_color?: string;
   background_color?: string;
   color?: string;
-  alternative_color?: string;
-  width?: number;
-  height?: number;
-  duration?: number;
   duration_pretty?: string;
+  duration?: number;
+  height?: number;
+  palette?: string[];
+  type?: string;
+  url: string;
+  width?: number;
 }
 
 type MqlResponseData = {
-  // A human-readable representation of the author's name.
-  author?: string | null;
-  // An ISO 8601 representation of the date the article was published.
-  date?: string | null;
-  // The publisher's chosen description of the article.
-  description?: string | null;
-  // An ISO 639-1 representation of the url content language.
-  lang?: string | null;
-  // An image URL that best represents the publisher brand.
-  logo?: MediaInfo | null;
-  // A human-readable representation of the publisher's name.
-  publisher?: string | null;
-  // The publisher's chosen title of the article.
-  title?: string | null;
-  // The URL of the article.
-  url?: string;
-  image?: MediaInfo | null;
-  screenshot?: MediaInfo | null;
-  video?: MediaInfo | null;
   audio?: MediaInfo | null;
-  iframe?: IframeInfo | null;
+  author?: string | null;
+  date?: string | null;
+  description?: string | null;
   function?: MqlFunctionResult;
+  iframe?: IframeInfo | null;
+  image?: MediaInfo | null;
+  lang?: string | null;
+  logo?: MediaInfo | null;
+  publisher?: string | null;
+  screenshot?: MediaInfo | null;
+  title?: string | null;
+  url?: string;
+  video?: MediaInfo | null;
 }
 
 type MqlFunctionResult = {
@@ -165,25 +159,26 @@ type HTTPResponseRaw = HTTPResponse & { body: ArrayBuffer };
 export type MqlResponse = MqlPayload & { response: HTTPResponseWithBody };
 
 export type MqlError = {
-  headers: { [key: string]: string };
-  data?: MqlResponseData;
-  statusCode?: number;
-  name: string;
-  message: string;
-  description: string;
-  status: MqlStatus;
   code: string;
+  data?: MqlResponseData;
+  description: string;
+  headers: { [key: string]: string };
+  message: string;
   more: string;
+  name: string;
+  status: MqlStatus;
+  statusCode?: number;
   url: string;
 }
 
 export type MqlOptions = MqlClientOptions & MicrolinkApiOptions;
 
 interface mql {
+  (url: string, opts?: MqlOptions & { stream: true }, gotOpts?: object): Promise<Response>;
   (url: string, opts?: MqlOptions, gotOpts?: object): Promise<MqlResponse>;
+  arrayBuffer: (url: string, opts?: MqlOptions, gotOpts?: object) => Promise<HTTPResponseRaw>;
   extend: (gotOpts?: object) => mql;
   stream: (input: RequestInfo, init?: RequestInit) => ReadableStream;
-  arrayBuffer: (url: string, opts?: MqlOptions, gotOpts?: object) => Promise<HTTPResponseRaw>;
 }
 
 declare const mql: mql;

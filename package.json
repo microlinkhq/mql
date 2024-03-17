@@ -139,6 +139,7 @@
   "standard": {
     "ignore": [
       "lightweight/index.js",
+      "lightweight/index.umd.js",
       "src/node.mjs"
     ]
   },

@@ -28,7 +28,13 @@ const parseBody = (input, error, url) => {
   }
 }
 
-const factory = ({ VERSION, MicrolinkError, urlHttp, got, flatten }) => {
+const factory = streamResponseType => ({
+  VERSION,
+  MicrolinkError,
+  urlHttp,
+  got,
+  flatten
+}) => {
   const assertUrl = (url = '') => {
     if (!urlHttp(url)) {
       const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
@@ -55,8 +61,8 @@ const factory = ({ VERSION, MicrolinkError, urlHttp, got, flatten }) => {
   const fetchFromApi = async (apiUrl, opts = {}) => {
     try {
       const response = await got(apiUrl, opts)
-      return opts.responseType === 'buffer'
-        ? { body: response.body, response }
+      return opts.responseType === streamResponseType
+        ? response
         : { ...response.body, response }
     } catch (err) {
       const { response = {} } = err
@@ -100,6 +106,10 @@ const factory = ({ VERSION, MicrolinkError, urlHttp, got, flatten }) => {
     const headers = isPro
       ? { ...gotHeaders, 'x-api-key': apiKey }
       : { ...gotHeaders }
+
+    if (opts.stream) {
+      responseType = streamResponseType
+    }
     return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
   }
 

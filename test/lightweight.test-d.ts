@@ -3,12 +3,28 @@ import type { MqlError } from '../lightweight'
 
 /** mql */
 
-mql('https://example.com', {
-  endpoint: 'https://pro.microlink.io',
-  apiKey: '123',
-  retry: 2,
-  cache: new Map()
-})
+;async () => {
+  const result = await mql('https://example.com', {
+    endpoint: 'https://pro.microlink.io',
+    apiKey: '123',
+    retry: 2,
+    cache: new Map()
+  })
+
+  console.log(result.status)
+  console.log(result.data)
+  console.log(result.statusCode)
+  console.log(result.headers)
+  console.log(result.response)
+}
+
+;(async () => {
+  const response = await mql('https://example.com', {
+    stream: true,
+    screenshot: true
+  })
+  console.log(response.body)
+})()
 
 /** data */
 
@@ -35,8 +51,7 @@ mql('https://github.com/microlinkhq', {
           type: 'number'
         },
         stars: {
-          selector:
-            '.js-responsive-underlinenav a[data-tab-item="stars"] span',
+          selector: '.js-responsive-underlinenav a[data-tab-item="stars"] span',
           type: 'number'
         }
       }
@@ -73,6 +88,7 @@ mql('https://example.com', {
   screenshot: {
     codeScheme: 'atom-dark',
     type: 'png',
+    optimizeForSpeed: true,
     overlay: {
       background: '#000',
       browser: 'light'
@@ -99,7 +115,6 @@ console.log(result.statusCode)
 console.log(result.headers)
 
 /** error */
-
 ;({
   status: 'error',
   data: { url: 'fetch failed' },
@@ -111,8 +126,7 @@ console.log(result.headers)
   name: 'MicrolinkError',
   message: 'EFATALCLIENT, fetch failed',
   description: 'fetch failed'
-}) as MqlError
-
+} as MqlError)
 ;({
   status: 'fail',
   code: 'EAUTH',
@@ -128,7 +142,8 @@ console.log(result.headers)
     'content-type': 'application/json',
     date: 'Thu, 05 Oct 2023 11:02:35 GMT',
     nel: '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}',
-    'report-to': '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=6tEv%2Fk7XkC0so782muCCxAfbFeaMusFvyv839c8Xv74aKQFy1jD%2Fd8hRrldtfntrhuzCi5HG8W%2FlBxk1a9qKqxHObl79FhxBnK6pAOF6gGXc9Vi0wHnXb1hayCkTxolfpR7yoH89el9W34r1T8E%3D"}],"group":"cf-nel","max_age":604800}',
+    'report-to':
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=6tEv%2Fk7XkC0so782muCCxAfbFeaMusFvyv839c8Xv74aKQFy1jD%2Fd8hRrldtfntrhuzCi5HG8W%2FlBxk1a9qKqxHObl79FhxBnK6pAOF6gGXc9Vi0wHnXb1hayCkTxolfpR7yoH89el9W34r1T8E%3D"}],"group":"cf-nel","max_age":604800}',
     server: 'cloudflare',
     'transfer-encoding': 'chunked',
     vary: 'Accept-Encoding',
@@ -141,9 +156,11 @@ console.log(result.headers)
     'x-cache': 'Error from cloudfront'
   },
   name: 'MicrolinkError',
-  message: 'EAUTH, Invalid API key. Make sure you are attaching your API key as `x-api-key` header.',
-  description: 'Invalid API key. Make sure you are attaching your API key as `x-api-key` header.'
-}) as MqlError
+  message:
+    'EAUTH, Invalid API key. Make sure you are attaching your API key as `x-api-key` header.',
+  description:
+    'Invalid API key. Make sure you are attaching your API key as `x-api-key` header.'
+} as MqlError)
 
 /* extend */
 
@@ -151,7 +168,7 @@ mql.extend({ responseType: 'text' })
 
 /* stream */
 
-mql.stream('https://example.com', { headers: { 'user-agent': 'foo' }})
+mql.stream('https://example.com', { headers: { 'user-agent': 'foo' } })
 
 /* arrraBuffer */
 
