@@ -14,7 +14,7 @@ import mql from '../src/node'
 
 ;(async () => {
   const response = await mql('https://example.com', {
-    stream: true,
+    stream: 'string',
     screenshot: true
   })
   console.log(response.body)

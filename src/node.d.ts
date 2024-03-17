@@ -13,7 +13,7 @@ type HTTPResponseRaw = HTTPResponse & { body: Buffer };
 type MqlResponse = MqlPayload & { response: HTTPResponseWithBody };
 
 interface Mql {
-  (url: string, opts?: MqlOptions & { stream: true }, gotOpts?: GotOpts): Promise<HTTPResponse>;
+  (url: string, opts?: MqlOptions & { stream: string }, gotOpts?: GotOpts): Promise<HTTPResponse>;
   (url: string, opts?: MqlOptions, gotOpts?: GotOpts): Promise<MqlResponse>;
   extend: (gotOpts?: GotOpts) => Mql;
   stream: (url: string, gotOpts?: GotOpts) => NodeJS.ReadableStream;

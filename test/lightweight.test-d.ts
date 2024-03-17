@@ -20,7 +20,7 @@ import type { MqlError } from '../lightweight'
 
 ;(async () => {
   const response = await mql('https://example.com', {
-    stream: true,
+    stream: 'screenshot',
     screenshot: true
   })
   console.log(response.body)

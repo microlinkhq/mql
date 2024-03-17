@@ -21,7 +21,7 @@ clients.forEach(({ constructor: mql, target }) => {
     const response = await mql(
       'https://kikobeats.com?ref=mql', {
         screenshot: { optimizedForSpeed: true },
-        stream: true
+        stream: 'screenshot'
       }
     )
 
