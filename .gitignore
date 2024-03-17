@@ -38,3 +38,4 @@ stats.html
 examples
 src/node.mjs
 lightweight/index.js
+lightweight/index.umd.js

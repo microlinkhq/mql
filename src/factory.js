@@ -64,8 +64,8 @@ const factory = streamResponseType => ({
       return opts.responseType === streamResponseType
         ? response
         : { ...response.body, response }
-    } catch (err) {
-      const { response = {} } = err
+    } catch (error) {
+      const { response = {} } = error
       const {
         statusCode,
         body: rawBody,
@@ -77,7 +77,7 @@ const factory = streamResponseType => ({
       const body =
         isObject(rawBody) && !isBodyBuffer
           ? rawBody
-          : parseBody(isBodyBuffer ? rawBody.toString() : rawBody, err, uri)
+          : parseBody(isBodyBuffer ? rawBody.toString() : rawBody, error, uri)
 
       throw new MicrolinkError({
         ...body,
