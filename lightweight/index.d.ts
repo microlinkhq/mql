@@ -85,6 +85,7 @@ type MicrolinkApiOptions = {
   scripts?: string | string[];
   scroll?: string;
   staleTtl?: string | number;
+  stream?: boolean;
   styles?: string | string[];
   timeout?: number;
   ttl?: string | number;

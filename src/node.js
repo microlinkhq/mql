@@ -1,4 +1,4 @@
-const mql = require('./factory')({
+const mql = require('./factory')('node')({
   MicrolinkError: require('whoops')('MicrolinkError'),
   urlHttp: require('url-http/lightweight'),
   got: require('got').extend({ headers: { 'user-agent': undefined } }),
