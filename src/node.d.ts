@@ -4,13 +4,13 @@ export { MicrolinkError, MqlError, MqlPayload } from '../lightweight'
 
 import { Response, Options as GotOpts } from 'got/dist/source/core'
 
-type HTTPResponse = Response<Buffer>
+export type HTTPResponse = Response<Buffer>
 
 type HTTPResponseWithBody = HTTPResponse & { body: MqlPayload };
 
 type HTTPResponseRaw = HTTPResponse & { body: Buffer };
 
-type MqlResponse = MqlPayload & { response: HTTPResponseWithBody };
+export type MqlResponse = MqlPayload & { response: HTTPResponseWithBody };
 
 interface Mql {
   (url: string, opts?: MqlOptions & { stream: string }, gotOpts?: GotOpts): Promise<HTTPResponse>;

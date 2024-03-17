@@ -154,7 +154,7 @@ type HTTPResponse = {
 
 type HTTPResponseWithBody = HTTPResponse & { body: MqlPayload };
 
-type HTTPResponseRaw = HTTPResponse & { body: ArrayBuffer };
+export type HTTPResponseRaw = HTTPResponse & { body: ArrayBuffer };
 
 export type MqlResponse = MqlPayload & { response: HTTPResponseWithBody };
 
