@@ -1,6 +1,6 @@
-import { MqlPayload, MqlOptions } from '../lightweight';
+import { MqlError, MqlPayload, MqlOptions } from '../lightweight';
 
-export { MqlError, MqlPayload } from '../lightweight'
+export { MicrolinkError, MqlError, MqlPayload } from '../lightweight'
 
 import { Response, Options as GotOpts } from 'got/dist/source/core'
 
@@ -18,6 +18,8 @@ interface Mql {
   extend: (gotOpts?: GotOpts) => Mql;
   stream: (url: string, gotOpts?: GotOpts) => NodeJS.ReadableStream;
   buffer: (url: string, opts?: MqlOptions, gotOpts?: GotOpts) => Promise<HTTPResponseRaw>;
+  MicrolinkError: new (props: object) => MqlError;
+  version: string;
 }
 
 declare const mql: Mql;

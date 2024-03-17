@@ -44,7 +44,7 @@ const builds = [
     plugins: [commonjs(), rewriteFlattie()]
   }),
   build({
-    compress: true,
+    compress: false,
     input: 'src/lightweight.js',
     output: { file: 'lightweight/index.js', format: 'es' },
     plugins: [
@@ -55,7 +55,7 @@ const builds = [
     ]
   }),
   build({
-    compress: true,
+    compress: false,
     input: 'src/lightweight.js',
     output: { name: 'mql', file: 'lightweight/index.umd.js', format: 'umd' },
     plugins: [
