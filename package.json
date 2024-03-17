@@ -2,7 +2,7 @@
   "name": "@microlink/mql",
   "description": "Microlink Query Language. The official HTTP client to interact with Microlink API for Node.js, browsers & Deno.",
   "homepage": "https://microlink.io/mql",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "types": "lightweight/index.d.ts",
   "exports": {
     "require": "./src/node.js",
