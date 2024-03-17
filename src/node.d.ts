@@ -1,24 +1,20 @@
-import { MqlError, MqlPayload, MqlOptions } from '../lightweight';
-
+import { MqlPayload, MqlOptions } from '../lightweight';
 export { MicrolinkError, MqlError, MqlPayload } from '../lightweight'
 
 import { Response, Options as GotOpts } from 'got/dist/source/core'
 
-export type HTTPResponse = Response<Buffer>
+type HTTPResponseWithBody = Response & { body: MqlPayload };
 
-type HTTPResponseWithBody = HTTPResponse & { body: MqlPayload };
-
-type HTTPResponseRaw = HTTPResponse & { body: Buffer };
+type HTTPResponseRaw = Response & { body: Buffer };
 
 export type MqlResponse = MqlPayload & { response: HTTPResponseWithBody };
 
 interface Mql {
-  (url: string, opts?: MqlOptions & { stream: string }, gotOpts?: GotOpts): Promise<HTTPResponse>;
+  (url: string, opts?: MqlOptions & { stream: string }, gotOpts?: GotOpts): Promise<HTTPResponseRaw>;
   (url: string, opts?: MqlOptions, gotOpts?: GotOpts): Promise<MqlResponse>;
   extend: (gotOpts?: GotOpts) => Mql;
   stream: (url: string, gotOpts?: GotOpts) => NodeJS.ReadableStream;
   buffer: (url: string, opts?: MqlOptions, gotOpts?: GotOpts) => Promise<HTTPResponseRaw>;
-  MicrolinkError: new (props: object) => MqlError;
   version: string;
 }
 
