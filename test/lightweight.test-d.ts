@@ -73,6 +73,7 @@ mql('https://example.com', {
   screenshot: {
     codeScheme: 'atom-dark',
     type: 'png',
+    optimizeForSpeed: true,
     overlay: {
       background: '#000',
       browser: 'light'

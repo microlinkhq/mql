@@ -31,6 +31,7 @@ type ScreenshotOptions = {
   element?: string;
   fullPage?: boolean;
   omitBackground?: boolean;
+  optimizeForSpeed?: boolean;
   overlay?: ScreenshotOverlay,
   type?: "jpeg" | "png";
 }
