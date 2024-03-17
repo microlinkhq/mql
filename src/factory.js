@@ -28,7 +28,7 @@ const parseBody = (input, error, url) => {
   }
 }
 
-const factory = buildName => ({
+const factory = streamResponseType => ({
   VERSION,
   MicrolinkError,
   urlHttp,
@@ -61,7 +61,7 @@ const factory = buildName => ({
   const fetchFromApi = async (apiUrl, opts = {}) => {
     try {
       const response = await got(apiUrl, opts)
-      return ['buffer', 'arrayBuffer'].includes(opts.responseType)
+      return opts.responseType === streamResponseType
         ? response
         : { ...response.body, response }
     } catch (err) {
@@ -108,7 +108,7 @@ const factory = buildName => ({
       : { ...gotHeaders }
 
     if (opts.stream) {
-      responseType = buildName === 'node' ? 'buffer' : 'arrayBuffer'
+      responseType = streamResponseType
     }
     return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
   }

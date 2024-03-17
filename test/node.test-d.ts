@@ -1,10 +1,11 @@
 import mql from '../src/node'
 
-/** response */
+/** mql */
 
 ;(async () => {
   const result = await mql('https://example.com', { meta: true })
   console.log(result.status)
+  console.log(result.data)
   console.log(result.statusCode)
   console.log(result.headers)
   console.log(result.response)

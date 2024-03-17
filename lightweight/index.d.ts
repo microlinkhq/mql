@@ -174,6 +174,7 @@ export type MqlError = {
 export type MqlOptions = MqlClientOptions & MicrolinkApiOptions;
 
 interface mql {
+  (url: string, opts?: MqlOptions & { stream: true }, gotOpts?: object): Promise<Response>;
   (url: string, opts?: MqlOptions, gotOpts?: object): Promise<MqlResponse>;
   arrayBuffer: (url: string, opts?: MqlOptions, gotOpts?: object) => Promise<HTTPResponseRaw>;
   extend: (gotOpts?: object) => mql;
