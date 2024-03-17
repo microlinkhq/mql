@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.13.4](https://github.com/microlinkhq/mql/compare/v0.13.3...v0.13.4) (2024-03-17)
+
+
+### Bug Fixes
+
+* types ([#154](https://github.com/microlinkhq/mql/issues/154)) ([e8cfe09](https://github.com/microlinkhq/mql/commit/e8cfe092a5aaf24ea007cd00292954e79d030742))
+
 ### [0.13.3](https://github.com/microlinkhq/mql/compare/v0.13.2...v0.13.3) (2024-03-17)
 
 
