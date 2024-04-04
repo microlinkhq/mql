@@ -41,7 +41,7 @@ const factory = streamResponseType => ({
       throw new MicrolinkError({
         status: 'fail',
         data: { url: message },
-        more: 'https://microlink.io/docs/api/api-parameters/url',
+        more: 'https://microlink.io/einvalurlclient',
         code: 'EINVALURLCLIENT',
         message,
         url

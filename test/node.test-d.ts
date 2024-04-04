@@ -6,7 +6,7 @@ import mql, { MicrolinkError } from '../src/node'
   const error = new MicrolinkError({
     status: 'fail',
     data: { url: 'something goes wrong' },
-    more: 'https://microlink.io/docs/api/api-parameters/url',
+    more: 'https://microlink.io/einvalurlclient',
     code: 'EINVALURLCLIENT',
     message: 'something goes wrong',
     url: 'https://example.com'

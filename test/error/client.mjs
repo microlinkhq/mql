@@ -11,7 +11,7 @@ clients.forEach(({ constructor: mql, target }) => {
     t.true(error.url === '')
     t.true(error.code === 'EINVALURLCLIENT')
     t.true(error.status === 'fail')
-    t.true(error.more === 'https://microlink.io/docs/api/api-parameters/url')
+    t.true(error.more === 'https://microlink.io/einvalurlclient')
     t.true(error.statusCode === undefined)
     t.true(!!error.data)
     t.true(!!error.message)
