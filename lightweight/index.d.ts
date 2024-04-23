@@ -142,7 +142,7 @@ type MqlStatus = "success" | "fail" | "error";
 export type MqlPayload = {
   status: MqlStatus;
   data: MqlResponseData;
-  statusCode: number;
+  statusCode?: number;
   headers: { [key: string]: string };
 }
 
