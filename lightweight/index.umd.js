@@ -1,723 +1,955 @@
-!(function (e, t) {
-  'object' == typeof exports && 'undefined' != typeof module
-    ? t(exports)
-    : 'function' == typeof define && define.amd
-    ? define(['exports'], t)
-    : t(
-        ((e =
-          'undefined' != typeof globalThis ? globalThis : e || self).mql = {})
-      )
-})(this, function (e) {
+;(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined'
+    ? factory(exports)
+    : typeof define === 'function' && define.amd
+    ? define(['exports'], factory)
+    : ((global =
+        typeof globalThis !== 'undefined' ? globalThis : global || self),
+      factory((global.mql = {})))
+})(this, function (exports) {
   'use strict'
-  function t (e) {
-    return e &&
-      e.__esModule &&
-      Object.prototype.hasOwnProperty.call(e, 'default')
-      ? e.default
-      : e
+
+  function getDefaultExportFromCjs (x) {
+    return x &&
+      x.__esModule &&
+      Object.prototype.hasOwnProperty.call(x, 'default')
+      ? x['default']
+      : x
   }
-  function r (e) {
-    if (e.__esModule) return e
-    var t = e.default
-    if ('function' == typeof t) {
-      var r = function e () {
-        return this instanceof e
-          ? Reflect.construct(t, arguments, this.constructor)
-          : t.apply(this, arguments)
+
+  function getAugmentedNamespace (n) {
+    if (n.__esModule) return n
+    var f = n.default
+    if (typeof f == 'function') {
+      var a = function a () {
+        if (this instanceof a) {
+          return Reflect.construct(f, arguments, this.constructor)
+        }
+        return f.apply(this, arguments)
       }
-      r.prototype = t.prototype
-    } else r = {}
-    return (
-      Object.defineProperty(r, '__esModule', { value: !0 }),
-      Object.keys(e).forEach(function (t) {
-        var s = Object.getOwnPropertyDescriptor(e, t)
-        Object.defineProperty(
-          r,
-          t,
-          s.get
-            ? s
-            : {
-                enumerable: !0,
-                get: function () {
-                  return e[t]
-                }
+      a.prototype = f.prototype
+    } else a = {}
+    Object.defineProperty(a, '__esModule', { value: true })
+    Object.keys(n).forEach(function (k) {
+      var d = Object.getOwnPropertyDescriptor(n, k)
+      Object.defineProperty(
+        a,
+        k,
+        d.get
+          ? d
+          : {
+              enumerable: true,
+              get: function () {
+                return n[k]
               }
-        )
-      }),
-      r
-    )
-  }
-  var s = { exports: {} }
-  const o = /^https?:\/\//i
-  var n = {}
-  function i (e, t, r, s, o) {
-    var n,
-      a = o ? o + r : o
-    if (null == s) t && (e[o] = s)
-    else if ('object' != typeof s) e[o] = s
-    else if (Array.isArray(s))
-      for (n = 0; n < s.length; n++) i(e, t, r, s[n], a + n)
-    else for (n in s) i(e, t, r, s[n], a + n)
-  }
-  n.flattie = function (e, t, r) {
-    var s = {}
-    return 'object' == typeof e && i(s, !!r, t || '.', e, ''), s
-  }
-  class a extends Error {
-    constructor (e, t, r) {
-      const s = `${e.status || 0 === e.status ? e.status : ''} ${e.statusText ||
-        ''}`.trim()
-      super(
-        `Request failed with ${s ? `status code ${s}` : 'an unknown error'}`
-      ),
-        Object.defineProperty(this, 'response', {
-          enumerable: !0,
-          configurable: !0,
-          writable: !0,
-          value: void 0
-        }),
-        Object.defineProperty(this, 'request', {
-          enumerable: !0,
-          configurable: !0,
-          writable: !0,
-          value: void 0
-        }),
-        Object.defineProperty(this, 'options', {
-          enumerable: !0,
-          configurable: !0,
-          writable: !0,
-          value: void 0
-        }),
-        (this.name = 'HTTPError'),
-        (this.response = e),
-        (this.request = t),
-        (this.options = r)
-    }
-  }
-  class u extends Error {
-    constructor (e) {
-      super('Request timed out'),
-        Object.defineProperty(this, 'request', {
-          enumerable: !0,
-          configurable: !0,
-          writable: !0,
-          value: void 0
-        }),
-        (this.name = 'TimeoutError'),
-        (this.request = e)
-    }
-  }
-  const l = e => null !== e && 'object' == typeof e,
-    c = (...e) => {
-      for (const t of e)
-        if ((!l(t) || Array.isArray(t)) && void 0 !== t)
-          throw new TypeError('The `options` argument must be an object')
-      return p({}, ...e)
-    },
-    h = (e = {}, t = {}) => {
-      const r = new globalThis.Headers(e),
-        s = t instanceof globalThis.Headers,
-        o = new globalThis.Headers(t)
-      for (const [e, t] of o.entries())
-        (s && 'undefined' === t) || void 0 === t ? r.delete(e) : r.set(e, t)
-      return r
-    },
-    p = (...e) => {
-      let t = {},
-        r = {}
-      for (const s of e)
-        if (Array.isArray(s)) Array.isArray(t) || (t = []), (t = [...t, ...s])
-        else if (l(s)) {
-          for (let [e, r] of Object.entries(s))
-            l(r) && e in t && (r = p(t[e], r)), (t = { ...t, [e]: r })
-          l(s.headers) && ((r = h(r, s.headers)), (t.headers = r))
-        }
-      return t
-    },
-    f = (() => {
-      let e = !1,
-        t = !1
-      const r = 'function' == typeof globalThis.ReadableStream,
-        s = 'function' == typeof globalThis.Request
-      return (
-        r &&
-          s &&
-          (t = new globalThis.Request('https://empty.invalid', {
-            body: new globalThis.ReadableStream(),
-            method: 'POST',
-            get duplex () {
-              return (e = !0), 'half'
             }
-          }).headers.has('Content-Type')),
-        e && !t
       )
-    })(),
-    d = 'function' == typeof globalThis.AbortController,
-    y = 'function' == typeof globalThis.ReadableStream,
-    b = 'function' == typeof globalThis.FormData,
-    m = ['get', 'post', 'put', 'patch', 'head', 'delete'],
-    _ = {
-      json: 'application/json',
-      text: 'text/*',
-      formData: 'multipart/form-data',
-      arrayBuffer: '*/*',
-      blob: '*/*'
-    },
-    g = 2147483647,
-    w = Symbol('stop'),
-    T = {
-      json: !0,
-      parseJson: !0,
-      searchParams: !0,
-      prefixUrl: !0,
-      retry: !0,
-      timeout: !0,
-      hooks: !0,
-      throwHttpErrors: !0,
-      onDownloadProgress: !0,
-      fetch: !0
-    },
-    R = {
-      method: !0,
-      headers: !0,
-      body: !0,
-      mode: !0,
-      credentials: !0,
-      cache: !0,
-      redirect: !0,
-      referrer: !0,
-      referrerPolicy: !0,
-      integrity: !0,
-      keepalive: !0,
-      signal: !0,
-      window: !0,
-      dispatcher: !0,
-      duplex: !0
-    },
-    v = e => (m.includes(e) ? e.toUpperCase() : e),
-    x = [413, 429, 503],
-    E = {
-      limit: 2,
-      methods: ['get', 'put', 'head', 'delete', 'options', 'trace'],
-      statusCodes: [408, 413, 429, 500, 502, 503, 504],
-      afterStatusCodes: x,
-      maxRetryAfter: Number.POSITIVE_INFINITY,
-      backoffLimit: Number.POSITIVE_INFINITY,
-      delay: e => 0.3 * 2 ** (e - 1) * 1e3
-    },
-    q = (e = {}) => {
-      if ('number' == typeof e) return { ...E, limit: e }
-      if (e.methods && !Array.isArray(e.methods))
-        throw new Error('retry.methods must be an array')
-      if (e.statusCodes && !Array.isArray(e.statusCodes))
-        throw new Error('retry.statusCodes must be an array')
-      return { ...E, ...e, afterStatusCodes: x }
+    })
+    return a
+  }
+
+  var lightweight$2 = { exports: {} }
+
+  const REGEX_HTTP_PROTOCOL = /^https?:\/\//i
+
+  var lightweight$1 = url => {
+    try {
+      const { href } = new URL(url)
+      return REGEX_HTTP_PROTOCOL.test(href) && href
+    } catch (err) {
+      return false
     }
-  class P {
-    static create (e, t) {
-      const r = new P(e, t),
-        s = async () => {
-          if ('number' == typeof r._options.timeout && r._options.timeout > g)
-            throw new RangeError(
-              'The `timeout` option cannot be greater than 2147483647'
-            )
-          await Promise.resolve()
-          let e = await r._fetch()
-          for (const t of r._options.hooks.afterResponse) {
-            const s = await t(
-              r.request,
-              r._options,
-              r._decorateResponse(e.clone())
-            )
-            s instanceof globalThis.Response && (e = s)
-          }
-          if ((r._decorateResponse(e), !e.ok && r._options.throwHttpErrors)) {
-            let t = new a(e, r.request, r._options)
-            for (const e of r._options.hooks.beforeError) t = await e(t)
-            throw t
-          }
-          if (r._options.onDownloadProgress) {
-            if ('function' != typeof r._options.onDownloadProgress)
-              throw new TypeError(
-                'The `onDownloadProgress` option must be a function'
-              )
-            if (!y)
-              throw new Error(
-                'Streams are not supported in your environment. `ReadableStream` is missing.'
-              )
-            return r._stream(e.clone(), r._options.onDownloadProgress)
-          }
-          return e
-        },
-        o = r._options.retry.methods.includes(r.request.method.toLowerCase())
-          ? r._retry(s)
-          : s()
-      for (const [e, s] of Object.entries(_))
-        o[e] = async () => {
-          r.request.headers.set('accept', r.request.headers.get('accept') || s)
-          const n = (await o).clone()
-          if ('json' === e) {
-            if (204 === n.status) return ''
-            if (0 === (await n.clone().arrayBuffer()).byteLength) return ''
-            if (t.parseJson) return t.parseJson(await n.text())
-          }
-          return n[e]()
-        }
-      return o
+  }
+
+  var dist = {}
+
+  function iter (output, nullish, sep, val, key) {
+    var k,
+      pfx = key ? key + sep : key
+
+    if (val == null) {
+      if (nullish) output[key] = val
+    } else if (typeof val != 'object') {
+      output[key] = val
+    } else if (Array.isArray(val)) {
+      for (k = 0; k < val.length; k++) {
+        iter(output, nullish, sep, val[k], pfx + k)
+      }
+    } else {
+      for (k in val) {
+        iter(output, nullish, sep, val[k], pfx + k)
+      }
     }
-    constructor (e, t = {}) {
-      Object.defineProperty(this, 'request', {
-        enumerable: !0,
-        configurable: !0,
-        writable: !0,
+  }
+
+  function flattie (input, glue, toNull) {
+    var output = {}
+    if (typeof input == 'object') {
+      iter(output, !!toNull, glue || '.', input, '')
+    }
+    return output
+  }
+
+  dist.flattie = flattie
+
+  // eslint-lint-disable-next-line @typescript-eslint/naming-convention
+  class HTTPError extends Error {
+    constructor (response, request, options) {
+      const code =
+        response.status || response.status === 0 ? response.status : ''
+      const title = response.statusText || ''
+      const status = `${code} ${title}`.trim()
+      const reason = status ? `status code ${status}` : 'an unknown error'
+      super(`Request failed with ${reason}`)
+      Object.defineProperty(this, 'response', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
         value: void 0
-      }),
-        Object.defineProperty(this, 'abortController', {
-          enumerable: !0,
-          configurable: !0,
-          writable: !0,
-          value: void 0
-        }),
-        Object.defineProperty(this, '_retryCount', {
-          enumerable: !0,
-          configurable: !0,
-          writable: !0,
-          value: 0
-        }),
-        Object.defineProperty(this, '_input', {
-          enumerable: !0,
-          configurable: !0,
-          writable: !0,
-          value: void 0
-        }),
-        Object.defineProperty(this, '_options', {
-          enumerable: !0,
-          configurable: !0,
-          writable: !0,
-          value: void 0
-        }),
-        (this._input = e)
-      const r = 'credentials' in Request.prototype
+      })
+      Object.defineProperty(this, 'request', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: void 0
+      })
+      Object.defineProperty(this, 'options', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: void 0
+      })
+      this.name = 'HTTPError'
+      this.response = response
+      this.request = request
+      this.options = options
+    }
+  }
+
+  class TimeoutError extends Error {
+    constructor (request) {
+      super('Request timed out')
+      Object.defineProperty(this, 'request', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: void 0
+      })
+      this.name = 'TimeoutError'
+      this.request = request
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const isObject$1 = value => value !== null && typeof value === 'object'
+
+  const validateAndMerge = (...sources) => {
+    for (const source of sources) {
       if (
-        ((this._options = {
-          credentials: r ? this._input.credentials : void 0,
-          ...t,
-          headers: h(this._input.headers, t.headers),
-          hooks: p(
-            {
-              beforeRequest: [],
-              beforeRetry: [],
-              beforeError: [],
-              afterResponse: []
-            },
-            t.hooks
-          ),
-          method: v(t.method ?? this._input.method),
-          prefixUrl: String(t.prefixUrl || ''),
-          retry: q(t.retry),
-          throwHttpErrors: !1 !== t.throwHttpErrors,
-          timeout: t.timeout ?? 1e4,
-          fetch: t.fetch ?? globalThis.fetch.bind(globalThis)
-        }),
-        'string' != typeof this._input &&
-          !(
-            this._input instanceof URL ||
-            this._input instanceof globalThis.Request
-          ))
+        (!isObject$1(source) || Array.isArray(source)) &&
+        source !== undefined
+      ) {
+        throw new TypeError('The `options` argument must be an object')
+      }
+    }
+    return deepMerge({}, ...sources)
+  }
+  const mergeHeaders = (source1 = {}, source2 = {}) => {
+    const result = new globalThis.Headers(source1)
+    const isHeadersInstance = source2 instanceof globalThis.Headers
+    const source = new globalThis.Headers(source2)
+    for (const [key, value] of source.entries()) {
+      if ((isHeadersInstance && value === 'undefined') || value === undefined) {
+        result.delete(key)
+      } else {
+        result.set(key, value)
+      }
+    }
+    return result
+  }
+  // TODO: Make this strongly-typed (no `any`).
+  const deepMerge = (...sources) => {
+    let returnValue = {}
+    let headers = {}
+    for (const source of sources) {
+      if (Array.isArray(source)) {
+        if (!Array.isArray(returnValue)) {
+          returnValue = []
+        }
+        returnValue = [...returnValue, ...source]
+      } else if (isObject$1(source)) {
+        for (let [key, value] of Object.entries(source)) {
+          if (isObject$1(value) && key in returnValue) {
+            value = deepMerge(returnValue[key], value)
+          }
+          returnValue = { ...returnValue, [key]: value }
+        }
+        if (isObject$1(source.headers)) {
+          headers = mergeHeaders(headers, source.headers)
+          returnValue.headers = headers
+        }
+      }
+    }
+    return returnValue
+  }
+
+  const supportsRequestStreams = (() => {
+    let duplexAccessed = false
+    let hasContentType = false
+    const supportsReadableStream =
+      typeof globalThis.ReadableStream === 'function'
+    const supportsRequest = typeof globalThis.Request === 'function'
+    if (supportsReadableStream && supportsRequest) {
+      hasContentType = new globalThis.Request('https://empty.invalid', {
+        body: new globalThis.ReadableStream(),
+        method: 'POST',
+        // @ts-expect-error - Types are outdated.
+        get duplex () {
+          duplexAccessed = true
+          return 'half'
+        }
+      }).headers.has('Content-Type')
+    }
+    return duplexAccessed && !hasContentType
+  })()
+  const supportsAbortController =
+    typeof globalThis.AbortController === 'function'
+  const supportsResponseStreams =
+    typeof globalThis.ReadableStream === 'function'
+  const supportsFormData = typeof globalThis.FormData === 'function'
+  const requestMethods = ['get', 'post', 'put', 'patch', 'head', 'delete']
+  const responseTypes = {
+    json: 'application/json',
+    text: 'text/*',
+    formData: 'multipart/form-data',
+    arrayBuffer: '*/*',
+    blob: '*/*'
+  }
+  // The maximum value of a 32bit int (see issue #117)
+  const maxSafeTimeout = 2_147_483_647
+  const stop = Symbol('stop')
+  const kyOptionKeys = {
+    json: true,
+    parseJson: true,
+    searchParams: true,
+    prefixUrl: true,
+    retry: true,
+    timeout: true,
+    hooks: true,
+    throwHttpErrors: true,
+    onDownloadProgress: true,
+    fetch: true
+  }
+  const requestOptionsRegistry = {
+    method: true,
+    headers: true,
+    body: true,
+    mode: true,
+    credentials: true,
+    cache: true,
+    redirect: true,
+    referrer: true,
+    referrerPolicy: true,
+    integrity: true,
+    keepalive: true,
+    signal: true,
+    window: true,
+    dispatcher: true,
+    duplex: true,
+    priority: true
+  }
+
+  const normalizeRequestMethod = input =>
+    requestMethods.includes(input) ? input.toUpperCase() : input
+  const retryMethods = ['get', 'put', 'head', 'delete', 'options', 'trace']
+  const retryStatusCodes = [408, 413, 429, 500, 502, 503, 504]
+  const retryAfterStatusCodes = [413, 429, 503]
+  const defaultRetryOptions = {
+    limit: 2,
+    methods: retryMethods,
+    statusCodes: retryStatusCodes,
+    afterStatusCodes: retryAfterStatusCodes,
+    maxRetryAfter: Number.POSITIVE_INFINITY,
+    backoffLimit: Number.POSITIVE_INFINITY,
+    delay: attemptCount => 0.3 * 2 ** (attemptCount - 1) * 1000
+  }
+  const normalizeRetryOptions = (retry = {}) => {
+    if (typeof retry === 'number') {
+      return {
+        ...defaultRetryOptions,
+        limit: retry
+      }
+    }
+    if (retry.methods && !Array.isArray(retry.methods)) {
+      throw new Error('retry.methods must be an array')
+    }
+    if (retry.statusCodes && !Array.isArray(retry.statusCodes)) {
+      throw new Error('retry.statusCodes must be an array')
+    }
+    return {
+      ...defaultRetryOptions,
+      ...retry,
+      afterStatusCodes: retryAfterStatusCodes
+    }
+  }
+
+  // `Promise.race()` workaround (#91)
+  async function timeout (request, init, abortController, options) {
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        if (abortController) {
+          abortController.abort()
+        }
+        reject(new TimeoutError(request))
+      }, options.timeout)
+      void options
+        .fetch(request, init)
+        .then(resolve)
+        .catch(reject)
+        .then(() => {
+          clearTimeout(timeoutId)
+        })
+    })
+  }
+
+  // https://github.com/sindresorhus/delay/tree/ab98ae8dfcb38e1593286c94d934e70d14a4e111
+  async function delay (ms, { signal }) {
+    return new Promise((resolve, reject) => {
+      if (signal) {
+        signal.throwIfAborted()
+        signal.addEventListener('abort', abortHandler, { once: true })
+      }
+      function abortHandler () {
+        clearTimeout(timeoutId)
+        reject(signal.reason)
+      }
+      const timeoutId = setTimeout(() => {
+        signal?.removeEventListener('abort', abortHandler)
+        resolve()
+      }, ms)
+    })
+  }
+
+  const findUnknownOptions = (request, options) => {
+    const unknownOptions = {}
+    for (const key in options) {
+      if (
+        !(key in requestOptionsRegistry) &&
+        !(key in kyOptionKeys) &&
+        !(key in request)
+      ) {
+        unknownOptions[key] = options[key]
+      }
+    }
+    return unknownOptions
+  }
+
+  class Ky {
+    static create (input, options) {
+      const ky = new Ky(input, options)
+      const function_ = async () => {
+        if (
+          typeof ky._options.timeout === 'number' &&
+          ky._options.timeout > maxSafeTimeout
+        ) {
+          throw new RangeError(
+            `The \`timeout\` option cannot be greater than ${maxSafeTimeout}`
+          )
+        }
+        // Delay the fetch so that body method shortcuts can set the Accept header
+        await Promise.resolve()
+        let response = await ky._fetch()
+        for (const hook of ky._options.hooks.afterResponse) {
+          // eslint-disable-next-line no-await-in-loop
+          const modifiedResponse = await hook(
+            ky.request,
+            ky._options,
+            ky._decorateResponse(response.clone())
+          )
+          if (modifiedResponse instanceof globalThis.Response) {
+            response = modifiedResponse
+          }
+        }
+        ky._decorateResponse(response)
+        if (!response.ok && ky._options.throwHttpErrors) {
+          let error = new HTTPError(response, ky.request, ky._options)
+          for (const hook of ky._options.hooks.beforeError) {
+            // eslint-disable-next-line no-await-in-loop
+            error = await hook(error)
+          }
+          throw error
+        }
+        // If `onDownloadProgress` is passed, it uses the stream API internally
+        /* istanbul ignore next */
+        if (ky._options.onDownloadProgress) {
+          if (typeof ky._options.onDownloadProgress !== 'function') {
+            throw new TypeError(
+              'The `onDownloadProgress` option must be a function'
+            )
+          }
+          if (!supportsResponseStreams) {
+            throw new Error(
+              'Streams are not supported in your environment. `ReadableStream` is missing.'
+            )
+          }
+          return ky._stream(response.clone(), ky._options.onDownloadProgress)
+        }
+        return response
+      }
+      const isRetriableMethod = ky._options.retry.methods.includes(
+        ky.request.method.toLowerCase()
       )
+      const result = isRetriableMethod ? ky._retry(function_) : function_()
+      for (const [type, mimeType] of Object.entries(responseTypes)) {
+        result[type] = async () => {
+          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+          ky.request.headers.set(
+            'accept',
+            ky.request.headers.get('accept') || mimeType
+          )
+          const awaitedResult = await result
+          const response = awaitedResult.clone()
+          if (type === 'json') {
+            if (response.status === 204) {
+              return ''
+            }
+            const arrayBuffer = await response.clone().arrayBuffer()
+            const responseSize = arrayBuffer.byteLength
+            if (responseSize === 0) {
+              return ''
+            }
+            if (options.parseJson) {
+              return options.parseJson(await response.text())
+            }
+          }
+          return response[type]()
+        }
+      }
+      return result
+    }
+    // eslint-disable-next-line complexity
+    constructor (input, options = {}) {
+      Object.defineProperty(this, 'request', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: void 0
+      })
+      Object.defineProperty(this, 'abortController', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: void 0
+      })
+      Object.defineProperty(this, '_retryCount', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: 0
+      })
+      Object.defineProperty(this, '_input', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: void 0
+      })
+      Object.defineProperty(this, '_options', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: void 0
+      })
+      this._input = input
+      const credentials =
+        this._input instanceof Request && 'credentials' in Request.prototype
+          ? this._input.credentials
+          : undefined
+      this._options = {
+        ...(credentials && { credentials }), // For exactOptionalPropertyTypes
+        ...options,
+        headers: mergeHeaders(this._input.headers, options.headers),
+        hooks: deepMerge(
+          {
+            beforeRequest: [],
+            beforeRetry: [],
+            beforeError: [],
+            afterResponse: []
+          },
+          options.hooks
+        ),
+        method: normalizeRequestMethod(options.method ?? this._input.method),
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        prefixUrl: String(options.prefixUrl || ''),
+        retry: normalizeRetryOptions(options.retry),
+        throwHttpErrors: options.throwHttpErrors !== false,
+        timeout: options.timeout ?? 10_000,
+        fetch: options.fetch ?? globalThis.fetch.bind(globalThis)
+      }
+      if (
+        typeof this._input !== 'string' &&
+        !(
+          this._input instanceof URL ||
+          this._input instanceof globalThis.Request
+        )
+      ) {
         throw new TypeError('`input` must be a string, URL, or Request')
-      if (this._options.prefixUrl && 'string' == typeof this._input) {
-        if (this._input.startsWith('/'))
+      }
+      if (this._options.prefixUrl && typeof this._input === 'string') {
+        if (this._input.startsWith('/')) {
           throw new Error(
             '`input` must not begin with a slash when using `prefixUrl`'
           )
-        this._options.prefixUrl.endsWith('/') ||
-          (this._options.prefixUrl += '/'),
-          (this._input = this._options.prefixUrl + this._input)
+        }
+        if (!this._options.prefixUrl.endsWith('/')) {
+          this._options.prefixUrl += '/'
+        }
+        this._input = this._options.prefixUrl + this._input
       }
-      if (d) {
-        if (
-          ((this.abortController = new globalThis.AbortController()),
-          this._options.signal)
-        ) {
-          const e = this._options.signal
+      if (supportsAbortController) {
+        this.abortController = new globalThis.AbortController()
+        if (this._options.signal) {
+          const originalSignal = this._options.signal
           this._options.signal.addEventListener('abort', () => {
-            this.abortController.abort(e.reason)
+            this.abortController.abort(originalSignal.reason)
           })
         }
         this._options.signal = this.abortController.signal
       }
-      if (
-        (f && (this._options.duplex = 'half'),
-        (this.request = new globalThis.Request(this._input, this._options)),
-        this._options.searchParams)
-      ) {
-        const e =
-            '?' +
-            ('string' == typeof this._options.searchParams
-              ? this._options.searchParams.replace(/^\?/, '')
-              : new URLSearchParams(this._options.searchParams).toString()),
-          t = this.request.url.replace(/(?:\?.*?)?(?=#|$)/, e)
-        !(
-          (b && this._options.body instanceof globalThis.FormData) ||
-          this._options.body instanceof URLSearchParams
-        ) ||
-          (this._options.headers && this._options.headers['content-type']) ||
-          this.request.headers.delete('content-type'),
-          (this.request = new globalThis.Request(
-            new globalThis.Request(t, { ...this.request }),
-            this._options
-          ))
+      if (supportsRequestStreams) {
+        // @ts-expect-error - Types are outdated.
+        this._options.duplex = 'half'
       }
-      void 0 !== this._options.json &&
-        ((this._options.body = JSON.stringify(this._options.json)),
+      this.request = new globalThis.Request(this._input, this._options)
+      if (this._options.searchParams) {
+        // eslint-disable-next-line unicorn/prevent-abbreviations
+        const textSearchParams =
+          typeof this._options.searchParams === 'string'
+            ? this._options.searchParams.replace(/^\?/, '')
+            : new URLSearchParams(this._options.searchParams).toString()
+        // eslint-disable-next-line unicorn/prevent-abbreviations
+        const searchParams = '?' + textSearchParams
+        const url = this.request.url.replace(/(?:\?.*?)?(?=#|$)/, searchParams)
+        // To provide correct form boundary, Content-Type header should be deleted each time when new Request instantiated from another one
+        if (
+          ((supportsFormData &&
+            this._options.body instanceof globalThis.FormData) ||
+            this._options.body instanceof URLSearchParams) &&
+          !(this._options.headers && this._options.headers['content-type'])
+        ) {
+          this.request.headers.delete('content-type')
+        }
+        // The spread of `this.request` is required as otherwise it misses the `duplex` option for some reason and throws.
+        this.request = new globalThis.Request(
+          new globalThis.Request(url, { ...this.request }),
+          this._options
+        )
+      }
+      if (this._options.json !== undefined) {
+        this._options.body = JSON.stringify(this._options.json)
         this.request.headers.set(
           'content-type',
           this._options.headers.get('content-type') ?? 'application/json'
-        ),
-        (this.request = new globalThis.Request(this.request, {
+        )
+        this.request = new globalThis.Request(this.request, {
           body: this._options.body
-        })))
+        })
+      }
     }
-    _calculateRetryDelay (e) {
+    _calculateRetryDelay (error) {
+      this._retryCount++
       if (
-        (this._retryCount++,
-        this._retryCount <= this._options.retry.limit && !(e instanceof u))
+        this._retryCount <= this._options.retry.limit &&
+        !(error instanceof TimeoutError)
       ) {
-        if (e instanceof a) {
-          if (!this._options.retry.statusCodes.includes(e.response.status))
-            return 0
-          const t = e.response.headers.get('Retry-After')
+        if (error instanceof HTTPError) {
           if (
-            t &&
-            this._options.retry.afterStatusCodes.includes(e.response.status)
+            !this._options.retry.statusCodes.includes(error.response.status)
           ) {
-            let e = Number(t)
-            return (
-              Number.isNaN(e) ? (e = Date.parse(t) - Date.now()) : (e *= 1e3),
-              void 0 !== this._options.retry.maxRetryAfter &&
-              e > this._options.retry.maxRetryAfter
-                ? 0
-                : e
-            )
+            return 0
           }
-          if (413 === e.response.status) return 0
+          const retryAfter = error.response.headers.get('Retry-After')
+          if (
+            retryAfter &&
+            this._options.retry.afterStatusCodes.includes(error.response.status)
+          ) {
+            let after = Number(retryAfter)
+            if (Number.isNaN(after)) {
+              after = Date.parse(retryAfter) - Date.now()
+            } else {
+              after *= 1000
+            }
+            if (
+              this._options.retry.maxRetryAfter !== undefined &&
+              after > this._options.retry.maxRetryAfter
+            ) {
+              return 0
+            }
+            return after
+          }
+          if (error.response.status === 413) {
+            return 0
+          }
         }
-        const t = this._options.retry.delay(this._retryCount)
-        return Math.min(this._options.retry.backoffLimit, t)
+        const retryDelay = this._options.retry.delay(this._retryCount)
+        return Math.min(this._options.retry.backoffLimit, retryDelay)
       }
       return 0
     }
-    _decorateResponse (e) {
-      return (
-        this._options.parseJson &&
-          (e.json = async () => this._options.parseJson(await e.text())),
-        e
-      )
+    _decorateResponse (response) {
+      if (this._options.parseJson) {
+        response.json = async () =>
+          this._options.parseJson(await response.text())
+      }
+      return response
     }
-    async _retry (e) {
+    async _retry (function_) {
       try {
-        return await e()
-      } catch (t) {
-        const r = Math.min(this._calculateRetryDelay(t), g)
-        if (0 !== r && this._retryCount > 0) {
-          await (async function (e, { signal: t }) {
-            return new Promise((r, s) => {
-              function o () {
-                clearTimeout(n), s(t.reason)
-              }
-              t &&
-                (t.throwIfAborted(),
-                t.addEventListener('abort', o, { once: !0 }))
-              const n = setTimeout(() => {
-                t?.removeEventListener('abort', o), r()
-              }, e)
+        return await function_()
+      } catch (error) {
+        const ms = Math.min(this._calculateRetryDelay(error), maxSafeTimeout)
+        if (ms !== 0 && this._retryCount > 0) {
+          await delay(ms, { signal: this._options.signal })
+          for (const hook of this._options.hooks.beforeRetry) {
+            // eslint-disable-next-line no-await-in-loop
+            const hookResult = await hook({
+              request: this.request,
+              options: this._options,
+              error: error,
+              retryCount: this._retryCount
             })
-          })(r, { signal: this._options.signal })
-          for (const e of this._options.hooks.beforeRetry) {
-            if (
-              (await e({
-                request: this.request,
-                options: this._options,
-                error: t,
-                retryCount: this._retryCount
-              })) === w
-            )
+            // If `stop` is returned from the hook, the retry process is stopped
+            if (hookResult === stop) {
               return
+            }
           }
-          return this._retry(e)
+          return this._retry(function_)
         }
-        throw t
+        throw error
       }
     }
     async _fetch () {
-      for (const e of this._options.hooks.beforeRequest) {
-        const t = await e(this.request, this._options)
-        if (t instanceof Request) {
-          this.request = t
+      for (const hook of this._options.hooks.beforeRequest) {
+        // eslint-disable-next-line no-await-in-loop
+        const result = await hook(this.request, this._options)
+        if (result instanceof Request) {
+          this.request = result
           break
         }
-        if (t instanceof Response) return t
-      }
-      const e = ((e, t) => {
-        const r = {}
-        for (const s in t) s in R || s in T || s in e || (r[s] = t[s])
-        return r
-      })(this.request, this._options)
-      return !1 === this._options.timeout
-        ? this._options.fetch(this.request.clone(), e)
-        : (async function (e, t, r, s) {
-            return new Promise((o, n) => {
-              const i = setTimeout(() => {
-                r && r.abort(), n(new u(e))
-              }, s.timeout)
-              s.fetch(e, t)
-                .then(o)
-                .catch(n)
-                .then(() => {
-                  clearTimeout(i)
-                })
-            })
-          })(this.request.clone(), e, this.abortController, this._options)
-    }
-    _stream (e, t) {
-      const r = Number(e.headers.get('content-length')) || 0
-      let s = 0
-      return 204 === e.status
-        ? (t &&
-            t(
-              { percent: 1, totalBytes: r, transferredBytes: s },
-              new Uint8Array()
-            ),
-          new globalThis.Response(null, {
-            status: e.status,
-            statusText: e.statusText,
-            headers: e.headers
-          }))
-        : new globalThis.Response(
-            new globalThis.ReadableStream({
-              async start (o) {
-                const n = e.body.getReader()
-                t &&
-                  t(
-                    { percent: 0, transferredBytes: 0, totalBytes: r },
-                    new Uint8Array()
-                  ),
-                  await (async function e () {
-                    const { done: i, value: a } = await n.read()
-                    if (i) o.close()
-                    else {
-                      if (t) {
-                        s += a.byteLength
-                        t(
-                          {
-                            percent: 0 === r ? 0 : s / r,
-                            transferredBytes: s,
-                            totalBytes: r
-                          },
-                          a
-                        )
-                      }
-                      o.enqueue(a), await e()
-                    }
-                  })()
-              }
-            }),
-            { status: e.status, statusText: e.statusText, headers: e.headers }
-          )
-    }
-  }
-  const j = e => {
-      const t = (t, r) => P.create(t, c(e, r))
-      for (const r of m) t[r] = (t, s) => P.create(t, c(e, s, { method: r }))
-      return (
-        (t.create = e => j(c(e))), (t.extend = t => j(c(e, t))), (t.stop = w), t
-      )
-    },
-    A = j()
-  var C = r(
-    Object.freeze({
-      __proto__: null,
-      HTTPError: a,
-      TimeoutError: u,
-      default: A
-    })
-  )
-  const O = {
-      FREE: 'https://api.microlink.io/',
-      PRO: 'https://pro.microlink.io/'
-    },
-    k = e => null !== e && 'object' == typeof e
-  var S = e => ({
-    VERSION: t,
-    MicrolinkError: r,
-    urlHttp: s,
-    got: o,
-    flatten: n
-  }) => {
-    const i = e => {
-        if (!k(e)) return
-        const t = n(e)
-        return Object.keys(t).reduce(
-          (e, r) => ((e[`data.${r}`] = t[r].toString()), e),
-          {}
-        )
-      },
-      a = async (t, s = {}) => {
-        try {
-          const r = await o(t, s)
-          return s.responseType === e ? r : { ...r.body, response: r }
-        } catch (e) {
-          const { response: s = {} } = e,
-            { statusCode: o, body: i, headers: a = {}, url: u = t } = s,
-            l =
-              null != (n = i) &&
-              null != n.constructor &&
-              'function' == typeof n.constructor.isBuffer &&
-              n.constructor.isBuffer(n),
-            c =
-              k(i) && !l
-                ? i
-                : ((e, t, r) => {
-                    try {
-                      return JSON.parse(e)
-                    } catch (s) {
-                      const o = e || t.message
-                      return {
-                        status: 'error',
-                        data: { url: o },
-                        more: 'https://microlink.io/efatalclient',
-                        code: 'EFATALCLIENT',
-                        message: o,
-                        url: r
-                      }
-                    }
-                  })(l ? i.toString() : i, e, u)
-          throw new r({
-            ...c,
-            message: c.message,
-            url: u,
-            statusCode: o,
-            headers: a
-          })
+        if (result instanceof Response) {
+          return result
         }
-        var n
-      },
-      u = (
-        t,
-        { data: r, apiKey: s, endpoint: o, retry: a, cache: u, ...l } = {},
-        { responseType: c = 'json', headers: h, ...p } = {}
-      ) => {
-        const f = !!s,
-          d = `${o || O[f ? 'PRO' : 'FREE']}?${new URLSearchParams({
-            url: t,
-            ...i(r),
-            ...n(l)
-          }).toString()}`,
-          y = f ? { ...h, 'x-api-key': s } : { ...h }
-        return (
-          l.stream && (c = e),
-          [d, { ...p, responseType: c, cache: u, retry: a, headers: y }]
-        )
-      },
-      l = e => async (t, o, n) => {
-        ;((e = '') => {
-          if (!s(e)) {
-            const t = `The \`url\` as \`${e}\` is not valid. Ensure it has protocol (http or https) and hostname.`
-            throw new r({
-              status: 'fail',
-              data: { url: t },
-              more: 'https://microlink.io/docs/api/api-parameters/url',
-              code: 'EINVALURLCLIENT',
-              message: t,
-              url: e
-            })
-          }
-        })(t)
-        const [i, l] = u(t, o, { ...e, ...n })
-        return a(i, l)
-      },
-      c = l()
-    return (
-      (c.extend = l),
-      (c.MicrolinkError = r),
-      (c.getApiUrl = u),
-      (c.fetchFromApi = a),
-      (c.mapRules = i),
-      (c.version = t),
-      (c.stream = o.stream),
-      c
-    )
-  }
-  const U = e => {
-      try {
-        const { href: t } = new URL(e)
-        return o.test(t) && t
-      } catch (e) {
-        return !1
       }
-    },
-    { flattie: L } = n,
-    { default: N } = C,
-    I = S('arrayBuffer')
-  class B extends Error {
-    constructor (e) {
-      super(),
-        (this.name = 'MicrolinkError'),
-        Object.assign(this, e),
-        (this.description = this.message),
-        (this.message = this.code
-          ? `${this.code}, ${this.description}`
-          : this.description)
+      const nonRequestOptions = findUnknownOptions(this.request, this._options)
+      if (this._options.timeout === false) {
+        return this._options.fetch(this.request.clone(), nonRequestOptions)
+      }
+      return timeout(
+        this.request.clone(),
+        nonRequestOptions,
+        this.abortController,
+        this._options
+      )
+    }
+    /* istanbul ignore next */
+    _stream (response, onDownloadProgress) {
+      const totalBytes = Number(response.headers.get('content-length')) || 0
+      let transferredBytes = 0
+      if (response.status === 204) {
+        if (onDownloadProgress) {
+          onDownloadProgress(
+            { percent: 1, totalBytes, transferredBytes },
+            new Uint8Array()
+          )
+        }
+        return new globalThis.Response(null, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers
+        })
+      }
+      return new globalThis.Response(
+        new globalThis.ReadableStream({
+          async start (controller) {
+            const reader = response.body.getReader()
+            if (onDownloadProgress) {
+              onDownloadProgress(
+                { percent: 0, transferredBytes: 0, totalBytes },
+                new Uint8Array()
+              )
+            }
+            async function read () {
+              const { done, value } = await reader.read()
+              if (done) {
+                controller.close()
+                return
+              }
+              if (onDownloadProgress) {
+                transferredBytes += value.byteLength
+                const percent =
+                  totalBytes === 0 ? 0 : transferredBytes / totalBytes
+                onDownloadProgress(
+                  { percent, transferredBytes, totalBytes },
+                  value
+                )
+              }
+              controller.enqueue(value)
+              await read()
+            }
+            await read()
+          }
+        }),
+        {
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers
+        }
+      )
     }
   }
-  const D = async (e, { responseType: t, ...r }) => {
+
+  /*! MIT License © Sindre Sorhus */
+  const createInstance = defaults => {
+    // eslint-disable-next-line @typescript-eslint/promise-function-async
+    const ky = (input, options) =>
+      Ky.create(input, validateAndMerge(defaults, options))
+    for (const method of requestMethods) {
+      // eslint-disable-next-line @typescript-eslint/promise-function-async
+      ky[method] = (input, options) =>
+        Ky.create(input, validateAndMerge(defaults, options, { method }))
+    }
+    ky.create = newDefaults => createInstance(validateAndMerge(newDefaults))
+    ky.extend = newDefaults =>
+      createInstance(validateAndMerge(defaults, newDefaults))
+    ky.stop = stop
+    return ky
+  }
+  const ky$1 = createInstance()
+
+  var distribution = /*#__PURE__*/ Object.freeze({
+    __proto__: null,
+    HTTPError: HTTPError,
+    TimeoutError: TimeoutError,
+    default: ky$1
+  })
+
+  var require$$2 = /*@__PURE__*/ getAugmentedNamespace(distribution)
+
+  const ENDPOINT = {
+    FREE: 'https://api.microlink.io/',
+    PRO: 'https://pro.microlink.io/'
+  }
+
+  const isObject = input => input !== null && typeof input === 'object'
+
+  const isBuffer = input =>
+    input != null &&
+    input.constructor != null &&
+    typeof input.constructor.isBuffer === 'function' &&
+    input.constructor.isBuffer(input)
+
+  const parseBody = (input, error, url) => {
     try {
-      void 0 === r.timeout && (r.timeout = !1)
-      const s = await N(e, r),
-        o = await s[t](),
-        { headers: n, status: i } = s
-      return { url: s.url, body: o, headers: n, statusCode: i }
-    } catch (e) {
-      if (e.response) {
-        const { response: t } = e
-        e.response = {
-          ...t,
-          headers: Array.from(t.headers.entries()).reduce(
-            (e, [t, r]) => ((e[t] = r), e),
+      return JSON.parse(input)
+    } catch (_) {
+      const message = input || error.message
+
+      return {
+        status: 'error',
+        data: { url: message },
+        more: 'https://microlink.io/efatalclient',
+        code: 'EFATALCLIENT',
+        message,
+        url
+      }
+    }
+  }
+
+  const factory$1 = streamResponseType => ({
+    VERSION,
+    MicrolinkError,
+    urlHttp,
+    got,
+    flatten
+  }) => {
+    const assertUrl = (url = '') => {
+      if (!urlHttp(url)) {
+        const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
+        throw new MicrolinkError({
+          status: 'fail',
+          data: { url: message },
+          more: 'https://microlink.io/einvalurlclient',
+          code: 'EINVALURLCLIENT',
+          message,
+          url
+        })
+      }
+    }
+
+    const mapRules = rules => {
+      if (!isObject(rules)) return
+      const flatRules = flatten(rules)
+      return Object.keys(flatRules).reduce((acc, key) => {
+        acc[`data.${key}`] = flatRules[key].toString()
+        return acc
+      }, {})
+    }
+
+    const fetchFromApi = async (apiUrl, opts = {}) => {
+      try {
+        const response = await got(apiUrl, opts)
+        return opts.responseType === streamResponseType
+          ? response
+          : { ...response.body, response }
+      } catch (error) {
+        const { response = {} } = error
+        const {
+          statusCode,
+          body: rawBody,
+          headers = {},
+          url: uri = apiUrl
+        } = response
+        const isBodyBuffer = isBuffer(rawBody)
+
+        const body =
+          isObject(rawBody) && !isBodyBuffer
+            ? rawBody
+            : parseBody(isBodyBuffer ? rawBody.toString() : rawBody, error, uri)
+
+        throw new MicrolinkError({
+          ...body,
+          message: body.message,
+          url: uri,
+          statusCode,
+          headers
+        })
+      }
+    }
+
+    const getApiUrl = (
+      url,
+      { data, apiKey, endpoint, retry, cache, ...opts } = {},
+      { responseType = 'json', headers: gotHeaders, ...gotOpts } = {}
+    ) => {
+      const isPro = !!apiKey
+      const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
+
+      const apiUrl = `${apiEndpoint}?${new URLSearchParams({
+        url,
+        ...mapRules(data),
+        ...flatten(opts)
+      }).toString()}`
+
+      const headers = isPro
+        ? { ...gotHeaders, 'x-api-key': apiKey }
+        : { ...gotHeaders }
+
+      if (opts.stream) {
+        responseType = streamResponseType
+      }
+      return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
+    }
+
+    const createMql = defaultOpts => async (url, opts, gotOpts) => {
+      assertUrl(url)
+      const [apiUrl, fetchOpts] = getApiUrl(url, opts, {
+        ...defaultOpts,
+        ...gotOpts
+      })
+      return fetchFromApi(apiUrl, fetchOpts)
+    }
+
+    const mql = createMql()
+    mql.extend = createMql
+    mql.MicrolinkError = MicrolinkError
+    mql.getApiUrl = getApiUrl
+    mql.fetchFromApi = fetchFromApi
+    mql.mapRules = mapRules
+    mql.version = VERSION
+    mql.stream = got.stream
+
+    return mql
+  }
+
+  var factory_1 = factory$1
+
+  const urlHttp = lightweight$1
+  const { flattie: flatten } = dist
+  const { default: ky } = require$$2
+
+  const factory = factory_1('arrayBuffer')
+
+  class MicrolinkError extends Error {
+    constructor (props) {
+      super()
+      this.name = 'MicrolinkError'
+      Object.assign(this, props)
+      this.description = this.message
+      this.message = this.code
+        ? `${this.code}, ${this.description}`
+        : this.description
+    }
+  }
+
+  const got = async (url, { responseType, ...opts }) => {
+    try {
+      if (opts.timeout === undefined) opts.timeout = false
+      const response = await ky(url, opts)
+      const body = await response[responseType]()
+      const { headers, status: statusCode } = response
+      return { url: response.url, body, headers, statusCode }
+    } catch (error) {
+      if (error.response) {
+        const { response } = error
+        error.response = {
+          ...response,
+          headers: Array.from(response.headers.entries()).reduce(
+            (acc, [key, value]) => {
+              acc[key] = value
+              return acc
+            },
             {}
           ),
-          statusCode: t.status,
-          body: await t.text()
+          statusCode: response.status,
+          body: await response.text()
         }
       }
-      throw e
+      throw error
     }
   }
-  D.stream = (...e) => N(...e).then(e => e.body)
-  const M = I({
-    MicrolinkError: B,
-    urlHttp: U,
-    got: D,
-    flatten: L,
-    VERSION: '0.13.0'
+
+  got.stream = (...args) => ky(...args).then(res => res.body)
+
+  const mql = factory({
+    MicrolinkError,
+    urlHttp,
+    got,
+    flatten,
+    VERSION: '0.13.6'
   })
-  s.exports = M
-  var F = (s.exports.arrayBuffer = M.extend({ responseType: 'arrayBuffer' })),
-    H = (s.exports.extend = M.extend),
-    $ = (s.exports.fetchFromApi = M.fetchFromApi),
-    J = (s.exports.getApiUrl = M.getApiUrl),
-    V = (s.exports.mapRules = M.mapRules),
-    W = (s.exports.MicrolinkError = M.MicrolinkError),
-    Y = (s.exports.version = M.version),
-    z = t(s.exports)
-  ;(e.MicrolinkError = W),
-    (e.arrayBuffer = F),
-    (e.default = z),
-    (e.extend = H),
-    (e.fetchFromApi = $),
-    (e.getApiUrl = J),
-    (e.mapRules = V),
-    (e.version = Y),
-    Object.defineProperty(e, '__esModule', { value: !0 })
+
+  lightweight$2.exports = mql
+  var arrayBuffer = (lightweight$2.exports.arrayBuffer = mql.extend({
+    responseType: 'arrayBuffer'
+  }))
+  var extend = (lightweight$2.exports.extend = mql.extend)
+  var fetchFromApi = (lightweight$2.exports.fetchFromApi = mql.fetchFromApi)
+  var getApiUrl = (lightweight$2.exports.getApiUrl = mql.getApiUrl)
+  var mapRules = (lightweight$2.exports.mapRules = mql.mapRules)
+  var MicrolinkError_1 = (lightweight$2.exports.MicrolinkError =
+    mql.MicrolinkError)
+  var version = (lightweight$2.exports.version = mql.version)
+
+  var lightweightExports = lightweight$2.exports
+  var lightweight = /*@__PURE__*/ getDefaultExportFromCjs(lightweightExports)
+
+  exports.MicrolinkError = MicrolinkError_1
+  exports.arrayBuffer = arrayBuffer
+  exports.default = lightweight
+  exports.extend = extend
+  exports.fetchFromApi = fetchFromApi
+  exports.getApiUrl = getApiUrl
+  exports.mapRules = mapRules
+  exports.version = version
+
+  Object.defineProperty(exports, '__esModule', { value: true })
 })
