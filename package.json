@@ -67,7 +67,6 @@
     "github-generate-release": "latest",
     "ky": "latest",
     "nano-staged": "latest",
-    "npm-check-updates": "latest",
     "prettier-standard": "latest",
     "rollup": "latest",
     "rollup-plugin-filesize": "latest",
@@ -98,14 +97,11 @@
     "postrelease": "npm run release:tags && npm run release:github && (ci-publish || npm publish --access=public)",
     "prebuild": "npm run clean:build",
     "prepublishOnly": "npm run build",
-    "prerelease": "npm run update:check",
     "pretest": "npm run lint && npm run build",
     "release": "standard-version -a",
     "release:github": "github-generate-release",
     "release:tags": "git push --follow-tags origin HEAD:master",
-    "test": "c8 ava --verbose",
-    "update": "ncu -u",
-    "update:check": "ncu -- --error-level 2"
+    "test": "c8 ava --verbose"
   },
   "license": "MIT",
   "ava": {
