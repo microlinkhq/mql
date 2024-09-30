@@ -48,7 +48,6 @@
   "dependencies": {
     "flattie": "~1.1.0",
     "got": "~11.8.6",
-    "url-http": "~1.2.0",
     "whoops": "~4.1.7"
   },
   "devDependencies": {

@@ -1,6 +1,5 @@
 'use strict'
 
-const urlHttp = require('url-http/lightweight')
 const { flattie: flatten } = require('flattie')
 const { default: ky } = require('ky')
 
@@ -49,7 +48,6 @@ got.stream = (...args) => ky(...args).then(res => res.body)
 
 const mql = factory({
   MicrolinkError,
-  urlHttp,
   got,
   flatten,
   VERSION: '__MQL_VERSION__'
