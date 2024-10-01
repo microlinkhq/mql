@@ -46,7 +46,7 @@
     "query"
   ],
   "dependencies": {
-    "flattie": "~1.1.0",
+    "flattie": "~1.1.1",
     "got": "~11.8.6",
     "whoops": "~4.1.7"
   },
@@ -54,7 +54,7 @@
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@ksmithut/prettier-standard": "latest",
-    "@rollup/plugin-commonjs": "26",
+    "@rollup/plugin-commonjs": "latest",
     "@rollup/plugin-node-resolve": "latest",
     "@rollup/plugin-replace": "latest",
     "@rollup/plugin-terser": "latest",

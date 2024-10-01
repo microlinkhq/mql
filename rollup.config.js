@@ -41,7 +41,7 @@ const builds = [
   build({
     input: './src/node.js',
     output: { file: 'src/node.mjs', format: 'es' },
-    plugins: [commonjs(), rewriteFlattie()]
+    plugins: [commonjs({ strictRequires: 'auto' }), rewriteFlattie()]
   }),
   build({
     compress: false,
@@ -51,7 +51,7 @@ const builds = [
       nodeResolve({
         mainFields: ['browser', 'module', 'main']
       }),
-      commonjs()
+      commonjs({ strictRequires: 'auto' })
     ]
   }),
   build({
@@ -62,7 +62,7 @@ const builds = [
       nodeResolve({
         mainFields: ['browser', 'module', 'main']
       }),
-      commonjs()
+      commonjs({ strictRequires: 'auto' })
     ]
   })
 ]
