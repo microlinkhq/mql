@@ -54,7 +54,7 @@
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@ksmithut/prettier-standard": "latest",
-    "@rollup/plugin-commonjs": "latest",
+    "@rollup/plugin-commonjs": "26",
     "@rollup/plugin-node-resolve": "latest",
     "@rollup/plugin-replace": "latest",
     "@rollup/plugin-terser": "latest",

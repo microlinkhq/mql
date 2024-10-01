@@ -46,4 +46,6 @@ test('esm', async t => {
       'version'
     ]
   )
+
+  t.is((await evalScript.esm("import {getApiUrl} from '@microlink/mql'; console.log(typeof getApiUrl)")), 'function')
 })
