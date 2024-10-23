@@ -109,6 +109,8 @@ type MediaInfo = {
   duration?: number;
   height?: number;
   palette?: string[];
+  size_pretty?: string;
+  size?: number;
   type?: string;
   url: string;
   width?: number;
