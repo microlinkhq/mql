@@ -116,7 +116,7 @@ type MediaInfo = {
   width?: number;
 }
 
-type MqlResponseData = {
+export type MqlResponseData = {
   audio?: MediaInfo | null;
   author?: string | null;
   date?: string | null;
