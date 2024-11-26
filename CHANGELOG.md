@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.13.11](https://github.com/microlinkhq/mql/compare/v0.13.10...v0.13.11) (2024-11-26)
+
+
+### Bug Fixes
+
+* **types:** expose MqlResponseData ([9bd3b66](https://github.com/microlinkhq/mql/commit/9bd3b66e53c21d49bfc862040535a6e7a5086ee1))
+
 ### [0.13.10](https://github.com/microlinkhq/mql/compare/v0.13.9...v0.13.10) (2024-10-23)
 
 
