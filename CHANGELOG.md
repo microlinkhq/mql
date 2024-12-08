@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.13.12](https://github.com/microlinkhq/mql/compare/v0.13.11...v0.13.12) (2024-12-08)
+
+
+### Features
+
+* redirects ([#159](https://github.com/microlinkhq/mql/issues/159)) ([5b90fd7](https://github.com/microlinkhq/mql/commit/5b90fd7c5a9dc40d592e2709347cd9051a717c19))
+
 ### [0.13.11](https://github.com/microlinkhq/mql/compare/v0.13.10...v0.13.11) (2024-11-26)
 
 
