@@ -202,3 +202,10 @@ mql.stream('https://example.com', { headers: { 'user-agent': 'foo' } })
   const response = await mql.arrayBuffer('https://example.com', { meta: false })
   console.log(response.body)
 }
+
+/* redirects */
+
+{
+  const response = await mql('https://example.com', { meta: false })
+  console.log(response.redirects)
+}
