@@ -48,7 +48,7 @@
   "dependencies": {
     "flattie": "~1.1.1",
     "got": "~11.8.6",
-    "whoops": "~4.1.7"
+    "whoops": "~5.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
