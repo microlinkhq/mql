@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.13.16](https://github.com/microlinkhq/mql/compare/v0.13.15...v0.13.16) (2025-05-21)
+
+
+### Bug Fixes
+
+* timeout/waitForTimeout as string ([48000ac](https://github.com/microlinkhq/mql/commit/48000ace4ba61922d2228bd4682f18c56186b698))
+
 ### [0.13.15](https://github.com/microlinkhq/mql/compare/v0.13.14...v0.13.15) (2025-05-21)
 
 ### [0.13.14](https://github.com/microlinkhq/mql/compare/v0.13.13...v0.13.14) (2025-01-28)
