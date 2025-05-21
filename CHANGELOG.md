@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.13.17](https://github.com/microlinkhq/mql/compare/v0.13.16...v0.13.17) (2025-05-21)
+
+
+### Bug Fixes
+
+* expose MicrolinkApiOptions for node ([fdad1b4](https://github.com/microlinkhq/mql/commit/fdad1b43ff5742f931258425bd80825c908d48e5))
+
 ### [0.13.16](https://github.com/microlinkhq/mql/compare/v0.13.15...v0.13.16) (2025-05-21)
 
 
