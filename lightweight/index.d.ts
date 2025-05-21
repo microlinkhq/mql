@@ -110,12 +110,12 @@ export type MicrolinkApiOptions = {
   staleTtl?: string | number
   stream?: string
   styles?: string | string[]
-  timeout?: number
+  timeout?: string | number
   ttl?: string | number
   video?: boolean
   viewport?: object
   waitForSelector?: string
-  waitForTimeout?: number
+  waitForTimeout?: string | number
   waitUntil?: WaitUntilEvent | WaitUntilEvent[]
 }
 
