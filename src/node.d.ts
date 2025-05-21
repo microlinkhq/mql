@@ -1,5 +1,5 @@
 import { MqlPayload, MqlOptions } from '../lightweight';
-export { MicrolinkError, MqlError, MqlPayload } from '../lightweight'
+export { MicrolinkApiOptions, MicrolinkError, MqlError, MqlPayload } from '../lightweight'
 
 import { Response, Options as GotOpts } from 'got/dist/source/core'
 
