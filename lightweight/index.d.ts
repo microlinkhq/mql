@@ -184,22 +184,39 @@ export type HTTPResponseRaw = HTTPResponse & { body: ArrayBuffer }
 
 export type MqlResponse = MqlPayload & { response: HTTPResponseWithBody }
 
-export type MqlError = {
-  code: string
-  data?: MqlResponseData
-  description: string
-  headers: { [key: string]: string }
-  message: string
-  more: string
-  name: string
-  status: MqlStatus
-  statusCode?: number
-  url: string
-}
-
 export type MqlOptions = MqlClientOptions & MicrolinkApiOptions
 
-export const MicrolinkError: new (props: object) => MqlError
+type MqlErrorGeneratedProps = {
+  description: string
+  name: string
+}
+
+export type MqlError = {
+  code: string
+  status: MqlStatus
+  message: string
+  data?: MqlResponseData
+  headers?: { [key: string]: string }
+  more?: string
+  statusCode?: number
+  url?: string
+}
+
+export type MqlErrorProps = MqlError & MqlErrorGeneratedProps
+
+export declare class MicrolinkError extends Error {
+  constructor(props: MqlError)
+  readonly code: string
+  readonly status: MqlStatus
+  readonly message: string
+  readonly description: string
+  readonly name: string
+  readonly data?: MqlResponseData
+  readonly headers?: { [key: string]: string }
+  readonly more?: string
+  readonly statusCode?: number
+  readonly url?: string
+}
 
 export const version: string
 
