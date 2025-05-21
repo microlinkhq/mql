@@ -1,5 +1,12 @@
-import mql, { MicrolinkError } from '../lightweight'
+import mql, { MicrolinkError, version } from '../lightweight'
 import type { MqlError } from '../lightweight'
+
+/** version */
+
+;(async () => {
+  console.log(version)
+})()
+
 
 /** error  */
 
@@ -141,6 +148,7 @@ console.log(result.statusCode)
 console.log(result.headers)
 
 /** error */
+
 ;({
   status: 'error',
   data: { url: 'fetch failed' },
@@ -153,6 +161,7 @@ console.log(result.headers)
   message: 'EFATALCLIENT, fetch failed',
   description: 'fetch failed'
 } as MqlError)
+
 ;({
   status: 'fail',
   code: 'EAUTH',

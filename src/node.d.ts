@@ -1,11 +1,21 @@
 import { MqlPayload, MqlOptions } from '../lightweight';
-export { MicrolinkApiOptions, MicrolinkError, MqlError, MqlPayload } from '../lightweight'
+
+export {
+  ColorScheme,
+  MicrolinkApiOptions,
+  MicrolinkError,
+  MqlError,
+  MqlOptions,
+  MqlPayload,
+  MqlResponseData,
+  version
+} from '../lightweight';
 
 import { Response, Options as GotOpts } from 'got/dist/source/core'
 
 type HTTPResponseWithBody = Response & { body: MqlPayload };
 
-type HTTPResponseRaw = Response & { body: Buffer };
+export type HTTPResponseRaw = Response & { body: Buffer };
 
 export type MqlResponse = MqlPayload & { response: HTTPResponseWithBody };
 

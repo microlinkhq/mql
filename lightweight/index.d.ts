@@ -1,4 +1,4 @@
-type ColorScheme = 'dark' | 'light'
+export type ColorScheme = 'dark' | 'light'
 
 type WaitUntilEvent =
   | 'load'

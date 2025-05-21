@@ -1,6 +1,26 @@
-import mql, { MicrolinkError } from '../src/node'
+import mql, { MicrolinkError, version } from '../src/node'
+import type { MqlError } from '../lightweight'
+
+/** version */
+
+;(async () => {
+  console.log(version)
+})()
 
 /** error  */
+
+;({
+  status: 'error',
+  data: { url: 'fetch failed' },
+  more: 'https://microlink.io/efatalclient',
+  code: 'EFATALCLIENT',
+  url: 'https://localhost.microlink.io?url=https%3A%2F%2Fexample.com%23t%3D1696503516588',
+  statusCode: undefined,
+  headers: {},
+  name: 'MicrolinkError',
+  message: 'EFATALCLIENT, fetch failed',
+  description: 'fetch failed'
+} as MqlError)
 
 ;(async () => {
   const error = new MicrolinkError({
