@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.13.20](https://github.com/microlinkhq/mql/compare/v0.13.19...v0.13.20) (2025-05-21)
+
+
+### Bug Fixes
+
+* rename type ([55f1870](https://github.com/microlinkhq/mql/commit/55f18708a3d415d02f4082137f91ac8057a81eb7))
+
 ### [0.13.19](https://github.com/microlinkhq/mql/compare/v0.13.18...v0.13.19) (2025-05-21)
 
 
