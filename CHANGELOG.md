@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.13.18](https://github.com/microlinkhq/mql/compare/v0.13.17...v0.13.18) (2025-05-21)
+
+
+### Bug Fixes
+
+* export missing types ([b55df1d](https://github.com/microlinkhq/mql/commit/b55df1d64a06b64c2311e355f90c3f459c8ce6aa))
+
 ### [0.13.17](https://github.com/microlinkhq/mql/compare/v0.13.16...v0.13.17) (2025-05-21)
 
 
