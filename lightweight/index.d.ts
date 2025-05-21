@@ -191,7 +191,7 @@ type MqlErrorGeneratedProps = {
   name: string
 }
 
-export type MqlError = {
+export type MqlErrorProps = {
   code: string
   status: MqlStatus
   message: string
@@ -202,10 +202,10 @@ export type MqlError = {
   url?: string
 }
 
-export type MqlErrorProps = MqlError & MqlErrorGeneratedProps
+export type MqlError = MqlErrorProps & MqlErrorGeneratedProps
 
 export declare class MicrolinkError extends Error {
-  constructor(props: MqlError)
+  constructor(props: MqlErrorProps)
   readonly code: string
   readonly status: MqlStatus
   readonly message: string
@@ -234,7 +234,7 @@ interface mql {
   ) => Promise<HTTPResponseRaw>
   extend: (gotOpts?: object) => mql
   stream: (input: RequestInfo, init?: RequestInit) => ReadableStream
-  MicrolinkError: new (props: object) => MqlError
+  MicrolinkError: new (props: object) => MqlErrorProps
   version: string
 }
 
