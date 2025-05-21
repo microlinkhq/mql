@@ -78,7 +78,7 @@ type MqlQueryOptions = {
     | 'video'
 }
 
-type MicrolinkApiOptions = {
+export type MicrolinkApiOptions = {
   adblock?: boolean
   animations?: boolean
   audio?: boolean
