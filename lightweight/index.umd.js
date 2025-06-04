@@ -801,7 +801,7 @@
 
     const getApiUrl = (
       url,
-      { data, apiKey, endpoint, retry, cache, ...opts } = {},
+      { data, apiKey, endpoint, ...opts } = {},
       { responseType = 'json', headers: gotHeaders, ...gotOpts } = {}
     ) => {
       const isPro = !!apiKey
@@ -820,7 +820,7 @@
       if (opts.stream) {
         responseType = streamResponseType
       }
-      return [apiUrl, { ...gotOpts, responseType, cache, retry, headers }]
+      return [apiUrl, { ...gotOpts, responseType, headers }]
     }
 
     const createMql = defaultOpts => async (url, opts, gotOpts) => {
@@ -896,7 +896,7 @@
     MicrolinkError,
     got,
     flatten,
-    VERSION: '0.13.11'
+    VERSION: '0.13.20'
   })
 
   lightweight$1.exports = mql

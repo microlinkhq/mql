@@ -28,11 +28,11 @@ clients.forEach(({ constructor: mql, target }) => {
     }
 
     const error = await t.throwsAsync(
-      mql('https://example.com', { endpoint: 'https://notexist.dev', retry: 3 }, { hooks }),
+      mql('https://example.com', { endpoint: 'https://notexist.dev' }, { retry: 2, hooks }),
       { instanceOf: mql.MicrolinkError }
     )
 
-    t.is(count, 3)
+    t.is(count, 2)
     t.true(error.url === 'https://notexist.dev?url=https%3A%2F%2Fexample.com')
     t.true(error.code === 'EFATALCLIENT')
     t.true(error.status === 'error')
