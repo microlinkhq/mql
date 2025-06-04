@@ -55,9 +55,8 @@ clients.forEach(({ constructor: mql, target }) => {
       mql('https://kikobeats.com', {
         timeout: 50,
         force: true,
-        screenshot: true,
-        retry: 0
-      }),
+        screenshot: true
+      }, { retry: 0 }),
       { instanceOf: mql.MicrolinkError }
     )
 

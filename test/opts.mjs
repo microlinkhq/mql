@@ -41,9 +41,9 @@ clients.forEach(({ constructor: mql, target }) => {
     test('node » cache support', async t => {
       const cache = new Map()
       let data
-      data = await mql('https://kikobeats.com?ref=mql', { cache })
+      data = await mql('https://kikobeats.com?ref=mql', {}, { cache })
       t.is(data.response.isFromCache, false)
-      data = await mql('https://kikobeats.com?ref=mql', { cache })
+      data = await mql('https://kikobeats.com?ref=mql', {}, { cache })
       t.is(data.response.isFromCache, true)
     })
   }
