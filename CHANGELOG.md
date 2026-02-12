@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.14.2](https://github.com/microlinkhq/mql/compare/v0.14.1...v0.14.2) (2026-02-12)
+
+
+### Bug Fixes
+
+* add constants file ([cb092c7](https://github.com/microlinkhq/mql/commit/cb092c722bc787c36c4fcdf94fdb14fc1b9f3ce1))
+
 ### [0.14.1](https://github.com/microlinkhq/mql/compare/v0.14.0...v0.14.1) (2026-02-12)
 
 
