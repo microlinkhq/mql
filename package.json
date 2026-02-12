@@ -83,6 +83,7 @@
   },
   "files": [
     "lightweight",
+    "src/constants.js",
     "src/factory.js",
     "src/node.js"
   ],
