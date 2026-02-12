@@ -1,8 +1,17 @@
+'use strict'
+
+const got = require('got')
+
+const { VERSION, USER_AGENT, RETRY_STATUS_CODES } = require('./constants')
+
 const mql = require('./factory')('buffer')({
   MicrolinkError: require('whoops')('MicrolinkError'),
-  got: require('got').extend({ headers: { 'user-agent': undefined } }),
+  got: got.extend({
+    headers: { 'user-agent': USER_AGENT },
+    retry: { statusCodes: RETRY_STATUS_CODES }
+  }),
   flatten: require('flattie').flattie,
-  VERSION: require('../package.json').version
+  VERSION
 })
 
 module.exports = mql

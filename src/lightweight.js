@@ -3,6 +3,13 @@
 const { flattie: flatten } = require('flattie')
 const { default: ky } = require('ky')
 
+const { VERSION, USER_AGENT, RETRY_STATUS_CODES } = require('./constants')
+
+const kyInstance = ky.extend({
+  headers: { 'user-agent': USER_AGENT },
+  retry: { statusCodes: RETRY_STATUS_CODES }
+})
+
 const factory = require('./factory')('arrayBuffer')
 
 class MicrolinkError extends Error {
@@ -20,7 +27,7 @@ class MicrolinkError extends Error {
 const got = async (url, { responseType, ...opts }) => {
   try {
     if (opts.timeout === undefined) opts.timeout = false
-    const response = await ky(url, opts)
+    const response = await kyInstance(url, opts)
     const body = await response[responseType]()
     const { headers, status: statusCode } = response
     return { url: response.url, body, headers, statusCode }
@@ -44,13 +51,13 @@ const got = async (url, { responseType, ...opts }) => {
   }
 }
 
-got.stream = (...args) => ky(...args).then(res => res.body)
+got.stream = (...args) => kyInstance(...args).then(res => res.body)
 
 const mql = factory({
   MicrolinkError,
   got,
   flatten,
-  VERSION: '__MQL_VERSION__'
+  VERSION
 })
 
 module.exports = mql

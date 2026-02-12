@@ -42,4 +42,26 @@ clients.forEach(({ constructor: mql, target }) => {
     t.true(!!error.message)
     t.true(!!error.description)
   })
+
+  test(`${target} » don't retry 429 status code`, async t => {
+    let count = 0
+
+    const hooks = {
+      beforeRetry: [
+        () => ++count
+      ]
+    }
+
+    const error = await t.throwsAsync(
+      mql(
+        'https://example.com',
+        { endpoint: 'https://httpbin.org/status/429' },
+        { hooks }
+      ),
+      { instanceOf: mql.MicrolinkError }
+    )
+
+    t.is(count, 0)
+    t.is(error.statusCode, 429)
+  })
 })
