@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.14.1](https://github.com/microlinkhq/mql/compare/v0.14.0...v0.14.1) (2026-02-12)
+
+
+### Bug Fixes
+
+* don’t retry 429 status code ([#169](https://github.com/microlinkhq/mql/issues/169)) ([f523d1f](https://github.com/microlinkhq/mql/commit/f523d1f704259df4f745e0900d3fe606f6334bdc))
+
 ## [0.14.0](https://github.com/microlinkhq/mql/compare/v0.13.20...v0.14.0) (2025-06-04)
 
 
