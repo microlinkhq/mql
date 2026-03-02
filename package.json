@@ -59,7 +59,7 @@
     "@rollup/plugin-replace": "latest",
     "@rollup/plugin-terser": "latest",
     "async-listen": "latest",
-    "ava": "5",
+    "ava": "7",
     "c8": "latest",
     "ci-publish": "latest",
     "git-authors-cli": "latest",
