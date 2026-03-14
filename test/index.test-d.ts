@@ -1,5 +1,5 @@
-import mql, { MicrolinkError, version } from '../lightweight'
-import type { MqlError } from '../lightweight'
+import mql, { MicrolinkError, version } from '@microlink/mql'
+import type { MqlError } from '@microlink/mql'
 
 /** version */
 
@@ -34,8 +34,7 @@ import type { MqlError } from '../lightweight'
   const result = await mql('https://example.com', {
     endpoint: 'https://pro.microlink.io',
     apiKey: '123',
-    retry: 2,
-    cache: new Map()
+    retry: 2
   })
 
   console.log(result.status)
@@ -203,12 +202,19 @@ mql.extend({ responseType: 'text' })
 
 /* stream */
 
-mql.stream('https://example.com', { headers: { 'user-agent': 'foo' } })
+await mql.stream('https://example.com', { headers: { 'user-agent': 'foo' } })
 
 /* arrraBuffer */
 
 {
   const response = await mql.arrayBuffer('https://example.com', { meta: false })
+  console.log(response.body)
+}
+
+/* buffer */
+
+{
+  const response = await mql.buffer('https://example.com', { meta: false })
   console.log(response.body)
 }
 

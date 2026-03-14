@@ -62,6 +62,7 @@ const mql = factory({
 
 module.exports = mql
 module.exports.arrayBuffer = mql.extend({ responseType: 'arrayBuffer' })
+module.exports.buffer = module.exports.arrayBuffer
 module.exports.extend = mql.extend
 module.exports.fetchFromApi = mql.fetchFromApi
 module.exports.getApiUrl = mql.getApiUrl
