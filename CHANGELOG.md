@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.15.1](https://github.com/microlinkhq/mql/compare/v0.15.0...v0.15.1) (2026-03-14)
+
+
+### Bug Fixes
+
+* cjs without default ([#173](https://github.com/microlinkhq/mql/issues/173)) ([125c83e](https://github.com/microlinkhq/mql/commit/125c83e42fe6bf0396483939b4e1802844dac18c))
+
 ## [0.15.0](https://github.com/microlinkhq/mql/compare/v0.14.2...v0.15.0) (2026-03-14)
 
 
