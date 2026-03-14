@@ -47,7 +47,7 @@
   ],
   "dependencies": {
     "flattie": "~1.1.1",
-    "ky": "~1.8.1"
+    "ky": "~1.14.3"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
@@ -58,7 +58,7 @@
     "@rollup/plugin-replace": "latest",
     "@rollup/plugin-terser": "latest",
     "async-listen": "latest",
-    "ava": "5",
+    "ava": "7",
     "c8": "latest",
     "ci-publish": "latest",
     "git-authors-cli": "latest",

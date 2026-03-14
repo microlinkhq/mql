@@ -618,9 +618,6 @@ const deepMerge = (...sources) => {
       returnValue.signal = signals.at(-1)
     }
   }
-  if (returnValue.context === undefined) {
-    returnValue.context = {}
-  }
   return returnValue
 }
 
