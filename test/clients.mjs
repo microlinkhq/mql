@@ -1,7 +1,5 @@
-import mqlLightweight from '../lightweight/index.js'
-import mqlNode from '../src/node.mjs'
+import mqlLightweight from '@microlink/mql'
 
 export default [
-  { constructor: mqlNode, target: 'node' },
   { constructor: mqlLightweight, target: 'lightweight' }
 ]

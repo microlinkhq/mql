@@ -42,7 +42,6 @@ type ScreenshotOptions = {
 
 type MqlClientOptions = {
   apiKey?: string
-  cache?: Map<string, any>
   endpoint?: string
   retry?: number
 }
@@ -232,8 +231,9 @@ interface mql {
     opts?: MqlOptions,
     gotOpts?: object
   ) => Promise<HTTPResponseRaw>
+  buffer: (url: string, opts?: MqlOptions, gotOpts?: object) => Promise<HTTPResponseRaw>
   extend: (gotOpts?: object) => mql
-  stream: (input: RequestInfo, init?: RequestInit) => ReadableStream
+  stream: (input: RequestInfo, init?: RequestInit) => Promise<ReadableStream | null>
   MicrolinkError: new (props: object) => MqlErrorProps
   version: string
 }

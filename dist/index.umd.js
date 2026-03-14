@@ -1,12 +1,12 @@
 ;(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined'
-    ? factory(exports)
+    ? (module.exports = factory())
     : typeof define === 'function' && define.amd
-    ? define(['exports'], factory)
+    ? define(factory)
     : ((global =
         typeof globalThis !== 'undefined' ? globalThis : global || self),
-      factory((global.mql = {})))
-})(this, function (exports) {
+      (global.mql = factory()))
+})(this, function () {
   'use strict'
 
   function getDefaultExportFromCjs (x) {
@@ -52,7 +52,7 @@
     return a
   }
 
-  var lightweight = { exports: {} }
+  var src = { exports: {} }
 
   var dist = {}
 
@@ -1388,7 +1388,7 @@
     ky.retry = retry
     return ky
   }
-  const ky$1 = createInstance()
+  const ky = createInstance()
   // Intentionally not exporting this for now as it's just an implementation detail and we don't want to commit to a certain API yet at least.
   // export {NonError} from './errors/NonError.js';
 
@@ -1397,7 +1397,7 @@
     ForceRetryError: ForceRetryError,
     HTTPError: HTTPError,
     TimeoutError: TimeoutError,
-    default: ky$1,
+    default: ky,
     isForceRetryError: isForceRetryError,
     isHTTPError: isHTTPError,
     isKyError: isKyError,
@@ -1406,14 +1406,13 @@
 
   var require$$1 = /*@__PURE__*/ getAugmentedNamespace(distribution)
 
-  const VERSION$1 = '0.14.1'
+  const VERSION = '0.14.2'
 
   var constants = {
-    VERSION: VERSION$1,
-    USER_AGENT: `mql/${VERSION$1}`,
+    VERSION,
+    USER_AGENT: `mql/${VERSION}`,
     /**
-     * Based on require('got').defaults.options.retry.statusCodes
-     * but without 429 (too many requests)
+     * Retry status codes, excluding 429 (too many requests).
      */
     RETRY_STATUS_CODES: [408, 413, 500, 502, 503, 504, 521, 522, 524]
   }
@@ -1456,7 +1455,7 @@
     }
   }
 
-  const factory$1 = streamResponseType => ({
+  const factory = streamResponseType => ({
     VERSION,
     MicrolinkError,
     got,
@@ -1561,93 +1560,82 @@
     return mql
   }
 
-  var factory_1 = factory$1
+  var factory_1 = factory
 
-  const { flattie: flatten } = dist
-  const { default: ky } = require$$1
+  ;(function (module) {
+    const { flattie: flatten } = dist
+    const { default: ky } = require$$1
 
-  const { VERSION, USER_AGENT, RETRY_STATUS_CODES } = constants
+    const { VERSION, USER_AGENT, RETRY_STATUS_CODES } = constants
 
-  const kyInstance = ky.extend({
-    headers: { 'user-agent': USER_AGENT },
-    retry: { statusCodes: RETRY_STATUS_CODES }
-  })
+    const kyInstance = ky.extend({
+      headers: { 'user-agent': USER_AGENT },
+      retry: { statusCodes: RETRY_STATUS_CODES }
+    })
 
-  const factory = factory_1('arrayBuffer')
+    const factory = factory_1('arrayBuffer')
 
-  class MicrolinkError extends Error {
-    constructor (props) {
-      super()
-      this.name = 'MicrolinkError'
-      Object.assign(this, props)
-      this.description = this.message
-      this.message = this.code
-        ? `${this.code}, ${this.description}`
-        : this.description
-    }
-  }
-
-  const got = async (url, { responseType, ...opts }) => {
-    try {
-      if (opts.timeout === undefined) opts.timeout = false
-      const response = await kyInstance(url, opts)
-      const body = await response[responseType]()
-      const { headers, status: statusCode } = response
-      return { url: response.url, body, headers, statusCode }
-    } catch (error) {
-      if (error.response) {
-        const { response } = error
-        error.response = {
-          ...response,
-          headers: Array.from(response.headers.entries()).reduce(
-            (acc, [key, value]) => {
-              acc[key] = value
-              return acc
-            },
-            {}
-          ),
-          statusCode: response.status,
-          body: await response.text()
-        }
+    class MicrolinkError extends Error {
+      constructor (props) {
+        super()
+        this.name = 'MicrolinkError'
+        Object.assign(this, props)
+        this.description = this.message
+        this.message = this.code
+          ? `${this.code}, ${this.description}`
+          : this.description
       }
-      throw error
     }
-  }
 
-  got.stream = (...args) => kyInstance(...args).then(res => res.body)
+    const got = async (url, { responseType, ...opts }) => {
+      try {
+        if (opts.timeout === undefined) opts.timeout = false
+        const response = await kyInstance(url, opts)
+        const body = await response[responseType]()
+        const { headers, status: statusCode } = response
+        return { url: response.url, body, headers, statusCode }
+      } catch (error) {
+        if (error.response) {
+          const { response } = error
+          error.response = {
+            ...response,
+            headers: Array.from(response.headers.entries()).reduce(
+              (acc, [key, value]) => {
+                acc[key] = value
+                return acc
+              },
+              {}
+            ),
+            statusCode: response.status,
+            body: await response.text()
+          }
+        }
+        throw error
+      }
+    }
 
-  const mql = factory({
-    MicrolinkError,
-    got,
-    flatten,
-    VERSION
-  })
+    got.stream = (...args) => kyInstance(...args).then(res => res.body)
 
-  lightweight.exports = mql
-  var arrayBuffer = (lightweight.exports.arrayBuffer = mql.extend({
-    responseType: 'arrayBuffer'
-  }))
-  var extend = (lightweight.exports.extend = mql.extend)
-  var fetchFromApi = (lightweight.exports.fetchFromApi = mql.fetchFromApi)
-  var getApiUrl = (lightweight.exports.getApiUrl = mql.getApiUrl)
-  var mapRules = (lightweight.exports.mapRules = mql.mapRules)
-  var MicrolinkError_1 = (lightweight.exports.MicrolinkError =
-    mql.MicrolinkError)
-  var version = (lightweight.exports.version = mql.version)
+    const mql = factory({
+      MicrolinkError,
+      got,
+      flatten,
+      VERSION
+    })
 
-  var lightweightExports = lightweight.exports
-  var lightweight_default = /*@__PURE__*/ getDefaultExportFromCjs(
-    lightweightExports
-  )
+    module.exports = mql
+    module.exports.arrayBuffer = mql.extend({ responseType: 'arrayBuffer' })
+    module.exports.buffer = module.exports.arrayBuffer
+    module.exports.extend = mql.extend
+    module.exports.fetchFromApi = mql.fetchFromApi
+    module.exports.getApiUrl = mql.getApiUrl
+    module.exports.mapRules = mql.mapRules
+    module.exports.MicrolinkError = mql.MicrolinkError
+    module.exports.version = mql.version
+  })(src)
 
-  exports.MicrolinkError = MicrolinkError_1
-  exports.arrayBuffer = arrayBuffer
-  exports.default = lightweight_default
-  exports.extend = extend
-  exports.fetchFromApi = fetchFromApi
-  exports.getApiUrl = getApiUrl
-  exports.mapRules = mapRules
-  exports.version = version
+  var srcExports = src.exports
+  var index = /*@__PURE__*/ getDefaultExportFromCjs(srcExports)
 
-  Object.defineProperty(exports, '__esModule', { value: true })
+  return index
 })
