@@ -5,8 +5,10 @@
   "version": "0.15.0",
   "types": "dist/index.d.ts",
   "exports": {
-    "default": "./src/main.mjs",
-    "types": "./dist/index.d.ts"
+    "types": "./dist/index.d.ts",
+    "require": "./src/index.js",
+    "import": "./src/main.mjs",
+    "default": "./src/main.mjs"
   },
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
