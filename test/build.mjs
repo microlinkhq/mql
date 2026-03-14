@@ -32,3 +32,26 @@ test('esm', async t => {
 
   t.is((await evalScript.esm("import {getApiUrl} from '@microlink/mql'; console.log(typeof getApiUrl)")), 'function')
 })
+
+test('cjs', async t => {
+  t.is((await evalScript("const mql = require('@microlink/mql'); console.log(typeof mql)")), 'function')
+  t.is((await evalScript("const mql = require('@microlink/mql'); console.log(typeof mql.default)")), 'undefined')
+
+  const methods = sort(JSON.parse((await evalScript("const mql = require('@microlink/mql'); console.log(JSON.stringify(Object.keys(mql)))"))))
+
+  t.deepEqual(methods,
+    [
+      'arrayBuffer',
+      'buffer',
+      'extend',
+      'fetchFromApi',
+      'getApiUrl',
+      'mapRules',
+      'MicrolinkError',
+      'stream',
+      'version'
+    ]
+  )
+
+  t.is((await evalScript("const {getApiUrl} = require('@microlink/mql'); console.log(typeof getApiUrl)")), 'function')
+})
