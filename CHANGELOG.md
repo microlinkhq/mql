@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.15.0](https://github.com/microlinkhq/mql/compare/v0.14.2...v0.15.0) (2026-03-14)
+
+
+### Features
+
+* use fetch ([#171](https://github.com/microlinkhq/mql/issues/171)) ([d7c6a73](https://github.com/microlinkhq/mql/commit/d7c6a73b0f47aeee0486b3124abb47546afd69ae))
+
 ### [0.14.2](https://github.com/microlinkhq/mql/compare/v0.14.1...v0.14.2) (2026-02-12)
 
 
