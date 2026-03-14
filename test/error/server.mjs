@@ -12,6 +12,9 @@ clients.forEach(({ constructor: mql, target }) => {
       res.statusCode = 503
       res.end('503 Service Unavailable')
     })
+    t.teardown(async () => {
+      await new Promise(resolve => server.close(resolve))
+    })
 
     const endpoint = await listen(server)
 
