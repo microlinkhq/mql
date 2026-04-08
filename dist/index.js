@@ -2166,7 +2166,7 @@ var constants = {
           ? Object.fromEntries(responseHeaders.entries())
           : responseHeaders || {}
 
-      let bodyInput = rawBody
+      let bodyInput = error.data ?? rawBody
       const isBodyReadableStream = typeof bodyInput?.getReader === 'function'
 
       if (
