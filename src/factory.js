@@ -73,18 +73,46 @@ const factory = streamResponseType => ({
         : { ...response.body, response }
     } catch (error) {
       const { response = {} } = error
+      const { statusCode: responseStatusCode, status } = response
       const {
-        statusCode,
         body: rawBody,
-        headers = {},
+        headers: responseHeaders = {},
         url: uri = apiUrl
       } = response
-      const isBodyBuffer = isBuffer(rawBody)
+      const statusCode = responseStatusCode ?? status
+      const headers =
+        responseHeaders != null && typeof responseHeaders.entries === 'function'
+          ? Array.from(responseHeaders.entries()).reduce(
+            (acc, [key, value]) => {
+              acc[key] = value
+              return acc
+            },
+            {}
+          )
+          : responseHeaders
+      let bodyInput = rawBody
+      const isBodyReadableStream =
+        bodyInput != null && typeof bodyInput.getReader === 'function'
+      if (
+        (bodyInput === undefined || isBodyReadableStream) &&
+        typeof response.text === 'function'
+      ) {
+        try {
+          bodyInput = await response.text()
+        } catch (_) {
+          bodyInput = undefined
+        }
+      }
+      const isBodyBuffer = isBuffer(bodyInput)
 
       const body =
-        isObject(rawBody) && !isBodyBuffer
-          ? rawBody
-          : parseBody(isBodyBuffer ? rawBody.toString() : rawBody, error, uri)
+        isObject(bodyInput) && !isBodyBuffer
+          ? bodyInput
+          : parseBody(
+            isBodyBuffer ? bodyInput.toString() : bodyInput,
+            error,
+            uri
+          )
 
       throw new MicrolinkError({
         ...body,

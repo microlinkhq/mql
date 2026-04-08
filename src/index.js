@@ -3,11 +3,19 @@
 const { flattie: flatten } = require('flattie')
 const { default: ky } = require('ky')
 
-const { VERSION, USER_AGENT, RETRY_STATUS_CODES } = require('./constants')
+const {
+  VERSION,
+  USER_AGENT,
+  RETRY_STATUS_CODES,
+  RETRY_AFTER_STATUS_CODES
+} = require('./constants')
 
 const kyInstance = ky.extend({
   headers: { 'user-agent': USER_AGENT },
-  retry: { statusCodes: RETRY_STATUS_CODES }
+  retry: {
+    statusCodes: RETRY_STATUS_CODES,
+    afterStatusCodes: RETRY_AFTER_STATUS_CODES
+  }
 })
 
 const factory = require('./factory')('arrayBuffer')
@@ -25,30 +33,11 @@ class MicrolinkError extends Error {
 }
 
 const got = async (url, { responseType, ...opts }) => {
-  try {
-    if (opts.timeout === undefined) opts.timeout = false
-    const response = await kyInstance(url, opts)
-    const body = await response[responseType]()
-    const { headers, status: statusCode } = response
-    return { url: response.url, body, headers, statusCode }
-  } catch (error) {
-    if (error.response) {
-      const { response } = error
-      error.response = {
-        ...response,
-        headers: Array.from(response.headers.entries()).reduce(
-          (acc, [key, value]) => {
-            acc[key] = value
-            return acc
-          },
-          {}
-        ),
-        statusCode: response.status,
-        body: await response.text()
-      }
-    }
-    throw error
-  }
+  if (opts.timeout === undefined) opts.timeout = false
+  const response = await kyInstance(url, opts)
+  const body = await response[responseType]()
+  const { headers, status: statusCode } = response
+  return { url: response.url, body, headers, statusCode }
 }
 
 got.stream = (...args) => kyInstance(...args).then(res => res.body)

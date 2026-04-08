@@ -8,5 +8,9 @@ module.exports = {
   /**
    * Retry status codes, excluding 429 (too many requests).
    */
-  RETRY_STATUS_CODES: [408, 413, 500, 502, 503, 504, 521, 522, 524]
+  RETRY_STATUS_CODES: [408, 413, 500, 502, 503, 504, 521, 522, 524],
+  /**
+   * Retry-After status codes, excluding 429 (too many requests).
+   */
+  RETRY_AFTER_STATUS_CODES: [413, 503]
 }
