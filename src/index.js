@@ -58,14 +58,6 @@ const isURL = url => {
   }
 }
 
-const headersToObject = headers =>
-  headers != null && typeof headers.entries === 'function'
-    ? Array.from(headers.entries()).reduce((acc, [key, value]) => {
-      acc[key] = value
-      return acc
-    }, {})
-    : headers
-
 class MicrolinkError extends Error {
   constructor (props) {
     super()
@@ -120,12 +112,15 @@ const fetchFromApi = async (apiUrl, opts = {}) => {
     const { statusCode: responseStatusCode, status } = response
     const {
       body: rawBody,
-      headers: responseHeaders = {},
+      headers: responseHeaders,
       url: uri = apiUrl
     } = response
 
     const statusCode = responseStatusCode ?? status
-    const headers = headersToObject(responseHeaders)
+    const headers =
+      typeof responseHeaders?.entries === 'function'
+        ? Object.fromEntries(responseHeaders.entries())
+        : responseHeaders || {}
 
     let bodyInput = rawBody
     const isBodyReadableStream =
@@ -161,7 +156,7 @@ const fetchFromApi = async (apiUrl, opts = {}) => {
 const getApiUrl = (
   url,
   { data, apiKey, endpoint, ...opts } = {},
-  { responseType = 'json', headers: gotHeaders, ...gotOpts } = {}
+  { responseType = 'json', headers: responseHeaders = {}, ...gotOpts } = {}
 ) => {
   const isPro = !!apiKey
   const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
@@ -170,11 +165,11 @@ const getApiUrl = (
     url,
     ...mapRules(data),
     ...flatten(opts)
-  }).toString()}`
+  })}`
 
   const headers = isPro
-    ? { ...gotHeaders, 'x-api-key': apiKey }
-    : { ...gotHeaders }
+    ? { ...responseHeaders, 'x-api-key': apiKey }
+    : responseHeaders
 
   if (opts.stream) responseType = STREAM_RESPONSE_TYPE
 

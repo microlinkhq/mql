@@ -2032,11 +2032,13 @@ var constants = {
   VERSION,
   USER_AGENT: `mql/${VERSION}`,
   /**
-   * Retry status codes, excluding 429 (too many requests).
+   * Based on Ky default retry status codes, excluding 429:
+   * https://github.com/sindresorhus/ky/blob/main/source/core/constants.ts
    */
   RETRY_STATUS_CODES: [408, 413, 500, 502, 503, 504, 521, 522, 524],
   /**
-   * Retry-After status codes, excluding 429 (too many requests).
+   * Based on Ky default Retry-After status codes, excluding 429:
+   * https://github.com/sindresorhus/ky/blob/main/source/core/constants.ts
    */
   RETRY_AFTER_STATUS_CODES: [413, 503]
 }
@@ -2100,14 +2102,6 @@ var constants = {
     }
   }
 
-  const headersToObject = headers =>
-    headers != null && typeof headers.entries === 'function'
-      ? Array.from(headers.entries()).reduce((acc, [key, value]) => {
-          acc[key] = value
-          return acc
-        }, {})
-      : headers
-
   class MicrolinkError extends Error {
     constructor (props) {
       super()
@@ -2162,12 +2156,15 @@ var constants = {
       const { statusCode: responseStatusCode, status } = response
       const {
         body: rawBody,
-        headers: responseHeaders = {},
+        headers: responseHeaders,
         url: uri = apiUrl
       } = response
 
       const statusCode = responseStatusCode ?? status
-      const headers = headersToObject(responseHeaders)
+      const headers =
+        typeof responseHeaders?.entries === 'function'
+          ? Object.fromEntries(responseHeaders.entries())
+          : responseHeaders || {}
 
       let bodyInput = rawBody
       const isBodyReadableStream =
@@ -2207,7 +2204,7 @@ var constants = {
   const getApiUrl = (
     url,
     { data, apiKey, endpoint, ...opts } = {},
-    { responseType = 'json', headers: gotHeaders, ...gotOpts } = {}
+    { responseType = 'json', headers: responseHeaders = {}, ...gotOpts } = {}
   ) => {
     const isPro = !!apiKey
     const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
@@ -2216,11 +2213,11 @@ var constants = {
       url,
       ...mapRules(data),
       ...flatten(opts)
-    }).toString()}`
+    })}`
 
     const headers = isPro
-      ? { ...gotHeaders, 'x-api-key': apiKey }
-      : { ...gotHeaders }
+      ? { ...responseHeaders, 'x-api-key': apiKey }
+      : responseHeaders
 
     if (opts.stream) responseType = STREAM_RESPONSE_TYPE
 
