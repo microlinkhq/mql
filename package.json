@@ -81,7 +81,6 @@
   "files": [
     "dist",
     "src/constants.js",
-    "src/factory.js",
     "src/index.js",
     "src/main.mjs"
   ],

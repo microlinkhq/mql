@@ -530,11 +530,11 @@ const streamRequest = (request, onUploadProgress, originalBody) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-restricted-types
-const isObject$1 = value => value !== null && typeof value === 'object'
+const isObject = value => value !== null && typeof value === 'object'
 
 const replaceSymbol = Symbol('replaceOption')
 const getReplaceState = value =>
-  isObject$1(value) && value[replaceSymbol] === true
+  isObject(value) && value[replaceSymbol] === true
     ? {
         isReplace: true,
         value: value.value
@@ -569,10 +569,7 @@ const replaceOption = value => {
 }
 const validateAndMerge = (...sources) => {
   for (const source of sources) {
-    if (
-      (!isObject$1(source) || Array.isArray(source)) &&
-      source !== undefined
-    ) {
+    if ((!isObject(source) || Array.isArray(source)) && source !== undefined) {
       throw new TypeError('The `options` argument must be an object')
     }
   }
@@ -592,7 +589,7 @@ const mergeHeaders = (source1 = {}, source2 = {}) => {
   return result
 }
 const isPlainObject = value => {
-  if (!isObject$1(value) || Array.isArray(value)) {
+  if (!isObject(value) || Array.isArray(value)) {
     return false
   }
   const prototype = Object.getPrototypeOf(value)
@@ -666,7 +663,7 @@ const appendSearchParameters = (target, source) => {
         result.append(String(pair[0]), String(pair[1]))
         deleted.delete(String(pair[0]))
       }
-    } else if (isObject$1(input)) {
+    } else if (isObject(input)) {
       for (const [key, value] of Object.entries(input)) {
         if (value === undefined) {
           result.delete(key)
@@ -703,7 +700,7 @@ const deepMerge = (...sources) => {
         returnValue = []
       }
       returnValue = [...returnValue, ...source]
-    } else if (isObject$1(source)) {
+    } else if (isObject(source)) {
       for (let [key, value] of Object.entries(source)) {
         // Special handling for AbortSignal instances
         if (key === 'signal' && value instanceof globalThis.AbortSignal) {
@@ -718,7 +715,7 @@ const deepMerge = (...sources) => {
           if (
             value !== undefined &&
             value !== null &&
-            (!isObject$1(value) || Array.isArray(value))
+            (!isObject(value) || Array.isArray(value))
           ) {
             throw new TypeError('The `context` option must be an object')
           }
@@ -751,19 +748,19 @@ const deepMerge = (...sources) => {
           }
           continue
         }
-        if (isObject$1(value) && !isReplace && key in returnValue) {
+        if (isObject(value) && !isReplace && key in returnValue) {
           value = deepMerge(returnValue[key], value)
         }
         returnValue = { ...returnValue, [key]: value }
       }
-      if (isObject$1(source.hooks)) {
+      if (isObject(source.hooks)) {
         const { value: hookValue, isReplace } = getReplaceState(source.hooks)
         hooks = isReplace
           ? mergeHooks({}, hookValue)
           : mergeHooks(hooks, hookValue)
         returnValue.hooks = hooks
       }
-      if (isObject$1(source.headers)) {
+      if (isObject(source.headers)) {
         const { value: headerValue, isReplace } = getReplaceState(
           source.headers
         )
@@ -2044,50 +2041,85 @@ var constants = {
   RETRY_AFTER_STATUS_CODES: [413, 503]
 }
 
-const ENDPOINT = {
-  FREE: 'https://api.microlink.io/',
-  PRO: 'https://pro.microlink.io/'
-}
+;(function (module) {
+  const { flattie: flatten } = dist
+  const { default: ky } = require$$1
 
-const isObject = input => input !== null && typeof input === 'object'
+  const {
+    VERSION,
+    USER_AGENT,
+    RETRY_STATUS_CODES,
+    RETRY_AFTER_STATUS_CODES
+  } = constants
 
-const isBuffer = input =>
-  input != null &&
-  input.constructor != null &&
-  typeof input.constructor.isBuffer === 'function' &&
-  input.constructor.isBuffer(input)
+  const ENDPOINT = {
+    FREE: 'https://api.microlink.io/',
+    PRO: 'https://pro.microlink.io/'
+  }
 
-const parseBody = (input, error, url) => {
-  try {
-    return JSON.parse(input)
-  } catch (_) {
-    const message = input || error.message
+  const STREAM_RESPONSE_TYPE = 'arrayBuffer'
 
-    return {
-      status: 'error',
-      data: { url: message },
-      more: 'https://microlink.io/efatalclient',
-      code: 'EFATALCLIENT',
-      message,
-      url
+  const kyInstance = ky.extend({
+    headers: { 'user-agent': USER_AGENT },
+    retry: {
+      statusCodes: RETRY_STATUS_CODES,
+      afterStatusCodes: RETRY_AFTER_STATUS_CODES
+    }
+  })
+
+  const isObject = input => input !== null && typeof input === 'object'
+
+  const isBuffer = input =>
+    input != null &&
+    input.constructor != null &&
+    typeof input.constructor.isBuffer === 'function' &&
+    input.constructor.isBuffer(input)
+
+  const parseBody = (input, error, url) => {
+    try {
+      return JSON.parse(input)
+    } catch (_) {
+      const message = input || error.message
+
+      return {
+        status: 'error',
+        data: { url: message },
+        more: 'https://microlink.io/efatalclient',
+        code: 'EFATALCLIENT',
+        message,
+        url
+      }
     }
   }
-}
 
-const isURL = url => {
-  try {
-    return /^https?:\/\//i.test(new URL(url).href)
-  } catch (_) {
-    return false
+  const isURL = url => {
+    try {
+      return /^https?:\/\//i.test(new URL(url).href)
+    } catch (_) {
+      return false
+    }
   }
-}
 
-const factory = streamResponseType => ({
-  VERSION,
-  MicrolinkError,
-  got,
-  flatten
-}) => {
+  const headersToObject = headers =>
+    headers != null && typeof headers.entries === 'function'
+      ? Array.from(headers.entries()).reduce((acc, [key, value]) => {
+          acc[key] = value
+          return acc
+        }, {})
+      : headers
+
+  class MicrolinkError extends Error {
+    constructor (props) {
+      super()
+      this.name = 'MicrolinkError'
+      Object.assign(this, props)
+      this.description = this.message
+      this.message = this.code
+        ? `${this.code}, ${this.description}`
+        : this.description
+    }
+  }
+
   const assertUrl = (url = '') => {
     if (!isURL(url)) {
       const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
@@ -2111,10 +2143,18 @@ const factory = streamResponseType => ({
     }, {})
   }
 
+  const doFetch = async (apiUrl, { responseType, ...opts }) => {
+    if (opts.timeout === undefined) opts.timeout = false
+    const response = await kyInstance(apiUrl, opts)
+    const body = await response[responseType]()
+    const { headers, status: statusCode } = response
+    return { url: response.url, body, headers, statusCode }
+  }
+
   const fetchFromApi = async (apiUrl, opts = {}) => {
     try {
-      const response = await got(apiUrl, opts)
-      return opts.responseType === streamResponseType
+      const response = await doFetch(apiUrl, opts)
+      return opts.responseType === STREAM_RESPONSE_TYPE
         ? response
         : { ...response.body, response }
     } catch (error) {
@@ -2125,20 +2165,14 @@ const factory = streamResponseType => ({
         headers: responseHeaders = {},
         url: uri = apiUrl
       } = response
+
       const statusCode = responseStatusCode ?? status
-      const headers =
-        responseHeaders != null && typeof responseHeaders.entries === 'function'
-          ? Array.from(responseHeaders.entries()).reduce(
-              (acc, [key, value]) => {
-                acc[key] = value
-                return acc
-              },
-              {}
-            )
-          : responseHeaders
+      const headers = headersToObject(responseHeaders)
+
       let bodyInput = rawBody
       const isBodyReadableStream =
         bodyInput != null && typeof bodyInput.getReader === 'function'
+
       if (
         (bodyInput === undefined || isBodyReadableStream) &&
         typeof response.text === 'function'
@@ -2149,8 +2183,8 @@ const factory = streamResponseType => ({
           bodyInput = undefined
         }
       }
-      const isBodyBuffer = isBuffer(bodyInput)
 
+      const isBodyBuffer = isBuffer(bodyInput)
       const body =
         isObject(bodyInput) && !isBodyBuffer
           ? bodyInput
@@ -2188,9 +2222,8 @@ const factory = streamResponseType => ({
       ? { ...gotHeaders, 'x-api-key': apiKey }
       : { ...gotHeaders }
 
-    if (opts.stream) {
-      responseType = streamResponseType
-    }
+    if (opts.stream) responseType = STREAM_RESPONSE_TYPE
+
     return [apiUrl, { ...gotOpts, responseType, headers }]
   }
 
@@ -2204,71 +2237,19 @@ const factory = streamResponseType => ({
   }
 
   const mql = createMql()
+
   mql.extend = createMql
   mql.MicrolinkError = MicrolinkError
   mql.getApiUrl = getApiUrl
   mql.fetchFromApi = fetchFromApi
   mql.mapRules = mapRules
   mql.version = VERSION
-  mql.stream = got.stream
-
-  return mql
-}
-
-var factory_1 = factory
-
-;(function (module) {
-  const { flattie: flatten } = dist
-  const { default: ky } = require$$1
-
-  const {
-    VERSION,
-    USER_AGENT,
-    RETRY_STATUS_CODES,
-    RETRY_AFTER_STATUS_CODES
-  } = constants
-
-  const kyInstance = ky.extend({
-    headers: { 'user-agent': USER_AGENT },
-    retry: {
-      statusCodes: RETRY_STATUS_CODES,
-      afterStatusCodes: RETRY_AFTER_STATUS_CODES
-    }
-  })
-
-  const factory = factory_1('arrayBuffer')
-
-  class MicrolinkError extends Error {
-    constructor (props) {
-      super()
-      this.name = 'MicrolinkError'
-      Object.assign(this, props)
-      this.description = this.message
-      this.message = this.code
-        ? `${this.code}, ${this.description}`
-        : this.description
-    }
-  }
-
-  const got = async (url, { responseType, ...opts }) => {
-    if (opts.timeout === undefined) opts.timeout = false
-    const response = await kyInstance(url, opts)
-    const body = await response[responseType]()
-    const { headers, status: statusCode } = response
-    return { url: response.url, body, headers, statusCode }
-  }
-
-  got.stream = (...args) => kyInstance(...args).then(res => res.body)
-
-  const mql = factory({
-    MicrolinkError,
-    got,
-    flatten,
-    VERSION
-  })
+  mql.stream = (...args) => kyInstance(...args).then(res => res.body)
 
   module.exports = mql
-  module.exports.arrayBuffer = mql.extend({ responseType: 'arrayBuffer' })
+  module.exports.arrayBuffer = mql.extend({
+    responseType: STREAM_RESPONSE_TYPE
+  })
   module.exports.buffer = module.exports.arrayBuffer
   module.exports.extend = mql.extend
   module.exports.fetchFromApi = mql.fetchFromApi

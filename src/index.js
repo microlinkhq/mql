@@ -10,6 +10,13 @@ const {
   RETRY_AFTER_STATUS_CODES
 } = require('./constants')
 
+const ENDPOINT = {
+  FREE: 'https://api.microlink.io/',
+  PRO: 'https://pro.microlink.io/'
+}
+
+const STREAM_RESPONSE_TYPE = 'arrayBuffer'
+
 const kyInstance = ky.extend({
   headers: { 'user-agent': USER_AGENT },
   retry: {
@@ -18,7 +25,46 @@ const kyInstance = ky.extend({
   }
 })
 
-const factory = require('./factory')('arrayBuffer')
+const isObject = input => input !== null && typeof input === 'object'
+
+const isBuffer = input =>
+  input != null &&
+  input.constructor != null &&
+  typeof input.constructor.isBuffer === 'function' &&
+  input.constructor.isBuffer(input)
+
+const parseBody = (input, error, url) => {
+  try {
+    return JSON.parse(input)
+  } catch (_) {
+    const message = input || error.message
+
+    return {
+      status: 'error',
+      data: { url: message },
+      more: 'https://microlink.io/efatalclient',
+      code: 'EFATALCLIENT',
+      message,
+      url
+    }
+  }
+}
+
+const isURL = url => {
+  try {
+    return /^https?:\/\//i.test(new URL(url).href)
+  } catch (_) {
+    return false
+  }
+}
+
+const headersToObject = headers =>
+  headers != null && typeof headers.entries === 'function'
+    ? Array.from(headers.entries()).reduce((acc, [key, value]) => {
+      acc[key] = value
+      return acc
+    }, {})
+    : headers
 
 class MicrolinkError extends Error {
   constructor (props) {
@@ -32,25 +78,130 @@ class MicrolinkError extends Error {
   }
 }
 
-const got = async (url, { responseType, ...opts }) => {
+const assertUrl = (url = '') => {
+  if (!isURL(url)) {
+    const message = `The \`url\` as \`${url}\` is not valid. Ensure it has protocol (http or https) and hostname.`
+    throw new MicrolinkError({
+      status: 'fail',
+      data: { url: message },
+      more: 'https://microlink.io/einvalurlclient',
+      code: 'EINVALURLCLIENT',
+      message,
+      url
+    })
+  }
+}
+
+const mapRules = rules => {
+  if (!isObject(rules)) return
+  const flatRules = flatten(rules)
+  return Object.keys(flatRules).reduce((acc, key) => {
+    acc[`data.${key}`] = flatRules[key].toString()
+    return acc
+  }, {})
+}
+
+const doFetch = async (apiUrl, { responseType, ...opts }) => {
   if (opts.timeout === undefined) opts.timeout = false
-  const response = await kyInstance(url, opts)
+  const response = await kyInstance(apiUrl, opts)
   const body = await response[responseType]()
   const { headers, status: statusCode } = response
   return { url: response.url, body, headers, statusCode }
 }
 
-got.stream = (...args) => kyInstance(...args).then(res => res.body)
+const fetchFromApi = async (apiUrl, opts = {}) => {
+  try {
+    const response = await doFetch(apiUrl, opts)
+    return opts.responseType === STREAM_RESPONSE_TYPE
+      ? response
+      : { ...response.body, response }
+  } catch (error) {
+    const { response = {} } = error
+    const { statusCode: responseStatusCode, status } = response
+    const {
+      body: rawBody,
+      headers: responseHeaders = {},
+      url: uri = apiUrl
+    } = response
 
-const mql = factory({
-  MicrolinkError,
-  got,
-  flatten,
-  VERSION
-})
+    const statusCode = responseStatusCode ?? status
+    const headers = headersToObject(responseHeaders)
+
+    let bodyInput = rawBody
+    const isBodyReadableStream =
+      bodyInput != null && typeof bodyInput.getReader === 'function'
+
+    if (
+      (bodyInput === undefined || isBodyReadableStream) &&
+      typeof response.text === 'function'
+    ) {
+      try {
+        bodyInput = await response.text()
+      } catch (_) {
+        bodyInput = undefined
+      }
+    }
+
+    const isBodyBuffer = isBuffer(bodyInput)
+    const body =
+      isObject(bodyInput) && !isBodyBuffer
+        ? bodyInput
+        : parseBody(isBodyBuffer ? bodyInput.toString() : bodyInput, error, uri)
+
+    throw new MicrolinkError({
+      ...body,
+      message: body.message,
+      url: uri,
+      statusCode,
+      headers
+    })
+  }
+}
+
+const getApiUrl = (
+  url,
+  { data, apiKey, endpoint, ...opts } = {},
+  { responseType = 'json', headers: gotHeaders, ...gotOpts } = {}
+) => {
+  const isPro = !!apiKey
+  const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
+
+  const apiUrl = `${apiEndpoint}?${new URLSearchParams({
+    url,
+    ...mapRules(data),
+    ...flatten(opts)
+  }).toString()}`
+
+  const headers = isPro
+    ? { ...gotHeaders, 'x-api-key': apiKey }
+    : { ...gotHeaders }
+
+  if (opts.stream) responseType = STREAM_RESPONSE_TYPE
+
+  return [apiUrl, { ...gotOpts, responseType, headers }]
+}
+
+const createMql = defaultOpts => async (url, opts, gotOpts) => {
+  assertUrl(url)
+  const [apiUrl, fetchOpts] = getApiUrl(url, opts, {
+    ...defaultOpts,
+    ...gotOpts
+  })
+  return fetchFromApi(apiUrl, fetchOpts)
+}
+
+const mql = createMql()
+
+mql.extend = createMql
+mql.MicrolinkError = MicrolinkError
+mql.getApiUrl = getApiUrl
+mql.fetchFromApi = fetchFromApi
+mql.mapRules = mapRules
+mql.version = VERSION
+mql.stream = (...args) => kyInstance(...args).then(res => res.body)
 
 module.exports = mql
-module.exports.arrayBuffer = mql.extend({ responseType: 'arrayBuffer' })
+module.exports.arrayBuffer = mql.extend({ responseType: STREAM_RESPONSE_TYPE })
 module.exports.buffer = module.exports.arrayBuffer
 module.exports.extend = mql.extend
 module.exports.fetchFromApi = mql.fetchFromApi
