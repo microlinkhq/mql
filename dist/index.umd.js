@@ -2107,9 +2107,7 @@
     const isObject = input => input !== null && typeof input === 'object'
 
     const isBuffer = input =>
-      input != null &&
-      input.constructor != null &&
-      typeof input.constructor.isBuffer === 'function' &&
+      typeof input?.constructor?.isBuffer === 'function' &&
       input.constructor.isBuffer(input)
 
     const parseBody = (input, error, url) => {
@@ -2131,7 +2129,8 @@
 
     const isURL = url => {
       try {
-        return /^https?:\/\//i.test(new URL(url).href)
+        const { protocol } = new URL(url)
+        return protocol === 'http:' || protocol === 'https:'
       } catch (_) {
         return false
       }
@@ -2165,11 +2164,12 @@
 
     const mapRules = rules => {
       if (!isObject(rules)) return
-      const flatRules = flatten(rules)
-      return Object.keys(flatRules).reduce((acc, key) => {
-        acc[`data.${key}`] = flatRules[key].toString()
-        return acc
-      }, {})
+      return Object.fromEntries(
+        Object.entries(flatten(rules)).map(([key, value]) => [
+          `data.${key}`,
+          value.toString()
+        ])
+      )
     }
 
     const doFetch = async (apiUrl, { responseType, ...opts }) => {
@@ -2202,8 +2202,7 @@
             : responseHeaders || {}
 
         let bodyInput = rawBody
-        const isBodyReadableStream =
-          bodyInput != null && typeof bodyInput.getReader === 'function'
+        const isBodyReadableStream = typeof bodyInput?.getReader === 'function'
 
         if (
           (bodyInput === undefined || isBodyReadableStream) &&
@@ -2228,7 +2227,6 @@
 
         throw new MicrolinkError({
           ...body,
-          message: body.message,
           url: uri,
           statusCode,
           headers
