@@ -2,18 +2,15 @@
 
 import test from 'ava'
 
-import clients from './clients.mjs'
+import mql from '@microlink/mql'
 
-clients
-  .forEach(({ constructor: mql, target }) => {
-    test(`${target} » pass headers`, async t => {
-      const stream = await mql.stream('https://cdn.microlink.io/logo/logo.png', {
-        headers: {
-          accept: 'image/webp'
-        }
-      })
-
-      t.truthy(stream)
-      t.is(typeof stream.getReader, 'function')
-    })
+test('pass headers', async t => {
+  const stream = await mql.stream('https://cdn.microlink.io/logo/logo.png', {
+    headers: {
+      accept: 'image/webp'
+    }
   })
+
+  t.truthy(stream)
+  t.is(typeof stream.getReader, 'function')
+})

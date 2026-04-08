@@ -2,32 +2,26 @@
 
 import test from 'ava'
 
-import clients from './clients.mjs'
+import mql from '@microlink/mql'
 
-clients.forEach(({ constructor: mql, target }) => {
-  test(`${target} » url`, async t => {
-    const { status, data, response } = await mql(
-      'https://kikobeats.com?ref=mql'
-    )
-    const { date, ...restData } = data
+test('url', async t => {
+  const { status, data, response } = await mql('https://kikobeats.com?ref=mql')
+  const { date, ...restData } = data
 
-    t.snapshot(status)
-    t.snapshot(restData)
-    t.snapshot(response.url)
-    t.snapshot(response.statusCode)
+  t.snapshot(status)
+  t.snapshot(restData)
+  t.snapshot(response.url)
+  t.snapshot(response.statusCode)
+})
+
+test('stream', async t => {
+  const response = await mql('https://kikobeats.com?ref=mql', {
+    screenshot: { optimizedForSpeed: true },
+    stream: 'screenshot'
   })
 
-  test(`${target} » stream`, async t => {
-    const response = await mql(
-      'https://kikobeats.com?ref=mql', {
-        screenshot: { optimizedForSpeed: true },
-        stream: 'screenshot'
-      }
-    )
-
-    t.is(typeof response.headers, 'object')
-    t.is(typeof response.statusCode, 'number')
-    t.is(typeof response.url, 'string')
-    t.true(response.body instanceof ArrayBuffer)
-  })
+  t.is(typeof response.headers, 'object')
+  t.is(typeof response.statusCode, 'number')
+  t.is(typeof response.url, 'string')
+  t.true(response.body instanceof ArrayBuffer)
 })
