@@ -154,7 +154,7 @@ const fetchFromApi = async (apiUrl, opts = {}) => {
 const getApiUrl = (
   url,
   { data, apiKey, endpoint, ...opts } = {},
-  { responseType = 'json', headers: responseHeaders = {}, ...gotOpts } = {}
+  { responseType = 'json', headers: reqHeaders = {}, ...gotOpts } = {}
 ) => {
   const isPro = !!apiKey
   const apiEndpoint = endpoint || ENDPOINT[isPro ? 'PRO' : 'FREE']
@@ -165,9 +165,7 @@ const getApiUrl = (
     ...flatten(opts)
   })}`
 
-  const headers = isPro
-    ? { ...responseHeaders, 'x-api-key': apiKey }
-    : responseHeaders
+  const headers = isPro ? { ...reqHeaders, 'x-api-key': apiKey } : reqHeaders
 
   if (opts.stream) responseType = STREAM_RESPONSE_TYPE
 

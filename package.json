@@ -119,6 +119,7 @@
   },
   "nano-staged": {
     "*.js": [
+      "npx -y @kikobeats/prettier-standard",
       "standard --fix"
     ],
     "*.md": [
